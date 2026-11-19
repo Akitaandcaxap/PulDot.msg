@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PulDot.msg</title>
+  <style>
+    :root {
+      --bg-color: #0d0607;
+      --card-bg: rgba(30, 10, 12, 0.65);
+      --accent-color: #e63946;
+      --accent-hover: #ff4d5a;
+      --text-color: #f1faee;
+      --text-muted: #a8a2a4;
+      --border-color: rgba(230, 57, 70, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --online-color: #2ecc71;
+      --playing-color: #ff9f1c;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(230, 57, 70, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(120, 15, 25, 0.2) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    header {
+      background: rgba(15, 5, 7, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.85rem 1.5rem;
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-color);
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--accent-color), #800f19);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(230, 57, 70, 0.4);
+      font-size: 1.15rem;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.3rem;
+      border-radius: 10px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .nav-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.45rem 0.95rem;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .nav-tab:hover {
+      color: var(--text-color);
+    }
+
+    .nav-tab.active {
+      background: var(--accent-color);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(230, 57, 70, 0.35);
+    }
+
+    .profile-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(230, 57, 70, 0.1);
+      border: 1px solid var(--border-color);
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--online-color);
+      display: inline-block;
+    }
+
+    .playing-badge {
+      background: rgba(255, 159, 28, 0.18);
+      border: 1px solid rgba(255, 159, 28, 0.5);
+      color: #ffbe55;
+      padding: 0.15rem 0.55rem;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      display: none;
+    }
+
+    .playing-badge.active {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .btn {
+      background: rgba(230, 57, 70, 0.15);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--accent-color);
+      border-color: var(--accent-color);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--accent-color);
+      border-color: var(--accent-color);
+      color: #fff;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 1.5rem auto;
+      padding: 0 1.25rem;
+      flex: 1;
+      width: 100%;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .glass-panel {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 1.25rem;
+    }
+
+    /* Chat Layout */
+    .chat-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 1.25rem;
+      min-height: 580px;
+    }
+
+    @media (max-width: 820px) {
+      .chat-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .sidebar-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .input-field, .select-field {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid var(--glass-border);
+      color: var(--text-color);
+      padding: 0.55rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .input-field:focus, .select-field:focus {
+      border-color: var(--accent-color);
+    }
+
+    .room-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin: 0.75rem 0 1.25rem;
+    }
+
+    .room-item {
+      padding: 0.55rem 0.75rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    .room-item:hover {
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .room-item.active {
+      background: rgba(230, 57, 70, 0.18);
+      border-color: var(--border-color);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .chat-main {
+      display: flex;
+      flex-direction: column;
+      height: 580px;
+    }
+
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      padding-bottom: 0.9rem;
+      border-bottom: 1px solid var(--glass-border);
+      margin-bottom: 0.9rem;
+    }
+
+    .messages-box {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      padding-right: 0.35rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .msg-item {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      padding: 0.65rem 0.85rem;
+      max-width: 82%;
+    }
+
+    .msg-item.own {
+      align-self: flex-end;
+      background: rgba(230, 57, 70, 0.16);
+      border-color: var(--border-color);
+    }
+
+    .msg-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .msg-author {
+      color: var(--accent-color);
+      font-weight: 600;
+    }
+
+    .msg-text {
+      font-size: 0.95rem;
+      word-break: break-word;
+    }
+
+    .chat-form {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    /* WebRTC Call Box */
+    .call-box {
+      margin-top: 1rem;
+      padding: 0.9rem;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid var(--border-color);
+      display: none;
+    }
+
+    .call-box.active {
+      display: block;
+    }
+
+    .call-videos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    video.call-video {
+      width: 100%;
+      max-height: 220px;
+      background: #050203;
+      border-radius: 8px;
+      border: 1px solid var(--glass-border);
+      object-fit: cover;
+    }
+
+    /* Games Grid */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .game-card {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: all 0.25s ease;
+    }
+
+    .game-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-color);
+    }
+
+    .game-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .game-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Friends Grid */
+    .friends-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .friend-card {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .friend-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .friend-status {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .friend-playing {
+      color: #ffbe55;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .game-modal-card {
+      background: #14080a;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 960px;
+      height: 82vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85);
+    }
+
+    .game-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 1.2rem;
+      border-bottom: 1px solid var(--border-color);
+      background: rgba(20, 6, 8, 0.95);
+    }
+
+    .game-frame {
+      flex: 1;
+      width: 100%;
+      border: none;
+      background: #0a0405;
+    }
+
+    .small-modal-card {
+      background: #14080a;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 480px;
+      padding: 1.5rem;
+      position: relative;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9);
+    }
+
+    /* Welcome Wizard Modal */
+    .wizard-modal {
+      z-index: 2000;
+      background: rgba(8, 3, 4, 0.94);
+    }
+
+    .wizard-step {
+      display: none;
+    }
+
+    .wizard-step.active {
+      display: block;
+    }
+
+    .wizard-dots {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .wizard-dot {
+      height: 4px;
+      flex: 1;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.12);
+      transition: background 0.2s ease;
+    }
+
+    .wizard-dot.active {
+      background: var(--accent-color);
+    }
+
+    .modal-close {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--glass-border);
+      color: var(--text-color);
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      background: var(--accent-color);
+      border-color: var(--accent-color);
+    }
+
+    .notice {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-container">
+      <a href="#" class="logo" id="brand-home">
+        <div class="logo-icon">💬</div>
+        <span>PulDot.msg</span>
+      </a>
+
+      <nav class="nav-tabs" role="tablist">
+        <button class="nav-tab active" data-tab="chat">Общение</button>
+        <button class="nav-tab" data-tab="games">Игры</button>
+        <button class="nav-tab" data-tab="friends">Друзья</button>
+      </nav>
+
+      <div class="profile-bar">
+        <span class="status-dot" id="self-status-dot"></span>
+        <strong id="self-nickname">Гость</strong>
+        <span class="playing-badge" id="self-playing-badge">🎮 Играет в: <span id="self-playing-name"></span></span>
+        <button class="btn" id="edit-profile-btn">Ник</button>
+        <button class="btn" id="fb-config-btn">Firebase</button>
+        <button class="btn" id="reopen-wizard-btn" title="Мастер настройки">⚙️</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- TAB 1: ОБЩЕНИЕ -->
+    <section class="tab-panel active" id="tab-chat">
+      <div class="chat-layout">
+        <aside class="glass-panel">
+          <div class="sidebar-title">Комнаты</div>
+          <div style="display: flex; gap: 0.4rem;">
+            <input type="text" class="input-field" id="new-room-input" placeholder="Новая комната...">
+            <button class="btn btn-primary" id="create-room-btn">+</button>
+          </div>
+          <div class="room-list" id="room-list"></div>
+
+          <div class="sidebar-title">Firebase статус</div>
+          <div id="fb-status-text" style="font-size: 0.85rem; color: var(--text-muted);">
+            Инициализация Firebase...
+          </div>
+        </aside>
+
+        <div class="glass-panel chat-main">
+          <div class="chat-header">
+            <div>
+              <h2 style="font-size: 1.15rem;">Комната: <span id="active-room-title" style="color: var(--accent-color);">#general</span></h2>
+              <div style="font-size: 0.8rem; color: var(--text-muted);" id="chat-mode-hint">Сообщения сохраняются в Firebase Realtime Database</div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button class="btn btn-primary" id="start-voice-btn">🎙️ Голосовой (WebRTC)</button>
+              <button class="btn" id="start-video-btn">📹 Видео (WebRTC)</button>
+              <button class="btn" id="hangup-btn" style="display: none;">📵 Завершить</button>
+            </div>
+          </div>
+
+          <div class="call-box" id="call-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+              <strong id="call-status-label">WebRTC звонок</strong>
+              <span style="font-size: 0.8rem; color: var(--text-muted);" id="call-peer-info">Ожидание подключения...</span>
+            </div>
+            <div class="call-videos">
+              <div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Вы</div>
+                <video id="local-video" class="call-video" autoplay muted playsinline></video>
+              </div>
+              <div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Собеседник</div>
+                <video id="remote-video" class="call-video" autoplay playsinline></video>
+              </div>
+            </div>
+          </div>
+
+          <div class="messages-box" id="messages-box"></div>
+
+          <form class="chat-form" id="message-form">
+            <input type="text" class="input-field" id="message-input" placeholder="Написать сообщение..." autocomplete="off" required>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: ИГРЫ -->
+    <section class="tab-panel" id="tab-games">
+      <div class="glass-panel">
+        <h2 style="font-size: 1.25rem;">Игры</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">
+          При нажатии «Играть» игра откроется во всплывающем окне, а в профиле появится плашка активности.
+        </p>
+
+        <div class="games-grid" id="games-grid"></div>
+      </div>
+    </section>
+
+    <!-- TAB 3: ДРУЗЬЯ -->
+    <section class="tab-panel" id="tab-friends">
+      <div class="glass-panel">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h2 style="font-size: 1.25rem;">Друзья</h2>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">Добавляй друзей по нику и смотри их текущий статус.</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" class="input-field" id="add-friend-input" placeholder="Ник друга..." style="width: 190px;">
+            <button class="btn btn-primary" id="add-friend-btn">Добавить</button>
+          </div>
+        </div>
+
+        <div class="friends-grid" id="friends-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Welcome Setup Wizard Modal -->
+  <div class="modal-overlay wizard-modal" id="welcome-wizard">
+    <div class="small-modal-card">
+      <div class="wizard-dots">
+        <div class="wizard-dot active" id="w-dot-1"></div>
+        <div class="wizard-dot" id="w-dot-2"></div>
+      </div>
+
+      <!-- Step 1: Nickname -->
+      <div class="wizard-step active" id="wizard-step-1">
+        <h2 style="font-size: 1.35rem; margin-bottom: 0.4rem;">Добро пожаловать в PulDot.msg</h2>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.1rem;">
+          Быстрая первичная настройка. Выбери свой никнейм, под которым тебя увидят в чате и списке друзей.
+        </p>
+        <label style="font-size: 0.82rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Твой никнейм</label>
+        <input type="text" class="input-field" id="wizard-nick-input" maxlength="24" placeholder="Например: User_2077" style="margin-bottom: 1.1rem;">
+        <button class="btn btn-primary" id="wizard-next-1" style="width: 100%;">Далее →</button>
+      </div>
+
+      <!-- Step 2: Optional Firebase Override & Cookie Save -->
+      <div class="wizard-step" id="wizard-step-2">
+        <h2 style="font-size: 1.25rem; margin-bottom: 0.4rem;">Подключение Firebase</h2>
+        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 0.9rem;">
+          Встроенный конфиг проекта <code>puldotmsg</code> уже подключён. При желании можешь указать свой JSON-конфиг <code>firebaseConfig</code>.
+        </p>
+        <textarea class="input-field" id="wizard-fb-input" rows="5" style="font-family: monospace; font-size: 0.78rem; margin-bottom: 1rem;" placeholder='{
+  "apiKey": "...",
+  "databaseURL": "https://puldotmsg-default-rtdb.firebaseio.com",
+  "projectId": "puldotmsg"
+}'></textarea>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn" id="wizard-back-2">← Назад</button>
+          <button class="btn btn-primary" id="wizard-finish-btn" style="flex: 1;">Завершить и сохранить</button>
+        </div>
+        <div class="notice">Настройки и факт прохождения сохраняются в cookies браузера на 1 год.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Popup Modal -->
+  <div class="modal-overlay" id="game-modal">
+    <div class="game-modal-card">
+      <div class="game-modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <strong id="game-modal-title">Игра</strong>
+          <span class="playing-badge active" id="modal-playing-tag">Играет в активном окне</span>
+        </div>
+        <button class="modal-close" id="close-game-modal" title="Закрыть">&times;</button>
+      </div>
+      <iframe id="game-iframe" class="game-frame" allow="autoplay; fullscreen; gamepad"></iframe>
+    </div>
+  </div>
+
+  <!-- Profile Nick Modal -->
+  <div class="modal-overlay" id="profile-modal">
+    <div class="small-modal-card">
+      <button class="modal-close" id="close-profile-modal" style="position: absolute; top: 1rem; right: 1rem;">&times;</button>
+      <h3 style="margin-bottom: 0.9rem;">Профиль</h3>
+      <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Ваш никнейм</label>
+      <input type="text" class="input-field" id="nickname-input" maxlength="24" style="margin-bottom: 1rem;">
+      <button class="btn btn-primary" id="save-nickname-btn" style="width: 100%;">Сохранить</button>
+    </div>
+  </div>
+
+  <!-- Firebase Config Modal -->
+  <div class="modal-overlay" id="fb-modal">
+    <div class="small-modal-card">
+      <button class="modal-close" id="close-fb-modal" style="position: absolute; top: 1rem; right: 1rem;">&times;</button>
+      <h3 style="margin-bottom: 0.5rem;">Настройка Firebase Realtime Database</h3>
+      <p style="font-size: 0.83rem; color: var(--text-muted); margin-bottom: 0.9rem;">
+        Вставь JSON-объект <code>firebaseConfig</code> из консоли Firebase (Realtime Database + Signaling для WebRTC) или сбрось до встроенного.
+      </p>
+      <textarea class="input-field" id="fb-config-textarea" rows="7" style="font-family: monospace; font-size: 0.8rem; margin-bottom: 0.85rem;"></textarea>
+      <div style="display: flex; gap: 0.5rem;">
+        <button class="btn btn-primary" id="save-fb-btn" style="flex: 1;">Сохранить конфиг</button>
+        <button class="btn" id="clear-fb-btn">По умолчанию</button>
+      </div>
+      <div class="notice">Убедись, что в Firebase Console создана Realtime Database и указан <code>databaseURL</code>.</div>
+    </div>
+  </div>
+
+  <footer>
+    PulDot.msg &copy; <span id="year"></span>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import {
+      getDatabase,
+      ref,
+      push,
+      set,
+      onValue,
+      onChildAdded,
+      off
+    } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const DEFAULT_FIREBASE_CONFIG = {
+      apiKey: "AIzaSyC1V4C5KhqFpCbQOW80SvIhtzPfACqOh0I",
+      authDomain: "puldotmsg.firebaseapp.com",
+      databaseURL: "https://puldotmsg-default-rtdb.firebaseio.com",
+      projectId: "puldotmsg",
+      storageBucket: "puldotmsg.firebasestorage.app",
+      messagingSenderId: "406260242291",
+      appId: "1:406260242291:web:a0e11af27b23227f719706"
+    };
+
+    // === COOKIE HELPERS ===
+    function setCookie(name, value, days = 365) {
+      const expires = new Date(Date.now() + days * 864e5).toUTCString();
+      document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+    }
+
+    function getCookie(name) {
+      const key = encodeURIComponent(name) + '=';
+      const parts = document.cookie.split('; ');
+      for (const part of parts) {
+        if (part.startsWith(key)) {
+          return decodeURIComponent(part.slice(key.length));
+        }
+      }
+      return null;
+    }
+
+    function generateDefaultNick() {
+      const num = Math.floor(1000 + Math.random() * 9000);
+      return `User_${num}`;
+    }
+
+    const GAMES = [
+      {
+        id: 'emotions',
+        title: 'Смешивание эмоций',
+        description: 'Комбинируй эмоции и открывай новые сочетания.',
+        url: 'https://akitaandcaxap.github.io/emotions-game/'
+      },
+      {
+        id: 'lobotomy-rush',
+        title: 'Лоботоми раш',
+        description: 'Динамичный браузерный раннер на реакцию.',
+        url: 'https://akitaandcaxap.github.io/runnergame/'
+      }
+    ];
+
+    const savedNickFromCookie = getCookie('puldot_nick');
+    const setupDoneCookie = getCookie('puldot_setup_done') === '1';
+
+    const state = {
+      nickname: savedNickFromCookie || generateDefaultNick(),
+      setupDone: setupDoneCookie,
+      activeTab: 'chat',
+      activeRoom: 'general',
+      rooms: ['general', 'games', 'random'],
+      playingGame: null,
+      friends: JSON.parse(localStorage.getItem('puldot_friends') || '[]'),
+      localMessages: JSON.parse(localStorage.getItem('puldot_local_msgs') || '{}'),
+      remoteStatuses: {},
+      fbConfig: JSON.parse(localStorage.getItem('puldot_fb_config') || 'null') || { ...DEFAULT_FIREBASE_CONFIG }
+    };
+
+    let db = null;
+    let currentMessagesRef = null;
+    let peerConnection = null;
+    let localStream = null;
+    const clientId = 'user_' + Math.random().toString(36).slice(2, 9);
+
+    const rtcConfig = {
+      iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+    };
+
+    // === WELCOME WIZARD ===
+    const wizardOverlay = document.getElementById('welcome-wizard');
+
+    function showWizardStep(step) {
+      document.getElementById('wizard-step-1').classList.toggle('active', step === 1);
+      document.getElementById('wizard-step-2').classList.toggle('active', step === 2);
+      document.getElementById('w-dot-1').classList.toggle('active', step >= 1);
+      document.getElementById('w-dot-2').classList.toggle('active', step >= 2);
+    }
+
+    function openWizard() {
+      document.getElementById('wizard-nick-input').value = state.nickname;
+      document.getElementById('wizard-fb-input').value = JSON.stringify(state.fbConfig, null, 2);
+      showWizardStep(1);
+      wizardOverlay.classList.add('active');
+    }
+
+    document.getElementById('wizard-next-1').addEventListener('click', () => {
+      const nickInput = document.getElementById('wizard-nick-input').value.trim();
+      if (!nickInput) {
+        alert('Введи никнейм, чтобы продолжить.');
+        return;
+      }
+      state.nickname = nickInput;
+      showWizardStep(2);
+    });
+
+    document.getElementById('wizard-back-2').addEventListener('click', () => {
+      showWizardStep(1);
+    });
+
+    document.getElementById('wizard-finish-btn').addEventListener('click', () => {
+      const rawFb = document.getElementById('wizard-fb-input').value.trim();
+      if (rawFb) {
+        try {
+          const parsed = JSON.parse(rawFb);
+          state.fbConfig = parsed;
+          localStorage.setItem('puldot_fb_config', JSON.stringify(parsed));
+        } catch (e) {
+          alert('Некорректный JSON конфигурации Firebase. Проверь скобки или оставь встроенный.');
+          return;
+        }
+      }
+
+      state.setupDone = true;
+      setCookie('puldot_nick', state.nickname, 365);
+      setCookie('puldot_setup_done', '1', 365);
+
+      wizardOverlay.classList.remove('active');
+      syncPresence();
+      initFirebase();
+    });
+
+    document.getElementById('reopen-wizard-btn').addEventListener('click', openWizard);
+
+    // === TABS ===
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+        state.activeTab = target;
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === target));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === `tab-${target}`));
+        if (target === 'friends') renderFriends();
+      });
+    });
+
+    // === PROFILE & PRESENCE (PLAYING STATUS) ===
+    function syncPresence() {
+      document.getElementById('self-nickname').textContent = state.nickname;
+      const badge = document.getElementById('self-playing-badge');
+      const nameEl = document.getElementById('self-playing-name');
+
+      if (state.playingGame) {
+        nameEl.textContent = state.playingGame;
+        badge.classList.add('active');
+      } else {
+        nameEl.textContent = '';
+        badge.classList.remove('active');
+      }
+
+      if (db) {
+        set(ref(db, `presence/${clientId}`), {
+          nickname: state.nickname,
+          playingGame: state.playingGame || null,
+          updatedAt: Date.now()
+        }).catch(() => {});
+      }
+      renderFriends();
+    }
+
+    document.getElementById('edit-profile-btn').addEventListener('click', () => {
+      document.getElementById('nickname-input').value = state.nickname;
+      document.getElementById('profile-modal').classList.add('active');
+    });
+
+    document.getElementById('close-profile-modal').addEventListener('click', () => {
+      document.getElementById('profile-modal').classList.remove('active');
+    });
+
+    document.getElementById('save-nickname-btn').addEventListener('click', () => {
+      const val = document.getElementById('nickname-input').value.trim();
+      if (val) {
+        state.nickname = val;
+        setCookie('puldot_nick', state.nickname, 365);
+        syncPresence();
+      }
+      document.getElementById('profile-modal').classList.remove('active');
+    });
+
+    // === GAMES MODAL & ACTIVITY BADGE ===
+    function renderGames() {
+      const grid = document.getElementById('games-grid');
+      grid.innerHTML = '';
+
+      GAMES.forEach(game => {
+        const card = document.createElement('article');
+        card.className = 'game-card';
+        card.innerHTML = `
+          <div>
+            <h3>${escapeHtml(game.title)}</h3>
+            <p>${escapeHtml(game.description)}</p>
+          </div>
+          <button class="btn btn-primary" data-game-title="${escapeHtml(game.title)}" data-game-url="${escapeHtml(game.url)}">
+            Играть
+          </button>
+        `;
+        card.querySelector('button').addEventListener('click', () => {
+          openGameModal(game.title, game.url);
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    function openGameModal(title, url) {
+      state.playingGame = title;
+      syncPresence();
+
+      document.getElementById('game-modal-title').textContent = title;
+      document.getElementById('game-iframe').src = url;
+      document.getElementById('game-modal').classList.add('active');
+    }
+
+    function closeGameModal() {
+      document.getElementById('game-modal').classList.remove('active');
+      document.getElementById('game-iframe').src = '';
+      state.playingGame = null;
+      syncPresence();
+    }
+
+    document.getElementById('close-game-modal').addEventListener('click', closeGameModal);
+
+    // === FRIENDS ===
+    function renderFriends() {
+      const grid = document.getElementById('friends-grid');
+      grid.innerHTML = '';
+
+      if (state.friends.length === 0) {
+        grid.innerHTML = '<div style="color: var(--text-muted); font-size: 0.9rem;">Список друзей пока пуст. Добавь кого-нибудь по нику справа сверху.</div>';
+        return;
+      }
+
+      const remoteList = Object.values(state.remoteStatuses || {});
+
+      state.friends.forEach(friendNick => {
+        const matchedRemote = remoteList.find(u => u.nickname === friendNick && (Date.now() - (u.updatedAt || 0) < 120000));
+        const isSelf = friendNick === state.nickname;
+        const playing = isSelf ? state.playingGame : (matchedRemote ? matchedRemote.playingGame : null);
+        const online = isSelf || Boolean(matchedRemote);
+
+        const card = document.createElement('div');
+        card.className = 'friend-card';
+        card.innerHTML = `
+          <div class="friend-top">
+            <strong>${escapeHtml(friendNick)}</strong>
+            <span class="friend-status">${online ? '● В сети' : '○ Офлайн'}</span>
+          </div>
+          ${playing ? `<div class="friend-playing">🎮 Играет в ${escapeHtml(playing)}</div>` : `<div class="friend-status">${online ? 'В сети' : 'Не в сети'}</div>`}
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    document.getElementById('add-friend-btn').addEventListener('click', () => {
+      const input = document.getElementById('add-friend-input');
+      const nick = input.value.trim();
+      if (!nick) return;
+      if (!state.friends.includes(nick)) {
+        state.friends.push(nick);
+        localStorage.setItem('puldot_friends', JSON.stringify(state.friends));
+        renderFriends();
+      }
+      input.value = '';
+    });
+
+    // === ROOMS & FIREBASE MESSAGES ===
+    function renderRooms() {
+      const list = document.getElementById('room-list');
+      list.innerHTML = '';
+      state.rooms.forEach(room => {
+        const div = document.createElement('div');
+        div.className = `room-item ${room === state.activeRoom ? 'active' : ''}`;
+        div.innerHTML = `<span>#${escapeHtml(room)}</span>`;
+        div.addEventListener('click', () => switchRoom(room));
+        list.appendChild(div);
+      });
+    }
+
+    document.getElementById('create-room-btn').addEventListener('click', () => {
+      const input = document.getElementById('new-room-input');
+      const clean = input.value.trim().toLowerCase().replace(/[^a-zа-я0-9_-]/gi, '');
+      if (!clean) return;
+      if (!state.rooms.includes(clean)) {
+        state.rooms.push(clean);
+      }
+      input.value = '';
+      switchRoom(clean);
+    });
+
+    function switchRoom(room) {
+      state.activeRoom = room;
+      document.getElementById('active-room-title').textContent = `#${room}`;
+      renderRooms();
+      subscribeMessages();
+    }
+
+    function appendMessage(msg) {
+      const box = document.getElementById('messages-box');
+      const isOwn = msg.senderId === clientId;
+      const timeStr = new Date(msg.timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const el = document.createElement('div');
+      el.className = `msg-item ${isOwn ? 'own' : ''}`;
+      el.innerHTML = `
+        <div class="msg-meta">
+          <span class="msg-author">${escapeHtml(msg.author || 'anon')}</span>
+          <span>${timeStr}</span>
+        </div>
+        <div class="msg-text">${escapeHtml(msg.text)}</div>
+      `;
+      box.appendChild(el);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function subscribeMessages() {
+      const box = document.getElementById('messages-box');
+      box.innerHTML = '';
+
+      if (currentMessagesRef) {
+        off(currentMessagesRef);
+        currentMessagesRef = null;
+      }
+
+      if (db) {
+        currentMessagesRef = ref(db, `messages/${state.activeRoom}`);
+        onChildAdded(currentMessagesRef, snap => {
+          const val = snap.val();
+          if (val) appendMessage(val);
+        });
+      } else {
+        const list = state.localMessages[state.activeRoom] || [];
+        list.forEach(appendMessage);
+      }
+    }
+
+    document.getElementById('message-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const input = document.getElementById('message-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const payload = {
+        author: state.nickname,
+        senderId: clientId,
+        text,
+        timestamp: Date.now()
+      };
+
+      if (db) {
+        push(ref(db, `messages/${state.activeRoom}`), payload).catch(() => {});
+      } else {
+        if (!state.localMessages[state.activeRoom]) state.localMessages[state.activeRoom] = [];
+        state.localMessages[state.activeRoom].push(payload);
+        localStorage.setItem('puldot_local_msgs', JSON.stringify(state.localMessages));
+        appendMessage(payload);
+      }
+
+      input.value = '';
+    });
+
+    // === FIREBASE INIT ===
+    function initFirebase() {
+      const statusEl = document.getElementById('fb-status-text');
+      if (!state.fbConfig || !state.fbConfig.databaseURL) {
+        db = null;
+        statusEl.textContent = 'Локальный режим (не указан databaseURL)';
+        subscribeMessages();
+        return;
+      }
+
+      try {
+        const app = initializeApp(state.fbConfig, 'PulDotApp_' + Date.now());
+        db = getDatabase(app);
+        statusEl.textContent = `Подключено: ${state.fbConfig.projectId || 'Firebase RTDB'}`;
+
+        onValue(ref(db, 'presence'), snap => {
+          state.remoteStatuses = snap.val() || {};
+          renderFriends();
+        });
+
+        syncPresence();
+        subscribeMessages();
+      } catch (err) {
+        db = null;
+        statusEl.textContent = 'Ошибка подключения к Firebase';
+        subscribeMessages();
+      }
+    }
+
+    document.getElementById('fb-config-btn').addEventListener('click', () => {
+      document.getElementById('fb-config-textarea').value = JSON.stringify(state.fbConfig || DEFAULT_FIREBASE_CONFIG, null, 2);
+      document.getElementById('fb-modal').classList.add('active');
+    });
+
+    document.getElementById('close-fb-modal').addEventListener('click', () => {
+      document.getElementById('fb-modal').classList.remove('active');
+    });
+
+    document.getElementById('save-fb-btn').addEventListener('click', () => {
+      const raw = document.getElementById('fb-config-textarea').value.trim();
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(raw);
+        state.fbConfig = parsed;
+        localStorage.setItem('puldot_fb_config', JSON.stringify(parsed));
+        document.getElementById('fb-modal').classList.remove('active');
+        initFirebase();
+      } catch (e) {
+        alert('Некорректный JSON конфигурации Firebase');
+      }
+    });
+
+    document.getElementById('clear-fb-btn').addEventListener('click', () => {
+      state.fbConfig = { ...DEFAULT_FIREBASE_CONFIG };
+      localStorage.removeItem('puldot_fb_config');
+      document.getElementById('fb-config-textarea').value = JSON.stringify(DEFAULT_FIREBASE_CONFIG, null, 2);
+      document.getElementById('fb-modal').classList.remove('active');
+      initFirebase();
+    });
+
+    // === WEBRTC CALLS (VOICE / VIDEO + FIREBASE SIGNALING) ===
+    async function startCall(withVideo) {
+      if (!db) {
+        alert('Для WebRTC-звонков между устройствами нужен подключённый Firebase (сигналинг SDP/ICE).');
+        return;
+      }
+
+      try {
+        localStream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video: withVideo
+        });
+
+        document.getElementById('local-video').srcObject = localStream;
+        document.getElementById('call-box').classList.add('active');
+        document.getElementById('call-status-label').textContent = withVideo ? 'Видеозвонок (WebRTC)' : 'Голосовой звонок (WebRTC)';
+        document.getElementById('start-voice-btn').style.display = 'none';
+        document.getElementById('start-video-btn').style.display = 'none';
+        document.getElementById('hangup-btn').style.display = 'inline-flex';
+
+        peerConnection = new RTCPeerConnection(rtcConfig);
+        localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+
+        peerConnection.ontrack = event => {
+          document.getElementById('remote-video').srcObject = event.streams[0];
+          document.getElementById('call-peer-info').textContent = 'Соединение установлено';
+        };
+
+        peerConnection.onicecandidate = event => {
+          if (event.candidate) {
+            push(ref(db, `calls/${state.activeRoom}/candidates`), {
+              senderId: clientId,
+              candidate: event.candidate.toJSON()
+            });
+          }
+        };
+
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+        await set(ref(db, `calls/${state.activeRoom}/offer`), {
+          senderId: clientId,
+          sdp: offer.sdp,
+          type: offer.type
+        });
+
+        onValue(ref(db, `calls/${state.activeRoom}/answer`), async snap => {
+          const ans = snap.val();
+          if (ans && ans.senderId !== clientId && peerConnection && !peerConnection.currentRemoteDescription) {
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(ans));
+          }
+        });
+
+        onChildAdded(ref(db, `calls/${state.activeRoom}/candidates`), async snap => {
+          const item = snap.val();
+          if (item && item.senderId !== clientId && peerConnection) {
+            try {
+              await peerConnection.addIceCandidate(new RTCIceCandidate(item.candidate));
+            } catch (_) {}
+          }
+        });
+
+        onValue(ref(db, `calls/${state.activeRoom}/offer`), async snap => {
+          const offData = snap.val();
+          if (offData && offData.senderId !== clientId && peerConnection && !peerConnection.currentRemoteDescription) {
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(offData));
+            const answer = await peerConnection.createAnswer();
+            await peerConnection.setLocalDescription(answer);
+            await set(ref(db, `calls/${state.activeRoom}/answer`), {
+              senderId: clientId,
+              sdp: answer.sdp,
+              type: answer.type
+            });
+          }
+        });
+      } catch (err) {
+        alert('Не удалось получить доступ к микрофону/камере: ' + err.message);
+      }
+    }
+
+    function hangupCall() {
+      if (peerConnection) {
+        peerConnection.close();
+        peerConnection = null;
+      }
+      if (localStream) {
+        localStream.getTracks().forEach(t => t.stop());
+        localStream = null;
+      }
+      document.getElementById('local-video').srcObject = null;
+      document.getElementById('remote-video').srcObject = null;
+      document.getElementById('call-box').classList.remove('active');
+      document.getElementById('start-voice-btn').style.display = 'inline-flex';
+      document.getElementById('start-video-btn').style.display = 'inline-flex';
+      document.getElementById('hangup-btn').style.display = 'none';
+      document.getElementById('call-peer-info').textContent = 'Звонок завершён';
+    }
+
+    document.getElementById('start-voice-btn').addEventListener('click', () => startCall(false));
+    document.getElementById('start-video-btn').addEventListener('click', () => startCall(true));
+    document.getElementById('hangup-btn').addEventListener('click', hangupCall);
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // INIT
+    renderRooms();
+    renderGames();
+    renderFriends();
+    syncPresence();
+    initFirebase();
+
+    if (!state.setupDone) {
+      openWizard();
+    }
+  </script>
+</body>
+</html>
