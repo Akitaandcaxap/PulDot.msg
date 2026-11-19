@@ -712,7 +712,7 @@
         </p>
         <textarea class="input-field" id="wizard-fb-input" rows="5" style="font-family: monospace; font-size: 0.78rem; margin-bottom: 1rem;" placeholder='{
   "apiKey": "...",
-  "databaseURL": "https://puldotmsg-default-rtdb.firebaseio.com",
+  "databaseURL": "https://puldotmsg-default-rtdb.europe-west1.firebasedatabase.app",
   "projectId": "puldotmsg"
 }'></textarea>
         <div style="display: flex; gap: 0.5rem;">
@@ -787,7 +787,7 @@
     const DEFAULT_FIREBASE_CONFIG = {
       apiKey: "AIzaSyC1V4C5KhqFpCbQOW80SvIhtzPfACqOh0I",
       authDomain: "puldotmsg.firebaseapp.com",
-      databaseURL: "https://puldotmsg-default-rtdb.firebaseio.com",
+      databaseURL: "https://puldotmsg-default-rtdb.europe-west1.firebasedatabase.app",
       projectId: "puldotmsg",
       storageBucket: "puldotmsg.firebasestorage.app",
       messagingSenderId: "406260242291",
@@ -834,6 +834,19 @@
     const savedNickFromCookie = getCookie('puldot_nick');
     const setupDoneCookie = getCookie('puldot_setup_done') === '1';
 
+    let savedFbConfig = null;
+    try {
+      const rawSavedFb = localStorage.getItem('puldot_fb_config');
+      if (rawSavedFb) {
+        const parsedFb = JSON.parse(rawSavedFb);
+        if (parsedFb && parsedFb.databaseURL === 'https://puldotmsg-default-rtdb.firebaseio.com') {
+          localStorage.removeItem('puldot_fb_config');
+        } else {
+          savedFbConfig = parsedFb;
+        }
+      }
+    } catch (_) {}
+
     const state = {
       nickname: savedNickFromCookie || generateDefaultNick(),
       setupDone: setupDoneCookie,
@@ -844,7 +857,7 @@
       friends: JSON.parse(localStorage.getItem('puldot_friends') || '[]'),
       localMessages: JSON.parse(localStorage.getItem('puldot_local_msgs') || '{}'),
       remoteStatuses: {},
-      fbConfig: JSON.parse(localStorage.getItem('puldot_fb_config') || 'null') || { ...DEFAULT_FIREBASE_CONFIG }
+      fbConfig: savedFbConfig || { ...DEFAULT_FIREBASE_CONFIG }
     };
 
     let db = null;
