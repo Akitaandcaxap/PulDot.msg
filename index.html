@@ -15,14 +15,11 @@
       --bg-active: #404249;
       --text-normal: #f2f3f5;
       --text-muted: #949ba4;
-      --text-faint: #6d6f78;
       --accent: #5865f2;
-      --accent-hover: #4752c4;
       --danger: #da373c;
       --danger-hover: #a1282c;
       --online: #23a55a;
-      --playing: #f0b232;
-      --border: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.07);
     }
 
     * {
@@ -53,7 +50,36 @@
     .nick-font-display { font-family: 'Trebuchet MS', 'Arial Black', sans-serif; letter-spacing: 0.03em; }
     .nick-font-italic { font-family: 'Segoe UI', Roboto, sans-serif; font-style: italic; }
 
-    /* Top Discord-like App Bar */
+    /* Profile Card Open Animations */
+    @keyframes profZoom {
+      from { opacity: 0; transform: scale(0.84); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes profSlideUp {
+      from { opacity: 0; transform: translateY(34px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes profSlideRight {
+      from { opacity: 0; transform: translateX(36px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes profFlip {
+      from { opacity: 0; transform: perspective(700px) rotateY(-18deg) scale(0.92); }
+      to { opacity: 1; transform: perspective(700px) rotateY(0deg) scale(1); }
+    }
+    @keyframes profBounce {
+      0% { opacity: 0; transform: scale(0.75); }
+      70% { opacity: 1; transform: scale(1.03); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .anim-zoom { animation: profZoom 0.22s ease-out forwards; }
+    .anim-slide-up { animation: profSlideUp 0.24s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .anim-slide-right { animation: profSlideRight 0.24s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .anim-flip { animation: profFlip 0.28s ease-out forwards; }
+    .anim-bounce { animation: profBounce 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+    /* Top App Bar */
     .top-bar {
       min-height: 48px;
       background: var(--bg-servers);
@@ -61,14 +87,11 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 6px 12px;
-      padding-left: max(12px, env(safe-area-inset-left));
-      padding-right: max(12px, env(safe-area-inset-right));
+      padding: 6px max(12px, env(safe-area-inset-right)) 6px max(12px, env(safe-area-inset-left));
       gap: 8px;
       position: sticky;
       top: 0;
       z-index: 120;
-      flex-wrap: wrap;
     }
 
     .brand-group {
@@ -76,48 +99,48 @@
       align-items: center;
       gap: 10px;
       min-width: 0;
+      flex: 1;
     }
 
     .brand-pill {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       font-weight: 700;
-      font-size: 0.98rem;
+      font-size: 0.95rem;
       color: var(--text-normal);
       text-decoration: none;
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .brand-badge {
-      width: 28px;
-      height: 28px;
-      border-radius: 9px;
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
       background: var(--accent);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.9rem;
-      flex-shrink: 0;
+      font-size: 0.85rem;
     }
 
     .dc-tabs {
       display: flex;
       align-items: center;
-      gap: 4px;
-      background: rgba(0, 0, 0, 0.25);
+      gap: 3px;
+      background: rgba(0, 0, 0, 0.28);
       padding: 3px;
       border-radius: 8px;
-      flex-wrap: wrap;
     }
 
     .dc-tab {
       background: transparent;
       border: none;
       color: var(--text-muted);
-      padding: 5px 11px;
+      padding: 5px 10px;
       border-radius: 6px;
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.15s, color 0.15s;
@@ -126,7 +149,6 @@
 
     .dc-tab:hover {
       color: var(--text-normal);
-      background: rgba(255, 255, 255, 0.04);
     }
 
     .dc-tab.active {
@@ -134,25 +156,18 @@
       color: #fff;
     }
 
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
     .playing-pill {
       display: none;
       align-items: center;
-      gap: 5px;
-      background: rgba(240, 178, 50, 0.14);
+      gap: 4px;
+      background: rgba(240, 178, 50, 0.15);
       border: 1px solid rgba(240, 178, 50, 0.35);
       color: #ffd369;
-      padding: 4px 9px;
-      border-radius: 12px;
-      font-size: 0.76rem;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 0.74rem;
       font-weight: 600;
-      max-width: 100%;
+      flex-shrink: 0;
     }
 
     .playing-pill.active {
@@ -163,7 +178,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      max-width: 150px;
+      max-width: 120px;
     }
 
     .dc-btn {
@@ -171,7 +186,7 @@
       color: var(--text-normal);
       border: 1px solid var(--border);
       padding: 6px 10px;
-      min-height: 32px;
+      min-height: 34px;
       border-radius: 6px;
       font-size: 0.8rem;
       font-weight: 600;
@@ -180,8 +195,9 @@
       align-items: center;
       justify-content: center;
       gap: 5px;
-      transition: background 0.15s, transform 0.12s, filter 0.12s;
+      transition: background 0.15s, filter 0.12s;
       white-space: nowrap;
+      touch-action: manipulation;
     }
 
     .dc-btn:hover:not(:disabled) {
@@ -245,6 +261,16 @@
       user-select: none;
     }
 
+    .avatar-clickable {
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+
+    .avatar-clickable:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
     .avatar-media img {
       width: 100%;
       height: 100%;
@@ -256,7 +282,7 @@
     .workspace {
       flex: 1;
       display: flex;
-      min-height: calc(100dvh - 48px - 42px);
+      min-height: calc(100dvh - 48px - 36px);
     }
 
     .tab-panel {
@@ -268,10 +294,10 @@
       display: flex;
     }
 
-    /* Channel Sidebar (Discord style) */
+    /* Channel Sidebar */
     .channel-sidebar {
-      width: 250px;
-      min-width: 250px;
+      width: 246px;
+      min-width: 246px;
       background: var(--bg-sidebar);
       display: flex;
       flex-direction: column;
@@ -281,15 +307,14 @@
     }
 
     .sidebar-header {
-      height: 48px;
-      padding: 0 14px;
+      height: 46px;
+      padding: 0 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
     }
 
     .close-drawer-btn {
@@ -297,23 +322,23 @@
       background: var(--bg-elevated);
       border: none;
       color: var(--text-normal);
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 6px;
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       cursor: pointer;
       align-items: center;
       justify-content: center;
     }
 
     .sidebar-body {
-      padding: 12px 8px;
+      padding: 10px 8px;
       flex: 1;
       overflow-y: auto;
     }
 
     .category-label {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -335,7 +360,7 @@
       color: var(--text-normal);
       padding: 8px 10px;
       border-radius: 6px;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       outline: none;
       font-family: inherit;
     }
@@ -348,7 +373,7 @@
       display: flex;
       flex-direction: column;
       gap: 2px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .channel-item {
@@ -358,7 +383,7 @@
       padding: 8px 10px;
       border-radius: 6px;
       color: var(--text-muted);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 500;
       cursor: pointer;
       transition: background 0.12s, color 0.12s;
@@ -377,27 +402,26 @@
 
     .channel-hash {
       color: var(--text-muted);
-      font-size: 1.05rem;
+      font-size: 1rem;
       line-height: 1;
       flex-shrink: 0;
     }
 
     .db-box {
       margin: 0 4px;
-      padding: 10px;
+      padding: 8px 10px;
       border-radius: 6px;
       background: var(--bg-servers);
       border: 1px solid var(--border);
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
       word-break: break-word;
     }
 
-    /* Bottom User Panel (Discord style) */
+    /* Bottom User Panel */
     .user-panel {
       background: #232428;
-      padding: 8px 10px;
-      padding-bottom: max(8px, env(safe-area-inset-bottom));
+      padding: 8px 10px max(8px, env(safe-area-inset-bottom));
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -410,6 +434,7 @@
       align-items: center;
       gap: 8px;
       min-width: 0;
+      flex: 1;
     }
 
     .avatar-circle-wrap {
@@ -435,14 +460,16 @@
       right: -1px;
       bottom: -1px;
       z-index: 2;
+      pointer-events: none;
     }
 
     .user-nick-wrap {
       overflow: hidden;
+      min-width: 0;
     }
 
     .user-nick-text {
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
@@ -450,7 +477,7 @@
     }
 
     .user-sub-text {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       white-space: nowrap;
       overflow: hidden;
@@ -464,19 +491,17 @@
       flex-direction: column;
       background: var(--bg-chat);
       min-width: 0;
-      height: calc(100dvh - 48px - 42px);
+      height: calc(100dvh - 48px - 36px);
     }
 
     .chat-topbar {
-      min-height: 48px;
+      min-height: 46px;
       padding: 6px 12px;
       border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      flex-wrap: wrap;
     }
 
     .chat-room-left {
@@ -484,35 +509,45 @@
       align-items: center;
       gap: 8px;
       min-width: 0;
-      flex-wrap: wrap;
+      flex: 1;
     }
 
     .chat-room-heading {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.98rem;
+      gap: 5px;
+      font-size: 0.95rem;
       font-weight: 700;
+      min-width: 0;
+    }
+
+    #active-room-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .chat-room-topic {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
       border-left: 1px solid var(--border);
-      padding-left: 10px;
+      padding-left: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .call-controls {
       display: flex;
       align-items: center;
       gap: 6px;
-      flex-wrap: wrap;
+      flex-shrink: 0;
     }
 
     /* WebRTC Stage */
     .call-panel {
-      margin: 10px 12px 0;
-      padding: 12px;
+      margin: 8px 12px 0;
+      padding: 10px 12px;
       border-radius: 10px;
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
@@ -528,8 +563,8 @@
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      margin-top: 10px;
+      gap: 10px;
+      margin-top: 8px;
     }
 
     .call-tile {
@@ -542,11 +577,10 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-width: 200px;
-      min-height: 155px;
-      flex: 1 1 240px;
+      min-width: 190px;
+      min-height: 145px;
+      flex: 1 1 220px;
       max-width: 100%;
-      transition: aspect-ratio 0.2s ease, max-width 0.2s ease;
     }
 
     .call-tile.remote-video-sized {
@@ -556,7 +590,7 @@
     }
 
     .call-tile.local-video-tile {
-      flex: 0 1 240px;
+      flex: 0 1 220px;
       aspect-ratio: 16 / 9;
     }
 
@@ -592,23 +626,21 @@
     }
 
     .call-tile-badge {
-      background: rgba(17, 18, 20, 0.78);
-      backdrop-filter: blur(4px);
+      background: rgba(17, 18, 20, 0.8);
       color: #f2f3f5;
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       font-weight: 600;
       padding: 3px 8px;
       border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .call-fs-btn {
       pointer-events: auto;
-      background: rgba(17, 18, 20, 0.82);
+      background: rgba(17, 18, 20, 0.85);
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.16);
       border-radius: 6px;
-      padding: 4px 8px;
+      padding: 5px 8px;
       font-size: 0.74rem;
       font-weight: 600;
       cursor: pointer;
@@ -633,8 +665,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 26px 16px 16px;
+      gap: 6px;
+      padding: 24px 14px 14px;
       width: 100%;
       height: 100%;
       background: radial-gradient(circle at center, rgba(88, 101, 242, 0.18), #111214 75%);
@@ -650,12 +682,11 @@
     }
 
     .audio-avatar-ring {
-      width: 78px;
-      height: 78px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       padding: 3px;
       border: 2px solid var(--online);
-      box-shadow: 0 0 18px rgba(35, 165, 90, 0.28);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -664,11 +695,11 @@
     .audio-avatar-ring .avatar-media {
       width: 100%;
       height: 100%;
-      font-size: 1.65rem;
+      font-size: 1.55rem;
     }
 
     .audio-peer-sub {
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       color: var(--text-muted);
     }
 
@@ -676,10 +707,10 @@
     .messages-stream {
       flex: 1;
       overflow-y: auto;
-      padding: 12px;
+      padding: 10px 12px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
       -webkit-overflow-scrolling: touch;
     }
 
@@ -688,7 +719,6 @@
       gap: 10px;
       padding: 6px 8px;
       border-radius: 6px;
-      transition: background 0.1s;
     }
 
     .dc-msg:hover {
@@ -696,9 +726,9 @@
     }
 
     .dc-msg-avatar {
-      width: 38px;
-      height: 38px;
-      font-size: 0.88rem;
+      width: 36px;
+      height: 36px;
+      font-size: 0.85rem;
       margin-top: 2px;
       background: var(--bg-elevated);
     }
@@ -715,14 +745,14 @@
     .dc-msg-header {
       display: flex;
       align-items: baseline;
-      gap: 8px;
+      gap: 7px;
       margin-bottom: 2px;
       flex-wrap: wrap;
     }
 
     .dc-msg-author {
       font-weight: 600;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       color: var(--text-normal);
     }
 
@@ -732,21 +762,21 @@
     }
 
     .dc-msg-time {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
     }
 
     .dc-msg-content {
-      font-size: 0.93rem;
-      line-height: 1.38;
+      font-size: 0.92rem;
+      line-height: 1.36;
       color: #dbdee1;
       word-break: break-word;
     }
 
     .msg-image-attach {
       margin-top: 6px;
-      max-width: min(380px, 100%);
-      max-height: 320px;
+      max-width: min(360px, 100%);
+      max-height: 300px;
       border-radius: 8px;
       border: 1px solid var(--border);
       display: block;
@@ -756,7 +786,7 @@
 
     .msg-videy-card {
       margin-top: 6px;
-      max-width: min(440px, 100%);
+      max-width: min(420px, 100%);
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -765,7 +795,7 @@
 
     .msg-videy-video {
       width: 100%;
-      max-height: 270px;
+      max-height: 260px;
       border-radius: 6px;
       background: #0d0e10;
       display: block;
@@ -774,21 +804,16 @@
     .msg-videy-link {
       display: inline-block;
       margin-top: 6px;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       color: var(--accent);
       filter: brightness(1.3);
       text-decoration: none;
       word-break: break-all;
     }
 
-    .msg-videy-link:hover {
-      text-decoration: underline;
-    }
-
     /* Composer */
     .composer-wrap {
-      padding: 4px 12px 12px;
-      padding-bottom: max(12px, env(safe-area-inset-bottom));
+      padding: 4px 12px max(10px, env(safe-area-inset-bottom));
     }
 
     .pending-attach-bar {
@@ -801,7 +826,7 @@
       border-radius: 8px;
       padding: 6px 10px;
       margin-bottom: 6px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
     }
 
@@ -815,12 +840,19 @@
       gap: 6px;
       background: var(--bg-input);
       border-radius: 8px;
-      padding: 4px 6px 4px 8px;
+      padding: 5px 6px;
       border: 1px solid transparent;
     }
 
     .composer-form:focus-within {
       border-color: var(--accent);
+    }
+
+    .composer-tools {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
     }
 
     .composer-input {
@@ -829,16 +861,16 @@
       background: transparent;
       border: none;
       color: var(--text-normal);
-      font-size: 0.95rem;
-      padding: 8px 4px;
+      font-size: 0.94rem;
+      padding: 7px 6px;
       outline: none;
     }
 
     /* Games, Friends, Settings Views */
     .view-container {
       width: 100%;
-      padding: 16px;
-      max-width: 1180px;
+      padding: 14px;
+      max-width: 1120px;
       margin: 0 auto;
     }
 
@@ -846,25 +878,25 @@
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 14px 16px;
-      margin-bottom: 16px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
 
     .add-friend-row {
       display: flex;
       gap: 6px;
       flex: 0 1 280px;
-      min-width: 210px;
+      min-width: 200px;
     }
 
     .games-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 12px;
     }
 
@@ -876,26 +908,22 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 12px;
-    }
-
-    .game-card:hover {
-      border-color: var(--accent);
+      gap: 10px;
     }
 
     .game-card h3 {
-      font-size: 1.03rem;
-      margin-bottom: 5px;
+      font-size: 1rem;
+      margin-bottom: 4px;
     }
 
     .game-card p {
       color: var(--text-muted);
-      font-size: 0.86rem;
+      font-size: 0.84rem;
     }
 
     .friends-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
       gap: 10px;
     }
 
@@ -903,7 +931,7 @@
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 12px 14px;
+      padding: 10px 12px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -924,22 +952,22 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .status-online-text {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--online);
       font-weight: 600;
     }
 
     .status-offline-text {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
     }
 
     .activity-text {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: #ffd369;
       font-weight: 600;
       margin-top: 2px;
@@ -948,7 +976,7 @@
     /* Settings Page */
     .settings-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 14px;
     }
 
@@ -956,58 +984,76 @@
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 16px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .settings-card h3 {
-      font-size: 1.04rem;
+      font-size: 1rem;
     }
 
     .field-label {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
 
-    /* Profile Card Preview */
-    .profile-preview-card {
-      border-radius: 10px;
+    /* Profile Card Preview & Public Profile Modal */
+    .profile-card-box {
+      border-radius: 12px;
       overflow: hidden;
       background: var(--bg-servers);
       border: 1px solid var(--border);
     }
 
     .profile-banner-box {
-      height: 84px;
+      height: 88px;
       width: 100%;
       background: linear-gradient(135deg, var(--accent), #2b2d31);
       background-size: cover;
       background-position: center;
     }
 
-    .profile-preview-body {
+    .profile-card-body {
       padding: 0 14px 14px;
-      display: flex;
-      align-items: flex-end;
-      gap: 12px;
-      margin-top: -26px;
     }
 
-    .profile-preview-avatar-wrap {
-      padding: 3px;
+    .profile-card-top-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: -28px;
+      margin-bottom: 10px;
+    }
+
+    .profile-avatar-ring {
+      padding: 4px;
       border-radius: 50%;
       background: var(--bg-servers);
       flex-shrink: 0;
     }
 
-    .profile-preview-avatar {
-      width: 52px;
-      height: 52px;
-      font-size: 1.2rem;
+    .profile-avatar-lg {
+      width: 58px;
+      height: 58px;
+      font-size: 1.3rem;
+    }
+
+    .profile-bio-box {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border);
+      font-size: 0.84rem;
+      line-height: 1.35;
+      color: #dbdee1;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
     .swatch-row {
@@ -1033,7 +1079,7 @@
     }
 
     .banner-chip {
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       padding: 4px 8px;
       border-radius: 6px;
       background: var(--bg-elevated);
@@ -1042,16 +1088,11 @@
       cursor: pointer;
     }
 
-    .banner-chip:hover {
-      background: var(--bg-active);
-    }
-
-    /* Avatar Preview in Wizard */
     .avatar-preview-row {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
+      gap: 10px;
+      margin-bottom: 10px;
       padding: 8px 10px;
       background: var(--bg-servers);
       border-radius: 8px;
@@ -1059,16 +1100,16 @@
     }
 
     .avatar-preview-circle {
-      width: 46px;
-      height: 46px;
-      font-size: 1.1rem;
+      width: 44px;
+      height: 44px;
+      font-size: 1.05rem;
     }
 
     /* Modals */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.84);
+      background: rgba(0, 0, 0, 0.82);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1118,11 +1159,22 @@
       border: 1px solid var(--border);
       border-radius: 10px;
       width: 100%;
-      max-width: 470px;
+      max-width: 440px;
       max-height: 90dvh;
       overflow-y: auto;
-      padding: 18px;
+      padding: 16px;
       position: relative;
+    }
+
+    .user-profile-modal-card {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: var(--bg-servers);
+      position: relative;
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.75);
     }
 
     .wizard-modal {
@@ -1141,7 +1193,7 @@
     .wizard-dots {
       display: flex;
       gap: 6px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .wizard-dot {
@@ -1156,18 +1208,19 @@
     }
 
     .modal-close {
-      background: var(--bg-elevated);
-      border: none;
+      background: rgba(17, 18, 20, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       color: var(--text-normal);
       width: 32px;
       height: 32px;
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 1.2rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      z-index: 5;
     }
 
     .modal-close:hover {
@@ -1176,37 +1229,32 @@
     }
 
     .notice {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
     footer {
-      min-height: 40px;
+      min-height: 36px;
       background: var(--bg-servers);
       border-top: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
-      padding: 6px 12px;
-      padding-bottom: max(6px, env(safe-area-inset-bottom));
+      padding: 4px 12px max(4px, env(safe-area-inset-bottom));
     }
 
     /* Tablet & Mobile Drawer Layout */
     @media (max-width: 820px) {
-      .mobile-drawer-btn {
-        display: inline-flex;
-      }
-
-      .close-drawer-btn {
+      .mobile-drawer-btn, .close-drawer-btn {
         display: inline-flex;
       }
 
       .workspace, .chat-stage {
-        height: calc(100dvh - 48px - 40px);
-        min-height: 420px;
+        height: calc(100dvh - 48px - 36px);
+        min-height: 400px;
       }
 
       .channel-sidebar {
@@ -1214,7 +1262,7 @@
         top: 0;
         left: 0;
         bottom: 0;
-        width: min(82vw, 290px);
+        width: min(82vw, 285px);
         min-width: 0;
         height: 100dvh;
         transform: translateX(-100%);
@@ -1232,15 +1280,21 @@
       }
     }
 
-    /* Small Phones */
+    /* Small Phones — No Overlapping Controls */
     @media (max-width: 600px) {
       .top-bar {
         padding: 6px 8px;
+        flex-wrap: wrap;
       }
 
       .brand-group {
         width: 100%;
         justify-content: space-between;
+        gap: 6px;
+      }
+
+      .brand-pill span:last-child {
+        display: none;
       }
 
       .dc-tabs {
@@ -1251,13 +1305,8 @@
       .dc-tab {
         flex: 1;
         padding: 6px 4px;
-        font-size: 0.76rem;
+        font-size: 0.75rem;
         text-align: center;
-      }
-
-      .top-actions {
-        width: 100%;
-        justify-content: flex-end;
       }
 
       .playing-pill {
@@ -1265,12 +1314,14 @@
         justify-content: center;
       }
 
-      #self-playing-name {
-        max-width: 190px;
-      }
-
       .chat-topbar {
         padding: 6px 8px;
+        flex-wrap: wrap;
+      }
+
+      .chat-room-left {
+        width: 100%;
+        justify-content: space-between;
       }
 
       .call-controls {
@@ -1281,7 +1332,6 @@
         flex: 1;
         min-height: 36px;
         font-size: 0.78rem;
-        padding: 6px 8px;
       }
 
       .call-tile {
@@ -1293,21 +1343,35 @@
         font-size: 16px;
       }
 
+      .composer-wrap {
+        padding: 4px 8px max(8px, env(safe-area-inset-bottom));
+      }
+
       .composer-form {
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 6px;
+        padding: 6px;
       }
 
       .composer-input {
-        flex: 1 1 100%;
+        grid-column: 1 / -1;
+        width: 100%;
+        padding: 6px 4px;
       }
 
-      .composer-form .dc-btn {
+      .composer-tools {
+        grid-column: 1 / 2;
+      }
+
+      .composer-submit-btn {
+        grid-column: 2 / 3;
         min-height: 36px;
-        padding: 6px 10px;
+        padding: 6px 14px;
       }
 
       .view-container {
-        padding: 12px 10px;
+        padding: 10px 8px;
       }
 
       .add-friend-row {
@@ -1315,16 +1379,12 @@
         max-width: 100%;
       }
 
-      .game-modal-card {
-        height: 90dvh;
-      }
-
       footer {
         display: none;
       }
 
       .workspace, .chat-stage {
-        height: calc(100dvh - 84px);
+        height: calc(100dvh - 48px);
       }
     }
   </style>
@@ -1339,99 +1399,95 @@
       </a>
 
       <nav class="dc-tabs" role="tablist">
-        <button class="dc-tab active" data-tab="chat">Общение</button>
+        <button class="dc-tab active" data-tab="chat">Чат</button>
         <button class="dc-tab" data-tab="games">Игры</button>
         <button class="dc-tab" data-tab="friends">Друзья</button>
         <button class="dc-tab" data-tab="settings">Настройки</button>
       </nav>
     </div>
 
-    <div class="top-actions">
-      <span class="playing-pill" id="self-playing-badge">🎮 Играет в: <span id="self-playing-name"></span></span>
-    </div>
+    <span class="playing-pill" id="self-playing-badge">🎮 <span id="self-playing-name"></span></span>
   </header>
 
   <div class="drawer-backdrop" id="drawer-backdrop"></div>
 
   <div class="workspace">
-    <!-- TAB 1: ОБЩЕНИЕ & ЛС -->
+    <!-- TAB 1: ЧАТ И ЛС -->
     <section class="tab-panel active" id="tab-chat">
       <aside class="channel-sidebar" id="channel-sidebar">
         <div>
           <div class="sidebar-header">
             <span>PulDot.msg</span>
-            <button class="close-drawer-btn" id="close-drawer-btn" title="Закрыть меню">&times;</button>
+            <button class="close-drawer-btn" id="close-drawer-btn" title="Закрыть">&times;</button>
           </div>
 
           <div class="sidebar-body">
-            <div class="category-label">Текстовые комнаты</div>
+            <div class="category-label">Комнаты</div>
             <div class="create-room-row">
-              <input type="text" class="dc-input" id="new-room-input" placeholder="Новая комната...">
+              <input type="text" class="dc-input" id="new-room-input" placeholder="Комната...">
               <button class="dc-btn dc-btn-primary" id="create-room-btn">+</button>
             </div>
 
             <div class="channel-list" id="room-list"></div>
 
-            <div class="category-label">Личные сообщения (ЛС)</div>
+            <div class="category-label">Личные сообщения</div>
             <div class="channel-list" id="dm-list"></div>
 
-            <div class="category-label">Firebase Realtime Database</div>
-            <div class="db-box" id="fb-status-text">
-              Инициализация Firebase...
-            </div>
+            <div class="category-label">Статус базы</div>
+            <div class="db-box" id="fb-status-text">Подключение...</div>
           </div>
         </div>
 
         <div class="user-panel">
           <div class="user-meta">
             <div class="avatar-circle-wrap">
-              <div class="avatar-media" id="self-avatar">U</div>
-              <span class="avatar-status-dot" id="self-status-dot"></span>
+              <div class="avatar-media avatar-clickable" id="self-avatar" title="Мой профиль">U</div>
+              <span class="avatar-status-dot"></span>
             </div>
             <div class="user-nick-wrap">
               <div class="user-nick-text" id="self-nickname">Гость</div>
               <div class="user-sub-text" id="self-activity-sub">В сети</div>
             </div>
           </div>
-          <button class="dc-btn" id="quick-settings-btn" title="Открыть настройки">⚙️</button>
+          <button class="dc-btn" id="quick-settings-btn" title="Настройки">⚙️</button>
         </div>
       </aside>
 
       <main class="chat-stage">
         <div class="chat-topbar">
           <div class="chat-room-left">
-            <button class="dc-btn mobile-drawer-btn" id="open-drawer-btn">☰ Комнаты</button>
+            <button class="dc-btn mobile-drawer-btn" id="open-drawer-btn">☰ Каналы</button>
             <div class="chat-room-heading">
               <span class="channel-hash" id="active-channel-prefix">#</span>
               <span id="active-room-title">general</span>
             </div>
-            <span class="chat-room-topic" id="chat-mode-hint">Сообщения сохраняются в Firebase Realtime Database</span>
+            <span class="chat-room-topic" id="chat-mode-hint">Firebase Realtime Database</span>
           </div>
 
           <div class="call-controls" id="call-controls-bar">
             <button class="dc-btn dc-btn-primary" id="start-voice-btn">🎙️ Голос</button>
             <button class="dc-btn" id="start-video-btn">📹 Видео</button>
-            <button class="dc-btn dc-btn-danger" id="hangup-btn" style="display: none;">📵 Завершить</button>
+            <button class="dc-btn dc-btn-danger" id="hangup-btn" style="display: none;">📵 Сброс</button>
           </div>
         </div>
 
         <div class="call-panel" id="call-box">
           <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <strong id="call-status-label">WebRTC звонок</strong>
-            <span style="font-size: 0.8rem; color: var(--text-muted);" id="call-peer-info">Ожидание подключения...</span>
+            <strong id="call-status-label">Звонок</strong>
+            <span style="font-size: 0.78rem; color: var(--text-muted);" id="call-peer-info">Ожидание...</span>
           </div>
           <div class="call-grid">
             <div class="call-tile local-video-tile" id="local-call-tile">
               <div class="call-tile-header">
                 <span class="call-tile-badge" id="local-call-label">Вы</span>
-                <button type="button" class="call-fs-btn" data-fs-target="local-call-tile" title="На весь экран">⛶ Фулскрин</button>
+                <button type="button" class="call-fs-btn" data-fs-target="local-call-tile">⛶</button>
               </div>
               <div class="audio-avatar-stage">
                 <div class="audio-avatar-ring">
                   <div class="avatar-media" id="call-local-avatar">U</div>
                 </div>
-                <strong style="font-size: 0.88rem;" id="call-local-name">Вы</strong>
-                <span class="audio-peer-sub">Микрофон активен</span>
+                <strong style="font-size: 0.85rem;" id="call-local-name">Вы</strong>
+                <span class="audio-peer-sub">Микрофон вкл</span>
               </div>
               <video id="local-video" class="call-video" autoplay muted playsinline></video>
             </div>
@@ -1439,14 +1495,14 @@
             <div class="call-tile" id="remote-call-tile">
               <div class="call-tile-header">
                 <span class="call-tile-badge" id="remote-call-label">Собеседник</span>
-                <button type="button" class="call-fs-btn" data-fs-target="remote-call-tile" title="На весь экран">⛶ Фулскрин</button>
+                <button type="button" class="call-fs-btn" data-fs-target="remote-call-tile">⛶</button>
               </div>
               <div class="audio-avatar-stage">
                 <div class="audio-avatar-ring">
                   <div class="avatar-media" id="call-remote-avatar">?</div>
                 </div>
-                <strong style="font-size: 0.88rem;" id="call-remote-name">Собеседник</strong>
-                <span class="audio-peer-sub" id="call-remote-sub">В голосовом канале</span>
+                <strong style="font-size: 0.85rem;" id="call-remote-name">Собеседник</strong>
+                <span class="audio-peer-sub" id="call-remote-sub">В канале</span>
               </div>
               <video id="remote-video" class="call-video" autoplay playsinline></video>
             </div>
@@ -1457,17 +1513,19 @@
 
         <div class="composer-wrap">
           <div class="pending-attach-bar" id="pending-attach-bar">
-            <span id="pending-attach-label">Вложение готово к отправке</span>
-            <button type="button" class="dc-btn dc-btn-danger" id="clear-attach-btn" style="min-height: 26px; padding: 2px 8px;">✕ Убрать</button>
+            <span id="pending-attach-label" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Файл готов</span>
+            <button type="button" class="dc-btn dc-btn-danger" id="clear-attach-btn" style="min-height: 26px; padding: 2px 8px;">✕</button>
           </div>
 
           <input type="file" id="image-file-input" accept="image/png,image/jpeg" style="display: none;">
 
           <form class="composer-form" id="message-form">
-            <button type="button" class="dc-btn" id="attach-image-btn" title="Прикрепить PNG или JPG">🖼️ PNG/JPG</button>
-            <button type="button" class="dc-btn" id="attach-videy-btn" title="Отправить видео через Videy">🎬 Videy</button>
-            <input type="text" class="composer-input" id="message-input" placeholder="Написать сообщение..." autocomplete="off">
-            <button type="submit" class="dc-btn dc-btn-primary">Отправить</button>
+            <input type="text" class="composer-input" id="message-input" placeholder="Сообщение..." autocomplete="off">
+            <div class="composer-tools">
+              <button type="button" class="dc-btn" id="attach-image-btn" title="PNG / JPG">🖼️</button>
+              <button type="button" class="dc-btn" id="attach-videy-btn" title="Видео Videy">🎬</button>
+            </div>
+            <button type="submit" class="dc-btn dc-btn-primary composer-submit-btn">➤</button>
           </form>
         </div>
       </main>
@@ -1478,10 +1536,8 @@
       <div class="view-container">
         <div class="view-banner">
           <div>
-            <h2 style="font-size: 1.15rem;">Игровой центр</h2>
-            <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 3px;">
-              При нажатии «Играть» игра откроется во всплывающем окне, а в профиле появится плашка активности.
-            </p>
+            <h2 style="font-size: 1.1rem;">Игры</h2>
+            <p style="color: var(--text-muted); font-size: 0.84rem; margin-top: 2px;">Запуск в окне со статусом активности в профиле.</p>
           </div>
         </div>
 
@@ -1494,10 +1550,8 @@
       <div class="view-container">
         <div class="view-banner">
           <div>
-            <h2 style="font-size: 1.15rem;">Друзья</h2>
-            <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 3px;">
-              Добавляй друзей по нику, открывай личные сообщения (ЛС) и смотри статус в сети.
-            </p>
+            <h2 style="font-size: 1.1rem;">Друзья</h2>
+            <p style="color: var(--text-muted); font-size: 0.84rem; margin-top: 2px;">Нажми на аватарку для просмотра профиля или на «ЛС» для чата.</p>
           </div>
           <div class="add-friend-row">
             <input type="text" class="dc-input" id="add-friend-input" placeholder="Ник друга...">
@@ -1514,101 +1568,148 @@
       <div class="view-container">
         <div class="view-banner">
           <div>
-            <h2 style="font-size: 1.15rem;">Настройки профиля, оформления и базы</h2>
-            <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 3px;">
-              Управление ником, аватаркой, баннером, акцентным цветом, шрифтом ника и конфигурацией Firebase.
-            </p>
+            <h2 style="font-size: 1.1rem;">Настройки</h2>
+            <p style="color: var(--text-muted); font-size: 0.84rem; margin-top: 2px;">Профиль, оформление карточки и база данных.</p>
           </div>
-          <button class="dc-btn" id="settings-run-wizard-btn">Запустить мастер настройки</button>
+          <button class="dc-btn" id="settings-run-wizard-btn">Мастер настройки</button>
         </div>
 
         <div class="settings-grid">
           <!-- Card 1: Profile & Customization -->
           <div class="settings-card">
-            <h3>Профиль и кастомизация</h3>
+            <h3>Профиль и оформление</h3>
 
-            <div class="profile-preview-card">
+            <div class="profile-card-box" id="settings-card-preview">
               <div class="profile-banner-box" id="settings-banner-preview"></div>
-              <div class="profile-preview-body">
-                <div class="profile-preview-avatar-wrap">
-                  <div class="avatar-media profile-preview-avatar" id="settings-avatar-preview">U</div>
+              <div class="profile-card-body">
+                <div class="profile-card-top-row">
+                  <div class="profile-avatar-ring" id="settings-avatar-ring">
+                    <div class="avatar-media profile-avatar-lg" id="settings-avatar-preview">U</div>
+                  </div>
                 </div>
-                <div style="min-width: 0; padding-top: 26px;">
-                  <div id="settings-nick-preview" style="font-size: 1rem; font-weight: 700;">Гость</div>
-                  <div style="font-size: 0.76rem; color: var(--text-muted);">Превью карточки профиля</div>
-                </div>
+                <div id="settings-nick-preview" style="font-size: 1rem; font-weight: 700;">Гость</div>
+                <div class="profile-bio-box" id="settings-bio-preview">Описание профиля...</div>
               </div>
             </div>
 
             <div>
               <label class="field-label" for="settings-nick-input">Никнейм</label>
-              <input type="text" class="dc-input" id="settings-nick-input" maxlength="24" placeholder="Ваш никнейм">
+              <input type="text" class="dc-input" id="settings-nick-input" maxlength="24" placeholder="Никнейм">
+            </div>
+
+            <div>
+              <label class="field-label" for="settings-bio-input">Описание (Bio)</label>
+              <textarea class="dc-textarea" id="settings-bio-input" rows="2" maxlength="160" placeholder="Пара слов о себе..."></textarea>
             </div>
 
             <div>
               <label class="field-label" for="settings-avatar-input">URL аватарки</label>
               <div style="display: flex; gap: 6px;">
-                <input type="url" class="dc-input" id="settings-avatar-input" placeholder="https://example.com/avatar.png">
-                <button type="button" class="dc-btn" id="settings-clear-avatar-btn">Сброс</button>
+                <input type="url" class="dc-input" id="settings-avatar-input" placeholder="https://...">
+                <button type="button" class="dc-btn" id="settings-clear-avatar-btn">✕</button>
               </div>
             </div>
 
             <div>
-              <label class="field-label" for="settings-banner-input">Фон баннера (URL картинки или CSS-градиент)</label>
-              <input type="text" class="dc-input" id="settings-banner-input" placeholder="https://example.com/banner.png или linear-gradient(...)">
+              <label class="field-label" for="settings-banner-input">Фон баннера (URL или градиент)</label>
+              <input type="text" class="dc-input" id="settings-banner-input" placeholder="https://... или linear-gradient(...)">
               <div class="banner-preset-row">
-                <button type="button" class="banner-chip" data-banner="linear-gradient(135deg, #5865f2, #1e1f22)">Blurple Night</button>
-                <button type="button" class="banner-chip" data-banner="linear-gradient(135deg, #e63946, #2b1014)">Crimson Pulse</button>
+                <button type="button" class="banner-chip" data-banner="linear-gradient(135deg, #5865f2, #1e1f22)">Blurple</button>
+                <button type="button" class="banner-chip" data-banner="linear-gradient(135deg, #e63946, #2b1014)">Crimson</button>
                 <button type="button" class="banner-chip" data-banner="linear-gradient(135deg, #16a34a, #0f291e)">Emerald</button>
                 <button type="button" class="banner-chip" data-banner="linear-gradient(135deg, #9333ea, #1e1b4b)">Violet</button>
               </div>
             </div>
 
-            <div>
-              <label class="field-label">Акцентный цвет</label>
-              <div class="swatch-row">
-                <input type="color" id="settings-accent-picker" value="#5865f2" style="width: 44px; height: 32px; background: transparent; border: none; cursor: pointer;">
-                <button type="button" class="color-swatch" data-accent="#5865f2" style="background: #5865f2;" title="Blurple"></button>
-                <button type="button" class="color-swatch" data-accent="#eb459e" style="background: #eb459e;" title="Pink"></button>
-                <button type="button" class="color-swatch" data-accent="#fee75c" style="background: #fee75c;" title="Yellow"></button>
-                <button type="button" class="color-swatch" data-accent="#57f287" style="background: #57f287;" title="Green"></button>
-                <button type="button" class="color-swatch" data-accent="#ed4245" style="background: #ed4245;" title="Red"></button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label class="field-label">Акцентный цвет</label>
+                <div class="swatch-row">
+                  <input type="color" id="settings-accent-picker" value="#5865f2" style="width: 38px; height: 32px; background: transparent; border: none; cursor: pointer;">
+                  <button type="button" class="color-swatch" data-accent="#5865f2" style="background: #5865f2;"></button>
+                  <button type="button" class="color-swatch" data-accent="#eb459e" style="background: #eb459e;"></button>
+                  <button type="button" class="color-swatch" data-accent="#57f287" style="background: #57f287;"></button>
+                  <button type="button" class="color-swatch" data-accent="#ed4245" style="background: #ed4245;"></button>
+                </div>
+              </div>
+
+              <div>
+                <label class="field-label">Фон карточки (бэкграунд)</label>
+                <div class="swatch-row">
+                  <input type="color" id="settings-cardbg-picker" value="#1e1f22" style="width: 38px; height: 32px; background: transparent; border: none; cursor: pointer;">
+                  <button type="button" class="color-swatch cardbg-swatch" data-cardbg="#1e1f22" style="background: #1e1f22;"></button>
+                  <button type="button" class="color-swatch cardbg-swatch" data-cardbg="#18122b" style="background: #18122b;"></button>
+                  <button type="button" class="color-swatch cardbg-swatch" data-cardbg="#1a1114" style="background: #1a1114;"></button>
+                  <button type="button" class="color-swatch cardbg-swatch" data-cardbg="#0f1c1a" style="background: #0f1c1a;"></button>
+                </div>
               </div>
             </div>
 
-            <div>
-              <label class="field-label" for="settings-font-select">Шрифт ника</label>
-              <select class="dc-select" id="settings-font-select">
-                <option value="nick-font-sans">gg sans (Стандартный)</option>
-                <option value="nick-font-mono">Monospace (Код / Терминал)</option>
-                <option value="nick-font-serif">Serif (Классический)</option>
-                <option value="nick-font-display">Display (Акцентный широкий)</option>
-                <option value="nick-font-italic">Italic (Наклонный)</option>
-              </select>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label class="field-label" for="settings-font-select">Шрифт ника</label>
+                <select class="dc-select" id="settings-font-select">
+                  <option value="nick-font-sans">gg sans</option>
+                  <option value="nick-font-mono">Monospace</option>
+                  <option value="nick-font-serif">Serif</option>
+                  <option value="nick-font-display">Display</option>
+                  <option value="nick-font-italic">Italic</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="field-label" for="settings-anim-select">Анимация профиля</label>
+                <select class="dc-select" id="settings-anim-select">
+                  <option value="anim-zoom">Плавный зум</option>
+                  <option value="anim-slide-up">Выезд снизу</option>
+                  <option value="anim-slide-right">Выезд справа</option>
+                  <option value="anim-flip">3D-разворот</option>
+                  <option value="anim-bounce">Пружина</option>
+                </select>
+              </div>
             </div>
 
-            <button type="button" class="dc-btn dc-btn-primary" id="save-profile-settings-btn" style="padding: 9px;">Сохранить профиль и стиль</button>
+            <button type="button" class="dc-btn dc-btn-primary" id="save-profile-settings-btn" style="padding: 9px;">Сохранить профиль</button>
           </div>
 
           <!-- Card 2: Firebase Realtime Database -->
           <div class="settings-card">
             <h3>Firebase Realtime Database</h3>
-            <p style="font-size: 0.84rem; color: var(--text-muted);">
-              Настройки подключения к базе данных для комнат, личных сообщений, присутствия и сигналинга WebRTC.
-            </p>
             <div>
-              <label class="field-label" for="settings-fb-textarea">JSON конфигурации <code>firebaseConfig</code></label>
-              <textarea class="dc-textarea" id="settings-fb-textarea" rows="10" style="font-family: monospace; font-size: 0.78rem;"></textarea>
+              <label class="field-label" for="settings-fb-textarea">JSON <code>firebaseConfig</code></label>
+              <textarea class="dc-textarea" id="settings-fb-textarea" rows="9" style="font-family: monospace; font-size: 0.78rem;"></textarea>
             </div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <button type="button" class="dc-btn dc-btn-primary" id="settings-save-fb-btn" style="flex: 1;">Сохранить конфиг</button>
-              <button type="button" class="dc-btn" id="settings-clear-fb-btn">По умолчанию</button>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="dc-btn dc-btn-primary" id="settings-save-fb-btn" style="flex: 1;">Сохранить</button>
+              <button type="button" class="dc-btn" id="settings-clear-fb-btn">Сброс</button>
             </div>
-            <div class="notice" id="settings-fb-current-info">Текущая БД: europe-west1</div>
+            <div class="notice" id="settings-fb-current-info">БД: europe-west1</div>
           </div>
         </div>
       </div>
     </section>
+  </div>
+
+  <!-- User Public Profile Modal (opens on avatar click) -->
+  <div class="modal-overlay" id="user-profile-modal">
+    <div class="user-profile-modal-card" id="user-profile-card">
+      <button class="modal-close" id="close-user-profile-modal" style="position: absolute; top: 10px; right: 10px;">&times;</button>
+      <div class="profile-banner-box" id="modal-prof-banner"></div>
+      <div class="profile-card-body">
+        <div class="profile-card-top-row">
+          <div class="profile-avatar-ring" id="modal-prof-avatar-ring">
+            <div class="avatar-media profile-avatar-lg" id="modal-prof-avatar">U</div>
+          </div>
+          <button type="button" class="dc-btn dc-btn-primary" id="modal-prof-dm-btn">✉️ ЛС</button>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <strong id="modal-prof-nick" style="font-size: 1.1rem;">Пользователь</strong>
+          <span id="modal-prof-status" class="status-online-text">● В сети</span>
+        </div>
+        <div id="modal-prof-playing" class="activity-text" style="display: none;"></div>
+        <div class="profile-bio-box" id="modal-prof-bio">Нет описания</div>
+      </div>
+    </div>
   </div>
 
   <!-- Welcome Setup Wizard Modal -->
@@ -1620,43 +1721,31 @@
       </div>
 
       <div class="wizard-step active" id="wizard-step-1">
-        <h2 style="font-size: 1.25rem; margin-bottom: 6px;">Добро пожаловать в PulDot.msg</h2>
-        <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 12px;">
-          Выбери никнейм и при желании вставь прямую ссылку (URL) на аватарку — её увидят все в чате и при звонках.
-        </p>
+        <h2 style="font-size: 1.2rem; margin-bottom: 6px;">PulDot.msg</h2>
+        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 10px;">Укажи никнейм и ссылку на аватарку.</p>
 
         <div class="avatar-preview-row">
           <div class="avatar-media avatar-preview-circle" id="wizard-avatar-preview">U</div>
-          <div style="flex: 1; min-width: 0;">
-            <div style="font-size: 0.82rem; font-weight: 600;">Предпросмотр аватарки</div>
-            <div style="font-size: 0.74rem; color: var(--text-muted);">Поддерживаются прямые ссылки PNG / JPG / GIF / WEBP</div>
-          </div>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">Предпросмотр аватарки</div>
         </div>
 
-        <label class="field-label" for="wizard-nick-input">Твой никнейм</label>
-        <input type="text" class="dc-input" id="wizard-nick-input" maxlength="24" placeholder="Например: User_2077" style="margin-bottom: 10px;">
+        <label class="field-label" for="wizard-nick-input">Никнейм</label>
+        <input type="text" class="dc-input" id="wizard-nick-input" maxlength="24" placeholder="User_2077" style="margin-bottom: 10px;">
 
-        <label class="field-label" for="wizard-avatar-input">URL аватарки (необязательно)</label>
-        <input type="url" class="dc-input" id="wizard-avatar-input" placeholder="https://example.com/avatar.png" style="margin-bottom: 14px;">
+        <label class="field-label" for="wizard-avatar-input">URL аватарки</label>
+        <input type="url" class="dc-input" id="wizard-avatar-input" placeholder="https://..." style="margin-bottom: 14px;">
 
         <button class="dc-btn dc-btn-primary" id="wizard-next-1" style="width: 100%; padding: 8px;">Далее →</button>
       </div>
 
       <div class="wizard-step" id="wizard-step-2">
-        <h2 style="font-size: 1.2rem; margin-bottom: 6px;">Подключение Firebase</h2>
-        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 10px;">
-          Встроенный конфиг проекта <code>puldotmsg</code> уже подключён. При желании можешь указать свой JSON-конфиг <code>firebaseConfig</code>.
-        </p>
-        <textarea class="dc-textarea" id="wizard-fb-input" rows="5" style="font-family: monospace; font-size: 0.78rem; margin-bottom: 12px;" placeholder='{
-  "apiKey": "...",
-  "databaseURL": "https://puldotmsg-default-rtdb.europe-west1.firebasedatabase.app",
-  "projectId": "puldotmsg"
-}'></textarea>
+        <h2 style="font-size: 1.15rem; margin-bottom: 6px;">Firebase</h2>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px;">Проект <code>puldotmsg</code> уже настроен. При необходимости измени конфиг.</p>
+        <textarea class="dc-textarea" id="wizard-fb-input" rows="5" style="font-family: monospace; font-size: 0.78rem; margin-bottom: 12px;"></textarea>
         <div style="display: flex; gap: 8px;">
           <button class="dc-btn" id="wizard-back-2">← Назад</button>
-          <button class="dc-btn dc-btn-primary" id="wizard-finish-btn" style="flex: 1;">Завершить и сохранить</button>
+          <button class="dc-btn dc-btn-primary" id="wizard-finish-btn" style="flex: 1;">Готово</button>
         </div>
-        <div class="notice">Настройки и факт прохождения сохраняются в cookies и localStorage браузера.</div>
       </div>
     </div>
   </div>
@@ -1667,7 +1756,7 @@
       <div class="game-modal-header">
         <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
           <strong id="game-modal-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Игра</strong>
-          <span class="playing-pill active" id="modal-playing-tag">В игре</span>
+          <span class="playing-pill active">В игре</span>
         </div>
         <button class="modal-close" id="close-game-modal" title="Закрыть">&times;</button>
       </div>
@@ -1678,14 +1767,11 @@
   <!-- Videy Video Link Modal -->
   <div class="modal-overlay" id="videy-modal">
     <div class="small-modal-card">
-      <button class="modal-close" id="close-videy-modal" style="position: absolute; top: 14px; right: 14px;">&times;</button>
-      <h3 style="margin-bottom: 6px;">Отправить видео через Videy</h3>
-      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px;">
-        Вставь ссылку с <code>videy.co</code> (например <code>https://videy.co/v?id=xxxxx</code>) или прямую ссылку на видео.
-      </p>
-      <label class="field-label" for="videy-url-input">Ссылка на видео Videy</label>
+      <button class="modal-close" id="close-videy-modal" style="position: absolute; top: 12px; right: 12px;">&times;</button>
+      <h3 style="margin-bottom: 6px;">Видео Videy</h3>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Вставь ссылку <code>https://videy.co/v?id=...</code></p>
       <input type="url" class="dc-input" id="videy-url-input" placeholder="https://videy.co/v?id=..." style="margin-bottom: 12px;">
-      <button type="button" class="dc-btn dc-btn-primary" id="confirm-videy-btn" style="width: 100%; padding: 8px;">Прикрепить видео</button>
+      <button type="button" class="dc-btn dc-btn-primary" id="confirm-videy-btn" style="width: 100%; padding: 8px;">Прикрепить</button>
     </div>
   </div>
 
@@ -1719,6 +1805,7 @@
     };
 
     const NICK_FONTS = ['nick-font-sans', 'nick-font-mono', 'nick-font-serif', 'nick-font-display', 'nick-font-italic'];
+    const PROFILE_ANIMS = ['anim-zoom', 'anim-slide-up', 'anim-slide-right', 'anim-flip', 'anim-bounce'];
 
     function sanitizeHttpUrl(rawUrl) {
       if (!rawUrl || typeof rawUrl !== 'string') return '';
@@ -1743,7 +1830,7 @@
       if (/^https?:\/\//i.test(trimmed)) {
         const safe = sanitizeHttpUrl(trimmed);
         el.style.background = safe
-          ? `linear-gradient(rgba(17,18,20,0.25), rgba(17,18,20,0.45)), url("${safe}") center / cover no-repeat`
+          ? `linear-gradient(rgba(17,18,20,0.2), rgba(17,18,20,0.45)), url("${safe}") center / cover no-repeat`
           : 'linear-gradient(135deg, var(--accent), #2b2d31)';
       } else if (/gradient\(/i.test(trimmed) || /^#[0-9a-f]{3,8}$/i.test(trimmed) || /^rgb/i.test(trimmed)) {
         el.style.background = trimmed;
@@ -1866,9 +1953,12 @@
     const savedNickFromCookie = getCookie('puldot_nick');
     const setupDoneCookie = getCookie('puldot_setup_done') === '1';
     const savedAvatarFromStorage = localStorage.getItem('puldot_avatar_url') || '';
+    const savedBioFromStorage = localStorage.getItem('puldot_bio') || '';
     const savedBannerFromStorage = localStorage.getItem('puldot_banner_bg') || '';
     const savedAccentFromStorage = localStorage.getItem('puldot_accent_color') || '#5865f2';
+    const savedCardBgFromStorage = localStorage.getItem('puldot_card_bg') || '#1e1f22';
     const savedNickFontFromStorage = localStorage.getItem('puldot_nick_font') || 'nick-font-sans';
+    const savedProfileAnimFromStorage = localStorage.getItem('puldot_profile_anim') || 'anim-zoom';
 
     let savedFbConfig = null;
     try {
@@ -1886,12 +1976,15 @@
     const state = {
       nickname: savedNickFromCookie || generateDefaultNick(),
       avatarUrl: sanitizeHttpUrl(savedAvatarFromStorage),
+      bio: savedBioFromStorage,
       bannerBg: savedBannerFromStorage,
       accentColor: savedAccentFromStorage,
+      cardBg: savedCardBgFromStorage,
       nickFont: NICK_FONTS.includes(savedNickFontFromStorage) ? savedNickFontFromStorage : 'nick-font-sans',
+      profileAnim: PROFILE_ANIMS.includes(savedProfileAnimFromStorage) ? savedProfileAnimFromStorage : 'anim-zoom',
       setupDone: setupDoneCookie,
       activeTab: 'chat',
-      channelType: 'room', // 'room' | 'dm'
+      channelType: 'room',
       activeRoom: 'general',
       activeDmPeer: null,
       rooms: ['general', 'games', 'random'],
@@ -1910,7 +2003,7 @@
     let activeCallRoom = null;
     let activeCallWithVideo = false;
     let remotePeerInfo = { nickname: 'Собеседник', avatarUrl: '' };
-    let pendingAttachment = null; // { kind: 'image', dataUrl, name } | { kind: 'videy', pageUrl, streamUrl }
+    let pendingAttachment = null;
     const clientId = 'user_' + Math.random().toString(36).slice(2, 9);
 
     const rtcConfig = {
@@ -1953,17 +2046,115 @@
       syncSettingsFormPreview();
     }
 
-    function getUserAvatarByNickOrId(nick, senderId) {
-      if (senderId && state.remoteStatuses && state.remoteStatuses[senderId] && state.remoteStatuses[senderId].avatarUrl) {
-        return state.remoteStatuses[senderId].avatarUrl;
+    function resolveUserProfileData(nick, senderId, fallbackObj = {}) {
+      const isSelf = (senderId && senderId === clientId) || (nick && nick === state.nickname);
+      if (isSelf) {
+        return {
+          nickname: state.nickname,
+          avatarUrl: state.avatarUrl,
+          bio: state.bio,
+          bannerBg: state.bannerBg,
+          accentColor: state.accentColor,
+          cardBg: state.cardBg,
+          nickFont: state.nickFont,
+          profileAnim: state.profileAnim,
+          playingGame: state.playingGame,
+          online: true
+        };
       }
-      if (nick === state.nickname && state.avatarUrl) {
-        return state.avatarUrl;
+
+      let remote = null;
+      if (senderId && state.remoteStatuses && state.remoteStatuses[senderId]) {
+        remote = state.remoteStatuses[senderId];
+      } else if (nick && state.remoteStatuses) {
+        const list = Object.values(state.remoteStatuses);
+        remote = list.find(u => u && u.nickname === nick) || null;
       }
-      const remoteList = Object.values(state.remoteStatuses || {});
-      const found = remoteList.find(u => u && u.nickname === nick && u.avatarUrl);
-      return found ? found.avatarUrl : '';
+
+      const isOnline = Boolean(remote && (Date.now() - (remote.updatedAt || 0) < 120000));
+      return {
+        nickname: (remote && remote.nickname) || nick || fallbackObj.nickname || 'Пользователь',
+        avatarUrl: (remote && remote.avatarUrl) || fallbackObj.avatarUrl || '',
+        bio: (remote && remote.bio) || fallbackObj.bio || '',
+        bannerBg: (remote && remote.bannerBg) || fallbackObj.bannerBg || '',
+        accentColor: (remote && remote.accentColor) || fallbackObj.accentColor || '#5865f2',
+        cardBg: (remote && remote.cardBg) || fallbackObj.cardBg || '#1e1f22',
+        nickFont: (remote && remote.nickFont) || fallbackObj.nickFont || 'nick-font-sans',
+        profileAnim: (remote && remote.profileAnim) || fallbackObj.profileAnim || state.profileAnim || 'anim-zoom',
+        playingGame: (remote && remote.playingGame) || null,
+        online: isOnline
+      };
     }
+
+    function getUserAvatarByNickOrId(nick, senderId) {
+      return resolveUserProfileData(nick, senderId).avatarUrl;
+    }
+
+    // === USER PROFILE MODAL ON AVATAR CLICK ===
+    const userProfileModal = document.getElementById('user-profile-modal');
+    const userProfileCard = document.getElementById('user-profile-card');
+    let currentInspectedNick = null;
+
+    function openUserProfileModal(nick, senderId, fallbackObj = {}) {
+      const data = resolveUserProfileData(nick, senderId, fallbackObj);
+      currentInspectedNick = data.nickname;
+
+      userProfileCard.style.backgroundColor = data.cardBg || '#1e1f22';
+      document.getElementById('modal-prof-avatar-ring').style.backgroundColor = data.cardBg || '#1e1f22';
+      applyBannerStyle(document.getElementById('modal-prof-banner'), data.bannerBg);
+      renderAvatarContent(document.getElementById('modal-prof-avatar'), data.nickname, data.avatarUrl);
+
+      const nickEl = document.getElementById('modal-prof-nick');
+      nickEl.textContent = data.nickname;
+      nickEl.style.color = data.accentColor || '#f2f3f5';
+      applyNickFontClass(nickEl, data.nickFont);
+
+      const statusEl = document.getElementById('modal-prof-status');
+      statusEl.textContent = data.online ? '● В сети' : '○ Офлайн';
+      statusEl.className = data.online ? 'status-online-text' : 'status-offline-text';
+
+      const playEl = document.getElementById('modal-prof-playing');
+      if (data.playingGame) {
+        playEl.textContent = `🎮 Играет в ${data.playingGame}`;
+        playEl.style.display = 'block';
+      } else {
+        playEl.style.display = 'none';
+      }
+
+      document.getElementById('modal-prof-bio').textContent = data.bio ? data.bio : 'Нет описания';
+
+      const dmBtn = document.getElementById('modal-prof-dm-btn');
+      dmBtn.style.display = data.nickname === state.nickname ? 'none' : 'inline-flex';
+      dmBtn.style.backgroundColor = data.accentColor || 'var(--accent)';
+      dmBtn.style.borderColor = data.accentColor || 'var(--accent)';
+
+      PROFILE_ANIMS.forEach(cls => userProfileCard.classList.remove(cls));
+      void userProfileCard.offsetWidth;
+      userProfileCard.classList.add(PROFILE_ANIMS.includes(data.profileAnim) ? data.profileAnim : 'anim-zoom');
+
+      userProfileModal.classList.add('active');
+    }
+
+    document.getElementById('close-user-profile-modal').addEventListener('click', () => {
+      userProfileModal.classList.remove('active');
+    });
+
+    userProfileModal.addEventListener('click', e => {
+      if (e.target === userProfileModal) {
+        userProfileModal.classList.remove('active');
+      }
+    });
+
+    document.getElementById('modal-prof-dm-btn').addEventListener('click', () => {
+      if (currentInspectedNick) {
+        userProfileModal.classList.remove('active');
+        openDirectMessage(currentInspectedNick);
+      }
+    });
+
+    document.getElementById('self-avatar').addEventListener('click', () => {
+      openUserProfileModal(state.nickname, clientId);
+    });
 
     function updateCallAvatarsUI() {
       renderAvatarContent(document.getElementById('call-local-avatar'), state.nickname, state.avatarUrl);
@@ -2023,7 +2214,7 @@
     document.getElementById('wizard-next-1').addEventListener('click', () => {
       const nickInput = wizardNickInput.value.trim();
       if (!nickInput) {
-        alert('Введи никнейм, чтобы продолжить.');
+        alert('Введи никнейм.');
         return;
       }
       state.nickname = nickInput;
@@ -2043,7 +2234,7 @@
           state.fbConfig = parsed;
           localStorage.setItem('puldot_fb_config', JSON.stringify(parsed));
         } catch (e) {
-          alert('Некорректный JSON конфигурации Firebase. Проверь скобки или оставь встроенный.');
+          alert('Некорректный JSON Firebase.');
           return;
         }
       }
@@ -2063,10 +2254,13 @@
 
     // === SETTINGS TAB LOGIC ===
     const settingsNickInput = document.getElementById('settings-nick-input');
+    const settingsBioInput = document.getElementById('settings-bio-input');
     const settingsAvatarInput = document.getElementById('settings-avatar-input');
     const settingsBannerInput = document.getElementById('settings-banner-input');
     const settingsAccentPicker = document.getElementById('settings-accent-picker');
+    const settingsCardBgPicker = document.getElementById('settings-cardbg-picker');
     const settingsFontSelect = document.getElementById('settings-font-select');
+    const settingsAnimSelect = document.getElementById('settings-anim-select');
     const settingsFbTextarea = document.getElementById('settings-fb-textarea');
 
     let settingsInitialized = false;
@@ -2074,38 +2268,65 @@
     function syncSettingsFormPreview(forceInputs = false) {
       if (!settingsInitialized || forceInputs) {
         settingsNickInput.value = state.nickname;
+        settingsBioInput.value = state.bio || '';
         settingsAvatarInput.value = state.avatarUrl || '';
         settingsBannerInput.value = state.bannerBg || '';
         settingsAccentPicker.value = state.accentColor || '#5865f2';
+        settingsCardBgPicker.value = state.cardBg || '#1e1f22';
         settingsFontSelect.value = state.nickFont || 'nick-font-sans';
+        settingsAnimSelect.value = state.profileAnim || 'anim-zoom';
         settingsFbTextarea.value = JSON.stringify(state.fbConfig || DEFAULT_FIREBASE_CONFIG, null, 2);
         settingsInitialized = true;
       }
 
       const previewNick = (settingsNickInput.value || state.nickname || 'Гость').trim();
+      const previewBio = (settingsBioInput.value || '').trim();
       const previewAvatar = settingsAvatarInput.value !== undefined ? settingsAvatarInput.value : state.avatarUrl;
       const previewBanner = settingsBannerInput.value !== undefined ? settingsBannerInput.value : state.bannerBg;
       const previewAccent = settingsAccentPicker.value || state.accentColor || '#5865f2';
+      const previewCardBg = settingsCardBgPicker.value || state.cardBg || '#1e1f22';
       const previewFont = settingsFontSelect.value || state.nickFont;
 
       document.documentElement.style.setProperty('--accent', previewAccent);
+      const cardBox = document.getElementById('settings-card-preview');
+      cardBox.style.backgroundColor = previewCardBg;
+      document.getElementById('settings-avatar-ring').style.backgroundColor = previewCardBg;
+
       const nickPreviewEl = document.getElementById('settings-nick-preview');
       nickPreviewEl.textContent = previewNick;
+      nickPreviewEl.style.color = previewAccent;
       applyNickFontClass(nickPreviewEl, previewFont);
+
+      document.getElementById('settings-bio-preview').textContent = previewBio || 'Описание профиля...';
       renderAvatarContent(document.getElementById('settings-avatar-preview'), previewNick, previewAvatar);
       applyBannerStyle(document.getElementById('settings-banner-preview'), previewBanner);
     }
 
-    [settingsNickInput, settingsAvatarInput, settingsBannerInput, settingsFontSelect].forEach(el => {
+    [settingsNickInput, settingsBioInput, settingsAvatarInput, settingsBannerInput, settingsFontSelect].forEach(el => {
       el.addEventListener('input', () => syncSettingsFormPreview(false));
       el.addEventListener('change', () => syncSettingsFormPreview(false));
     });
 
     settingsAccentPicker.addEventListener('input', () => syncSettingsFormPreview(false));
+    settingsCardBgPicker.addEventListener('input', () => syncSettingsFormPreview(false));
 
-    document.querySelectorAll('.color-swatch').forEach(btn => {
+    settingsAnimSelect.addEventListener('change', () => {
+      const cardBox = document.getElementById('settings-card-preview');
+      PROFILE_ANIMS.forEach(cls => cardBox.classList.remove(cls));
+      void cardBox.offsetWidth;
+      cardBox.classList.add(settingsAnimSelect.value);
+    });
+
+    document.querySelectorAll('.color-swatch[data-accent]').forEach(btn => {
       btn.addEventListener('click', () => {
         settingsAccentPicker.value = btn.dataset.accent;
+        syncSettingsFormPreview(false);
+      });
+    });
+
+    document.querySelectorAll('.cardbg-swatch').forEach(btn => {
+      btn.addEventListener('click', () => {
+        settingsCardBgPicker.value = btn.dataset.cardbg;
         syncSettingsFormPreview(false);
       });
     });
@@ -2124,13 +2345,16 @@
 
     document.getElementById('save-profile-settings-btn').addEventListener('click', () => {
       const rawNick = settingsNickInput.value.trim();
+      const rawBio = settingsBioInput.value.trim();
       const rawAvatar = settingsAvatarInput.value.trim();
       const rawBanner = settingsBannerInput.value.trim();
       const chosenAccent = settingsAccentPicker.value || '#5865f2';
+      const chosenCardBg = settingsCardBgPicker.value || '#1e1f22';
       const chosenFont = settingsFontSelect.value || 'nick-font-sans';
+      const chosenAnim = settingsAnimSelect.value || 'anim-zoom';
 
       if (rawAvatar && !sanitizeHttpUrl(rawAvatar)) {
-        alert('Укажи корректную ссылку на аватарку (http:// или https://).');
+        alert('Укажи корректную ссылку на аватарку (http/https).');
         return;
       }
 
@@ -2144,20 +2368,26 @@
         setCookie('puldot_nick', state.nickname, 365);
       }
 
+      state.bio = rawBio;
       state.avatarUrl = sanitizeHttpUrl(rawAvatar);
       state.bannerBg = rawBanner;
       state.accentColor = chosenAccent;
+      state.cardBg = chosenCardBg;
       state.nickFont = NICK_FONTS.includes(chosenFont) ? chosenFont : 'nick-font-sans';
+      state.profileAnim = PROFILE_ANIMS.includes(chosenAnim) ? chosenAnim : 'anim-zoom';
 
+      localStorage.setItem('puldot_bio', state.bio);
       localStorage.setItem('puldot_avatar_url', state.avatarUrl);
       localStorage.setItem('puldot_banner_bg', state.bannerBg);
       localStorage.setItem('puldot_accent_color', state.accentColor);
+      localStorage.setItem('puldot_card_bg', state.cardBg);
       localStorage.setItem('puldot_nick_font', state.nickFont);
+      localStorage.setItem('puldot_profile_anim', state.profileAnim);
 
       applyThemeCustomization();
       syncPresence();
       renderFriends();
-      alert('Настройки профиля сохранены.');
+      alert('Профиль сохранён.');
     });
 
     function applyFirebaseConfigString(rawJson) {
@@ -2172,7 +2402,7 @@
         applyFirebaseConfigString(settingsFbTextarea.value.trim());
         alert('Конфиг Firebase сохранён.');
       } catch (_) {
-        alert('Некорректный JSON конфигурации Firebase.');
+        alert('Некорректный JSON Firebase.');
       }
     });
 
@@ -2181,7 +2411,7 @@
       localStorage.removeItem('puldot_fb_config');
       settingsFbTextarea.value = JSON.stringify(DEFAULT_FIREBASE_CONFIG, null, 2);
       initFirebase();
-      alert('Сброшено до встроенного конфига Firebase.');
+      alert('Сброшено.');
     });
 
     // === PRESENCE ===
@@ -2199,7 +2429,7 @@
       if (state.playingGame) {
         nameEl.textContent = state.playingGame;
         badge.classList.add('active');
-        subEl.textContent = `Играет в ${state.playingGame}`;
+        subEl.textContent = `Играет: ${state.playingGame}`;
       } else {
         nameEl.textContent = '';
         badge.classList.remove('active');
@@ -2210,9 +2440,12 @@
         set(ref(db, `presence/${clientId}`), {
           nickname: state.nickname,
           avatarUrl: state.avatarUrl || null,
+          bio: state.bio || null,
           bannerBg: state.bannerBg || null,
           accentColor: state.accentColor || null,
+          cardBg: state.cardBg || null,
           nickFont: state.nickFont || 'nick-font-sans',
+          profileAnim: state.profileAnim || 'anim-zoom',
           playingGame: state.playingGame || null,
           activeRoom: state.activeRoom,
           inCallRoom: activeCallRoom || null,
@@ -2222,7 +2455,7 @@
       renderFriends();
     }
 
-    // === GAMES MODAL & ACTIVITY BADGE ===
+    // === GAMES MODAL ===
     function renderGames() {
       const grid = document.getElementById('games-grid');
       grid.innerHTML = '';
@@ -2235,9 +2468,7 @@
             <h3>${escapeHtml(game.title)}</h3>
             <p>${escapeHtml(game.description)}</p>
           </div>
-          <button class="dc-btn dc-btn-primary" data-game-title="${escapeHtml(game.title)}" data-game-url="${escapeHtml(game.url)}">
-            Играть
-          </button>
+          <button class="dc-btn dc-btn-primary">Играть</button>
         `;
         card.querySelector('button').addEventListener('click', () => {
           openGameModal(game.title, game.url);
@@ -2287,8 +2518,8 @@
 
       if (state.dmPeers.length === 0) {
         const empty = document.createElement('div');
-        empty.style.cssText = 'font-size: 0.78rem; color: var(--text-muted); padding: 4px 10px 12px;';
-        empty.textContent = 'Нет открытых ЛС';
+        empty.style.cssText = 'font-size: 0.76rem; color: var(--text-muted); padding: 4px 10px 10px;';
+        empty.textContent = 'Нет ЛС';
         list.appendChild(empty);
         return;
       }
@@ -2299,9 +2530,13 @@
         div.className = `channel-item ${isActive ? 'active' : ''}`;
 
         const av = document.createElement('div');
-        av.className = 'avatar-media';
+        av.className = 'avatar-media avatar-clickable';
         av.style.cssText = 'width: 22px; height: 22px; font-size: 0.7rem;';
         renderAvatarContent(av, peerNick, getUserAvatarByNickOrId(peerNick, null));
+        av.addEventListener('click', e => {
+          e.stopPropagation();
+          openUserProfileModal(peerNick, null);
+        });
 
         const span = document.createElement('span');
         span.textContent = peerNick;
@@ -2322,34 +2557,30 @@
       grid.innerHTML = '';
 
       if (state.friends.length === 0) {
-        grid.innerHTML = '<div style="color: var(--text-muted); font-size: 0.9rem;">Список друзей пока пуст. Добавь кого-нибудь по нику в шапке вкладки.</div>';
+        grid.innerHTML = '<div style="color: var(--text-muted); font-size: 0.88rem;">Список друзей пуст.</div>';
         return;
       }
 
-      const remoteList = Object.values(state.remoteStatuses || {});
-
       state.friends.forEach(friendNick => {
-        const matchedRemote = remoteList.find(u => u && u.nickname === friendNick && (Date.now() - (u.updatedAt || 0) < 120000));
-        const isSelf = friendNick === state.nickname;
-        const playing = isSelf ? state.playingGame : (matchedRemote ? matchedRemote.playingGame : null);
-        const online = isSelf || Boolean(matchedRemote);
-        const friendAvatar = isSelf ? state.avatarUrl : (matchedRemote && matchedRemote.avatarUrl ? matchedRemote.avatarUrl : '');
+        const prof = resolveUserProfileData(friendNick, null);
 
         const card = document.createElement('div');
         card.className = 'friend-card';
 
         const avatarEl = document.createElement('div');
-        avatarEl.className = 'avatar-media friend-avatar';
-        renderAvatarContent(avatarEl, friendNick, friendAvatar);
+        avatarEl.className = 'avatar-media friend-avatar avatar-clickable';
+        avatarEl.title = 'Открыть профиль';
+        renderAvatarContent(avatarEl, friendNick, prof.avatarUrl);
+        avatarEl.addEventListener('click', () => openUserProfileModal(friendNick, null));
 
         const infoEl = document.createElement('div');
         infoEl.className = 'friend-info';
         infoEl.innerHTML = `
           <div class="friend-row">
             <strong>${escapeHtml(friendNick)}</strong>
-            <span class="${online ? 'status-online-text' : 'status-offline-text'}">${online ? '● В сети' : '○ Офлайн'}</span>
+            <span class="${prof.online ? 'status-online-text' : 'status-offline-text'}">${prof.online ? '● В сети' : '○ Офлайн'}</span>
           </div>
-          ${playing ? `<div class="activity-text">🎮 Играет в ${escapeHtml(playing)}</div>` : `<div class="${online ? 'status-online-text' : 'status-offline-text'}">${online ? 'В сети' : 'Не в сети'}</div>`}
+          ${prof.playingGame ? `<div class="activity-text">🎮 ${escapeHtml(prof.playingGame)}</div>` : `<div class="${prof.online ? 'status-online-text' : 'status-offline-text'}">${prof.online ? 'В сети' : 'Не в сети'}</div>`}
         `;
 
         const dmBtn = document.createElement('button');
@@ -2387,12 +2618,12 @@
       if (state.channelType === 'dm' && state.activeDmPeer) {
         prefixEl.textContent = '@';
         titleEl.textContent = state.activeDmPeer;
-        hintEl.textContent = `Личные сообщения с ${state.activeDmPeer}`;
+        hintEl.textContent = `ЛС • ${state.activeDmPeer}`;
         callBar.style.display = 'none';
       } else {
         prefixEl.textContent = '#';
         titleEl.textContent = state.activeRoom;
-        hintEl.textContent = 'Сообщения сохраняются в Firebase Realtime Database';
+        hintEl.textContent = 'Firebase RTDB';
         callBar.style.display = 'flex';
       }
     }
@@ -2453,9 +2684,9 @@
       }
       pendingBar.classList.add('active');
       if (att.kind === 'image') {
-        pendingLabel.textContent = `🖼️ Изображение: ${att.name}`;
+        pendingLabel.textContent = `🖼️ ${att.name}`;
       } else if (att.kind === 'videy') {
-        pendingLabel.textContent = `🎬 Videy: ${att.pageUrl}`;
+        pendingLabel.textContent = `🎬 ${att.pageUrl}`;
       }
     }
 
@@ -2466,12 +2697,12 @@
       const file = imageFileInput.files && imageFileInput.files[0];
       if (!file) return;
       if (!['image/png', 'image/jpeg'].includes(file.type)) {
-        alert('Поддерживаются только файлы PNG и JPG.');
+        alert('Только PNG и JPG.');
         imageFileInput.value = '';
         return;
       }
       if (file.size > 1.5 * 1024 * 1024) {
-        alert('Размер файла для отправки в базу не должен превышать 1.5 МБ.');
+        alert('Максимум 1.5 МБ.');
         imageFileInput.value = '';
         return;
       }
@@ -2502,7 +2733,7 @@
     document.getElementById('confirm-videy-btn').addEventListener('click', () => {
       const parsed = parseVideyLink(videyUrlInput.value);
       if (!parsed) {
-        alert('Введи корректную ссылку на видео (например https://videy.co/v?id=...).');
+        alert('Некорректная ссылка Videy.');
         return;
       }
       setPendingAttachment({
@@ -2524,8 +2755,20 @@
       el.className = `dc-msg ${isOwn ? 'own' : ''}`;
 
       const avatarEl = document.createElement('div');
-      avatarEl.className = 'avatar-media dc-msg-avatar';
+      avatarEl.className = 'avatar-media dc-msg-avatar avatar-clickable';
+      avatarEl.title = `Профиль ${authorName}`;
       renderAvatarContent(avatarEl, authorName, msgAvatarUrl);
+      avatarEl.addEventListener('click', () => {
+        openUserProfileModal(authorName, msg.senderId, {
+          nickname: authorName,
+          avatarUrl: msg.avatarUrl || '',
+          bio: msg.bio || '',
+          bannerBg: msg.bannerBg || '',
+          accentColor: msg.accentColor || '#5865f2',
+          cardBg: msg.cardBg || '#1e1f22',
+          nickFont: msg.nickFont || 'nick-font-sans'
+        });
+      });
 
       const bodyEl = document.createElement('div');
       bodyEl.className = 'dc-msg-body';
@@ -2580,7 +2823,7 @@
           link.href = safePage;
           link.target = '_blank';
           link.rel = 'noopener noreferrer';
-          link.textContent = `🎬 Открыть на Videy: ${safePage}`;
+          link.textContent = `🎬 ${safePage}`;
 
           card.appendChild(vid);
           card.appendChild(link);
@@ -2625,6 +2868,10 @@
       const payload = {
         author: state.nickname,
         avatarUrl: state.avatarUrl || null,
+        bio: state.bio || null,
+        bannerBg: state.bannerBg || null,
+        accentColor: state.accentColor || null,
+        cardBg: state.cardBg || null,
         nickFont: state.nickFont || 'nick-font-sans',
         senderId: clientId,
         text: text || '',
@@ -2653,8 +2900,8 @@
 
       if (!state.fbConfig || !state.fbConfig.databaseURL) {
         db = null;
-        statusEl.textContent = 'Локальный режим (не указан databaseURL)';
-        if (settingsInfoEl) settingsInfoEl.textContent = 'Режим: локальное хранилище';
+        statusEl.textContent = 'Локально';
+        if (settingsInfoEl) settingsInfoEl.textContent = 'Локальный режим';
         subscribeMessages();
         return;
       }
@@ -2662,9 +2909,9 @@
       try {
         const app = initializeApp(state.fbConfig, 'PulDotApp_' + Date.now());
         db = getDatabase(app);
-        const label = `Подключено: ${state.fbConfig.projectId || 'Firebase RTDB'}`;
+        const label = `Онлайн: ${state.fbConfig.projectId || 'RTDB'}`;
         statusEl.textContent = label;
-        if (settingsInfoEl) settingsInfoEl.textContent = `${label} (${state.fbConfig.databaseURL})`;
+        if (settingsInfoEl) settingsInfoEl.textContent = label;
 
         onValue(ref(db, 'presence'), snap => {
           state.remoteStatuses = snap.val() || {};
@@ -2688,8 +2935,8 @@
         subscribeMessages();
       } catch (err) {
         db = null;
-        statusEl.textContent = 'Ошибка подключения к Firebase';
-        if (settingsInfoEl) settingsInfoEl.textContent = 'Ошибка подключения к Firebase';
+        statusEl.textContent = 'Ошибка БД';
+        if (settingsInfoEl) settingsInfoEl.textContent = 'Ошибка БД';
         subscribeMessages();
       }
     }
@@ -2730,7 +2977,7 @@
       if (vw > 0 && vh > 0 && activeCallWithVideo) {
         remoteTileEl.classList.add('remote-video-sized');
         remoteTileEl.style.aspectRatio = `${vw} / ${vh}`;
-        const maxDisplayWidth = Math.min(window.innerWidth - 48, Math.max(240, Math.min(vw, 560)));
+        const maxDisplayWidth = Math.min(window.innerWidth - 40, Math.max(220, Math.min(vw, 560)));
         remoteTileEl.style.width = `${maxDisplayWidth}px`;
         document.getElementById('remote-call-label').textContent = `${remotePeerInfo.nickname || 'Собеседник'} (${vw}×${vh})`;
       } else {
@@ -2744,7 +2991,7 @@
     remoteVideoEl.addEventListener('resize', applyRemoteVideoAspect);
     window.addEventListener('resize', applyRemoteVideoAspect);
 
-    // === WEBRTC CALLS (VOICE / VIDEO + FIREBASE SIGNALING) ===
+    // === WEBRTC CALLS ===
     let callUnsubscribers = [];
     let pendingIceCandidates = [];
 
@@ -2786,8 +3033,8 @@
         if (event.streams && event.streams[0]) {
           remoteVideoEl.srcObject = event.streams[0];
         }
-        document.getElementById('call-peer-info').textContent = 'Соединение установлено';
-        document.getElementById('call-remote-sub').textContent = 'Подключён к звонку';
+        document.getElementById('call-peer-info').textContent = 'На связи';
+        document.getElementById('call-remote-sub').textContent = 'Подключён';
       };
 
       peerConnection.onicecandidate = event => {
@@ -2803,18 +3050,18 @@
         if (!peerConnection) return;
         const infoEl = document.getElementById('call-peer-info');
         if (peerConnection.connectionState === 'disconnected' || peerConnection.connectionState === 'failed') {
-          infoEl.textContent = 'Соединение прервано (проверьте сеть/NAT)';
+          infoEl.textContent = 'Разрыв соединения';
         }
       };
     }
 
     async function startCall(withVideo) {
       if (state.channelType !== 'room') {
-        alert('Звонки доступны в текстовых комнатах.');
+        alert('Звонки доступны в комнатах.');
         return;
       }
       if (!db) {
-        alert('Для WebRTC-звонков между устройствами нужен подключённый Firebase (сигналинг SDP/ICE).');
+        alert('Нужен подключённый Firebase.');
         return;
       }
 
@@ -2839,9 +3086,9 @@
         updateCallAvatarsUI();
         syncPresence();
 
-        document.getElementById('call-status-label').textContent = withVideo ? 'Видеозвонок (WebRTC)' : 'Голосовой звонок (WebRTC)';
-        document.getElementById('call-peer-info').textContent = 'Ожидание подключения...';
-        document.getElementById('call-remote-sub').textContent = 'Ожидание собеседника...';
+        document.getElementById('call-status-label').textContent = withVideo ? 'Видеозвонок' : 'Голосовой звонок';
+        document.getElementById('call-peer-info').textContent = 'Ожидание...';
+        document.getElementById('call-remote-sub').textContent = 'Ожидание...';
         document.getElementById('start-voice-btn').style.display = 'none';
         document.getElementById('start-video-btn').style.display = 'none';
         document.getElementById('hangup-btn').style.display = 'inline-flex';
@@ -2880,7 +3127,7 @@
               });
             }
           } catch (err) {
-            console.warn('Ошибка обработки входящего offer:', err);
+            console.warn('Offer error:', err);
           }
         });
 
@@ -2902,7 +3149,7 @@
               await flushPendingIceCandidates();
             }
           } catch (err) {
-            console.warn('Ошибка установки remote answer:', err);
+            console.warn('Answer error:', err);
           }
         });
 
@@ -2959,7 +3206,7 @@
       } catch (err) {
         clearCallListeners();
         activeCallRoom = null;
-        alert('Не удалось получить доступ к микрофону/камере: ' + err.message);
+        alert('Нет доступа к микрофону/камере: ' + err.message);
       }
     }
 
@@ -3002,7 +3249,7 @@
       document.getElementById('start-voice-btn').style.display = 'inline-flex';
       document.getElementById('start-video-btn').style.display = 'inline-flex';
       document.getElementById('hangup-btn').style.display = 'none';
-      document.getElementById('call-peer-info').textContent = 'Звонок завершён';
+      document.getElementById('call-peer-info').textContent = 'Завершён';
     }
 
     document.getElementById('start-voice-btn').addEventListener('click', () => startCall(false));
