@@ -19,6 +19,9 @@
       --danger: #da373c;
       --danger-hover: #a1282c;
       --online: #23a55a;
+      --idle: #f0b232;
+      --dnd: #f23f43;
+      --offline: #80848e;
       --border: rgba(255, 255, 255, 0.08);
     }
 
@@ -153,6 +156,13 @@
     .dc-tab.active {
       background: var(--bg-active);
       color: #fff;
+    }
+
+    .top-right-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
     }
 
     .playing-pill {
@@ -300,8 +310,8 @@
 
     /* Channel Sidebar */
     .channel-sidebar {
-      width: 244px;
-      min-width: 244px;
+      width: 254px;
+      min-width: 254px;
       height: 100%;
       background: var(--bg-sidebar);
       display: flex;
@@ -361,6 +371,7 @@
       color: var(--text-muted);
       padding: 0 8px;
       margin-bottom: 6px;
+      margin-top: 6px;
     }
 
     .create-room-row {
@@ -389,7 +400,7 @@
       display: flex;
       flex-direction: column;
       gap: 2px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .channel-item {
@@ -418,7 +429,7 @@
 
     .channel-hash {
       color: var(--text-muted);
-      font-size: 1rem;
+      font-size: 0.95rem;
       line-height: 1;
       flex-shrink: 0;
     }
@@ -441,7 +452,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 6px;
       border-top: 1px solid rgba(0, 0, 0, 0.25);
       flex-shrink: 0;
     }
@@ -468,8 +479,8 @@
     }
 
     .avatar-status-dot {
-      width: 10px;
-      height: 10px;
+      width: 11px;
+      height: 11px;
       border-radius: 50%;
       background: var(--online);
       border: 2px solid #232428;
@@ -479,6 +490,11 @@
       z-index: 2;
       pointer-events: none;
     }
+
+    .avatar-status-dot.status-online { background: var(--online); }
+    .avatar-status-dot.status-idle { background: var(--idle); }
+    .avatar-status-dot.status-dnd { background: var(--dnd); }
+    .avatar-status-dot.status-offline { background: var(--offline); }
 
     .user-nick-wrap {
       overflow: hidden;
@@ -499,6 +515,13 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .user-panel-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
     }
 
     /* Chat Area */
@@ -562,6 +585,25 @@
       align-items: center;
       gap: 6px;
       flex-shrink: 0;
+    }
+
+    /* Incoming Call Banner */
+    .incoming-call-banner {
+      display: none;
+      margin: 8px 12px 0;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(35, 165, 90, 0.14);
+      border: 1px solid rgba(35, 165, 90, 0.45);
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    .incoming-call-banner.active {
+      display: flex;
     }
 
     /* WebRTC Stage */
@@ -980,16 +1022,10 @@
       gap: 6px;
     }
 
-    .status-online-text {
-      font-size: 0.76rem;
-      color: var(--online);
-      font-weight: 600;
-    }
-
-    .status-offline-text {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-    }
+    .status-online-text { font-size: 0.76rem; color: var(--online); font-weight: 600; }
+    .status-idle-text { font-size: 0.76rem; color: var(--idle); font-weight: 600; }
+    .status-dnd-text { font-size: 0.76rem; color: var(--dnd); font-weight: 600; }
+    .status-offline-text { font-size: 0.76rem; color: var(--offline); font-weight: 600; }
 
     .activity-text {
       font-size: 0.78rem;
@@ -1033,12 +1069,12 @@
       margin-bottom: 4px;
     }
 
-    /* Larger & Taller Profile Card Preview & Public Profile Modal */
+    /* Adaptive Contrast Profile Card Preview & Public Profile Modal */
     .profile-card-box {
       border-radius: 14px;
       overflow: hidden;
       background: var(--bg-servers);
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(128, 128, 128, 0.25);
       min-height: 360px;
       display: flex;
       flex-direction: column;
@@ -1088,7 +1124,6 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--text-muted);
       margin-bottom: 4px;
     }
 
@@ -1096,11 +1131,9 @@
       min-height: 76px;
       padding: 9px 11px;
       border-radius: 8px;
-      background: rgba(17, 18, 20, 0.84);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(128, 128, 128, 0.22);
       font-size: 0.85rem;
       line-height: 1.38;
-      color: #f2f3f5;
       white-space: pre-wrap;
       word-break: break-word;
     }
@@ -1109,8 +1142,7 @@
       min-height: 72px;
       padding: 9px 11px;
       border-radius: 8px;
-      background: rgba(17, 18, 20, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(128, 128, 128, 0.22);
       display: flex;
       flex-wrap: wrap;
       align-content: flex-start;
@@ -1123,9 +1155,7 @@
       gap: 6px;
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(88, 101, 242, 0.22);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      color: #f2f3f5;
+      border: 1px solid rgba(128, 128, 128, 0.28);
       font-size: 0.78rem;
       font-weight: 600;
     }
@@ -1133,7 +1163,7 @@
     .fav-game-remove {
       background: transparent;
       border: none;
-      color: #ff9aa2;
+      color: var(--dnd);
       font-weight: 700;
       cursor: pointer;
       font-size: 0.85rem;
@@ -1141,13 +1171,9 @@
       padding: 0 2px;
     }
 
-    .fav-game-remove:hover {
-      color: #fff;
-    }
-
     .fav-games-empty-text {
       font-size: 0.8rem;
-      color: var(--text-muted);
+      opacity: 0.75;
     }
 
     .swatch-row {
@@ -1267,7 +1293,7 @@
       max-height: 88dvh;
       overflow-y: auto;
       border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(128, 128, 128, 0.28);
       background: var(--bg-servers);
       position: relative;
       box-shadow: 0 22px 54px rgba(0, 0, 0, 0.8);
@@ -1479,13 +1505,16 @@
       </nav>
     </div>
 
-    <span class="playing-pill" id="self-playing-badge">🎮 <span id="self-playing-name"></span></span>
+    <div class="top-right-group">
+      <span class="playing-pill" id="self-playing-badge">🎮 <span id="self-playing-name"></span></span>
+      <button type="button" class="dc-btn" id="toggle-mute-btn" title="Уведомления / Заглушение">🔔</button>
+    </div>
   </header>
 
   <div class="drawer-backdrop" id="drawer-backdrop"></div>
 
   <div class="workspace">
-    <!-- TAB 1: ЧАТ И ЛС -->
+    <!-- TAB 1: ЧАТ, ГРУППЫ И ЛС -->
     <section class="tab-panel active" id="tab-chat">
       <aside class="channel-sidebar" id="channel-sidebar">
         <div class="sidebar-top-scroll">
@@ -1498,10 +1527,16 @@
             <div class="category-label">Комнаты</div>
             <div class="create-room-row">
               <input type="text" class="dc-input" id="new-room-input" placeholder="Комната...">
-              <button class="dc-btn dc-btn-primary" id="create-room-btn">+</button>
+              <button class="dc-btn dc-btn-primary" id="create-room-btn" title="Создать комнату">+</button>
             </div>
-
             <div class="channel-list" id="room-list"></div>
+
+            <div class="category-label">Группы</div>
+            <div class="create-room-row">
+              <input type="text" class="dc-input" id="new-group-name-input" placeholder="Название группы...">
+              <button class="dc-btn dc-btn-primary" id="create-group-btn" title="Создать группу">+</button>
+            </div>
+            <div class="channel-list" id="group-list"></div>
 
             <div class="category-label">Личные сообщения</div>
             <div class="channel-list" id="dm-list"></div>
@@ -1515,14 +1550,17 @@
           <div class="user-meta">
             <div class="avatar-circle-wrap">
               <div class="avatar-media avatar-clickable" id="self-avatar" title="Мой профиль">U</div>
-              <span class="avatar-status-dot"></span>
+              <span class="avatar-status-dot status-online" id="self-status-dot"></span>
             </div>
             <div class="user-nick-wrap">
               <div class="user-nick-text" id="self-nickname">Гость</div>
               <div class="user-sub-text" id="self-activity-sub">В сети</div>
             </div>
           </div>
-          <button class="dc-btn" id="quick-settings-btn" title="Настройки">⚙️</button>
+          <div class="user-panel-actions">
+            <button type="button" class="dc-btn" id="quick-dnd-btn" title="Не беспокоить (DND)">⛔</button>
+            <button type="button" class="dc-btn" id="quick-settings-btn" title="Настройки">⚙️</button>
+          </div>
         </div>
       </aside>
 
@@ -1541,6 +1579,18 @@
             <button class="dc-btn dc-btn-primary" id="start-voice-btn">🎙️ Голос</button>
             <button class="dc-btn" id="start-video-btn">📹 Видео</button>
             <button class="dc-btn dc-btn-danger" id="hangup-btn" style="display: none;">📵 Сброс</button>
+          </div>
+        </div>
+
+        <!-- Incoming DM Call Banner -->
+        <div class="incoming-call-banner" id="incoming-call-banner">
+          <div>
+            <strong id="incoming-call-caller">Входящий звонок в ЛС</strong>
+            <div style="font-size: 0.78rem; color: var(--text-muted);" id="incoming-call-mode">Голосовой вызов</div>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button type="button" class="dc-btn dc-btn-primary" id="accept-incoming-call-btn">📞 Принять</button>
+            <button type="button" class="dc-btn dc-btn-danger" id="decline-incoming-call-btn">✕ Отклонить</button>
           </div>
         </div>
 
@@ -1590,12 +1640,13 @@
             <button type="button" class="dc-btn dc-btn-danger" id="clear-attach-btn" style="min-height: 26px; padding: 2px 8px;">✕</button>
           </div>
 
-          <input type="file" id="image-file-input" accept="image/png,image/jpeg" style="display: none;">
+          <input type="file" id="image-file-input" accept="image/png,image/jpeg,image/gif" style="display: none;">
 
           <form class="composer-form" id="message-form">
             <input type="text" class="composer-input" id="message-input" placeholder="Сообщение..." autocomplete="off">
             <div class="composer-tools">
-              <button type="button" class="dc-btn" id="attach-image-btn" title="PNG / JPG">🖼️</button>
+              <button type="button" class="dc-btn" id="attach-image-btn" title="PNG / JPG / GIF">🖼️</button>
+              <button type="button" class="dc-btn" id="attach-gif-url-btn" title="Ссылка на GIF">GIF</button>
               <button type="button" class="dc-btn" id="attach-videy-btn" title="Видео Videy">🎬</button>
             </div>
             <button type="submit" class="dc-btn dc-btn-primary composer-submit-btn">➤</button>
@@ -1642,15 +1693,15 @@
         <div class="view-banner">
           <div>
             <h2 style="font-size: 1.05rem;">Настройки</h2>
-            <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 2px;">Профиль, любимые игры, карточка и база данных.</p>
+            <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 2px;">Профиль, статусы, уведомления, мелодия вызова в ЛС и база данных.</p>
           </div>
           <button class="dc-btn" id="settings-run-wizard-btn">Мастер настройки</button>
         </div>
 
         <div class="settings-grid">
-          <!-- Card 1: Profile & Customization -->
+          <!-- Card 1: Profile, Status, Notifications & Call Ringtone -->
           <div class="settings-card">
-            <h3>Профиль и оформление</h3>
+            <h3>Профиль, статус и вызовы</h3>
 
             <div class="profile-card-box" id="settings-card-preview">
               <div class="profile-banner-box" id="settings-banner-preview"></div>
@@ -1661,22 +1712,35 @@
                   </div>
                 </div>
                 <div id="settings-nick-preview" style="font-size: 1.08rem; font-weight: 700;">Гость</div>
+                <div id="settings-status-preview" style="font-size: 0.78rem; font-weight: 600;">● В сети</div>
 
                 <div>
-                  <div class="profile-section-label">О себе</div>
+                  <div class="profile-section-label" id="settings-bio-label">О себе</div>
                   <div class="profile-bio-box" id="settings-bio-preview">Описание профиля...</div>
                 </div>
 
                 <div>
-                  <div class="profile-section-label">Любимые игры</div>
+                  <div class="profile-section-label" id="settings-fav-label">Любимые игры</div>
                   <div class="profile-fav-games-box" id="settings-fav-games-preview"></div>
                 </div>
               </div>
             </div>
 
-            <div>
-              <label class="field-label" for="settings-nick-input">Никнейм</label>
-              <input type="text" class="dc-input" id="settings-nick-input" maxlength="24" placeholder="Никнейм">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px;">
+              <div>
+                <label class="field-label" for="settings-nick-input">Никнейм</label>
+                <input type="text" class="dc-input" id="settings-nick-input" maxlength="24" placeholder="Никнейм">
+              </div>
+
+              <div>
+                <label class="field-label" for="settings-status-select">Статус пользователя</label>
+                <select class="dc-select" id="settings-status-select">
+                  <option value="online">🟢 В сети</option>
+                  <option value="idle">🌙 Неактивен</option>
+                  <option value="dnd">⛔ Не беспокоить (заглушить)</option>
+                  <option value="offline">⚫ Не в сети</option>
+                </select>
+              </div>
             </div>
 
             <div>
@@ -1728,9 +1792,9 @@
                 <div class="swatch-row">
                   <input type="color" id="settings-cardbg-picker" value="#1e1f22" style="width: 32px; height: 26px; background: transparent; border: none; cursor: pointer;">
                   <button type="button" class="color-swatch cardbg-swatch" data-cardbg="#1e1f22" style="background: #1e1f22;"></button>
+                  <button type="button" class="color-swatch cardbg-swatch" data-cardbg="#f4f5f7" style="background: #f4f5f7;"></button>
+                  <button type="button" class="color-swatch cardbg-swatch" data-cardbg="#e8eefc" style="background: #e8eefc;"></button>
                   <button type="button" class="color-swatch cardbg-swatch" data-cardbg="#18122b" style="background: #18122b;"></button>
-                  <button type="button" class="color-swatch cardbg-swatch" data-cardbg="#1a1114" style="background: #1a1114;"></button>
-                  <button type="button" class="color-swatch cardbg-swatch" data-cardbg="#0f1c1a" style="background: #0f1c1a;"></button>
                 </div>
               </div>
             </div>
@@ -1759,6 +1823,33 @@
               </div>
             </div>
 
+            <!-- Notifications & DM Ringtone Settings -->
+            <div style="border-top: 1px solid var(--border); padding-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 0.84rem; cursor: pointer;">
+                  <input type="checkbox" id="settings-notif-enabled">
+                  <span>Включить уведомления</span>
+                </label>
+                <button type="button" class="dc-btn" id="settings-request-browser-notif-btn">Разрешить в браузере</button>
+              </div>
+
+              <div>
+                <label class="field-label" for="settings-ringtone-select">Мелодия вызова в ЛС</label>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <select class="dc-select" id="settings-ringtone-select" style="flex: 1; min-width: 150px;">
+                    <option value="classic">Классический звонок</option>
+                    <option value="pulse">Мягкий пульс</option>
+                    <option value="arcade">Ретро-аркада</option>
+                    <option value="custom">Своя мелодия (MP3/WAV/OGG)</option>
+                  </select>
+                  <button type="button" class="dc-btn" id="settings-preview-ringtone-btn">▶ Тест</button>
+                  <button type="button" class="dc-btn" id="settings-stop-ringtone-btn">⏹ Стоп</button>
+                </div>
+                <input type="file" id="settings-ringtone-file" accept="audio/*" style="margin-top: 6px; font-size: 0.78rem; color: var(--text-muted);">
+                <div class="notice" id="settings-ringtone-status">При вызове в ЛС играет выбранная мелодия; при вызове в комнату уведомление не отправляется.</div>
+              </div>
+            </div>
+
             <button type="button" class="dc-btn dc-btn-primary" id="save-profile-settings-btn" style="padding: 8px;">Сохранить профиль</button>
           </div>
 
@@ -1780,6 +1871,20 @@
     </section>
   </div>
 
+  <!-- Create Group Modal -->
+  <div class="modal-overlay" id="create-group-modal">
+    <div class="small-modal-card">
+      <button class="modal-close" id="close-create-group-modal" style="position: absolute; top: 12px; right: 12px;">&times;</button>
+      <h3 style="margin-bottom: 6px;">Создать группу</h3>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Укажи название группы и участников через запятую.</p>
+      <label class="field-label" for="modal-group-title">Название</label>
+      <input type="text" class="dc-input" id="modal-group-title" maxlength="32" placeholder="Команда" style="margin-bottom: 10px;">
+      <label class="field-label" for="modal-group-members">Участники (ники через запятую)</label>
+      <input type="text" class="dc-input" id="modal-group-members" placeholder="User_1001, User_1002" style="margin-bottom: 12px;">
+      <button type="button" class="dc-btn dc-btn-primary" id="confirm-create-group-btn" style="width: 100%; padding: 8px;">Создать группу</button>
+    </div>
+  </div>
+
   <!-- User Public Profile Modal (opens on avatar click) -->
   <div class="modal-overlay" id="user-profile-modal">
     <div class="user-profile-modal-card" id="user-profile-card">
@@ -1790,7 +1895,10 @@
           <div class="profile-avatar-ring" id="modal-prof-avatar-ring">
             <div class="avatar-media profile-avatar-lg" id="modal-prof-avatar">U</div>
           </div>
-          <button type="button" class="dc-btn dc-btn-primary" id="modal-prof-dm-btn">✉️ ЛС</button>
+          <div style="display: flex; gap: 6px;">
+            <button type="button" class="dc-btn" id="modal-prof-call-btn">📞 Позвонить</button>
+            <button type="button" class="dc-btn dc-btn-primary" id="modal-prof-dm-btn">✉️ ЛС</button>
+          </div>
         </div>
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
           <strong id="modal-prof-nick" style="font-size: 1.18rem;">Пользователь</strong>
@@ -1799,12 +1907,12 @@
         <div id="modal-prof-playing" class="activity-text" style="display: none;"></div>
 
         <div>
-          <div class="profile-section-label">О себе</div>
+          <div class="profile-section-label" id="modal-prof-bio-label">О себе</div>
           <div class="profile-bio-box" id="modal-prof-bio">Нет описания</div>
         </div>
 
         <div>
-          <div class="profile-section-label">Любимые игры</div>
+          <div class="profile-section-label" id="modal-prof-fav-label">Любимые игры</div>
           <div class="profile-fav-games-box" id="modal-prof-fav-games"></div>
         </div>
       </div>
@@ -1863,6 +1971,17 @@
     </div>
   </div>
 
+  <!-- GIF Link Modal -->
+  <div class="modal-overlay" id="gif-modal">
+    <div class="small-modal-card">
+      <button class="modal-close" id="close-gif-modal" style="position: absolute; top: 12px; right: 12px;">&times;</button>
+      <h3 style="margin-bottom: 6px;">Гифка по ссылке</h3>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Вставь прямую ссылку на <code>.gif</code></p>
+      <input type="url" class="dc-input" id="gif-url-input" placeholder="https://.../animation.gif" style="margin-bottom: 12px;">
+      <button type="button" class="dc-btn dc-btn-primary" id="confirm-gif-btn" style="width: 100%; padding: 8px;">Прикрепить GIF</button>
+    </div>
+  </div>
+
   <!-- Videy Video Link Modal -->
   <div class="modal-overlay" id="videy-modal">
     <div class="small-modal-card">
@@ -1899,6 +2018,12 @@
 
     const NICK_FONTS = ['nick-font-sans', 'nick-font-mono', 'nick-font-serif', 'nick-font-display', 'nick-font-italic'];
     const PROFILE_ANIMS = ['anim-zoom', 'anim-slide-up', 'anim-slide-right', 'anim-flip', 'anim-bounce'];
+    const STATUS_META = {
+      online: { label: 'В сети', dotClass: 'status-online', textClass: 'status-online-text', icon: '🟢' },
+      idle: { label: 'Неактивен', dotClass: 'status-idle', textClass: 'status-idle-text', icon: '🌙' },
+      dnd: { label: 'Не беспокоить', dotClass: 'status-dnd', textClass: 'status-dnd-text', icon: '⛔' },
+      offline: { label: 'Не в сети', dotClass: 'status-offline', textClass: 'status-offline-text', icon: '⚫' }
+    };
 
     function sanitizeHttpUrl(rawUrl) {
       if (!rawUrl || typeof rawUrl !== 'string') return '';
@@ -1911,6 +2036,115 @@
         }
       } catch (_) {}
       return '';
+    }
+
+    // === ADAPTIVE PROFILE CONTRAST ENGINE ===
+    function parseHexToRgb(hex) {
+      if (!hex || typeof hex !== 'string') return null;
+      const clean = hex.trim().replace(/^#/, '');
+      if (clean.length === 3) {
+        return {
+          r: parseInt(clean[0] + clean[0], 16),
+          g: parseInt(clean[1] + clean[1], 16),
+          b: parseInt(clean[2] + clean[2], 16)
+        };
+      }
+      if (clean.length === 6 || clean.length === 8) {
+        return {
+          r: parseInt(clean.slice(0, 2), 16),
+          g: parseInt(clean.slice(2, 4), 16),
+          b: parseInt(clean.slice(4, 6), 16)
+        };
+      }
+      return null;
+    }
+
+    function parseRgbStringToRgb(rgbStr) {
+      if (!rgbStr || typeof rgbStr !== 'string') return null;
+      const m = rgbStr.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+      if (!m) return null;
+      return { r: Number(m[1]), g: Number(m[2]), b: Number(m[3]) };
+    }
+
+    function getRelativeLuminance({ r, g, b }) {
+      const toLin = c => {
+        const s = c / 255;
+        return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+      };
+      return 0.2126 * toLin(r) + 0.7152 * toLin(g) + 0.0722 * toLin(b);
+    }
+
+    function shadeRgb({ r, g, b }, factor) {
+      const clamp = v => Math.max(0, Math.min(255, Math.round(v)));
+      if (factor < 0) {
+        const t = Math.min(1, Math.abs(factor));
+        return { r: clamp(r * (1 - t)), g: clamp(g * (1 - t)), b: clamp(b * (1 - t)) };
+      }
+      const t = Math.min(1, factor);
+      return {
+        r: clamp(r + (255 - r) * t),
+        g: clamp(g + (255 - g) * t),
+        b: clamp(b + (255 - b) * t)
+      };
+    }
+
+    function computeAdaptiveProfilePalette(bgValue) {
+      const rgb = parseHexToRgb(bgValue) || parseRgbStringToRgb(bgValue) || { r: 30, g: 31, b: 34 };
+      const lum = getRelativeLuminance(rgb);
+      const isDarkBg = lum < 0.35;
+
+      // Если фон светлый — делаем текст заметно темнее фона; если фон тёмный — заметно светлее фона
+      const primaryRgb = isDarkBg ? shadeRgb(rgb, 0.78) : shadeRgb(rgb, -0.78);
+      const mutedRgb = isDarkBg ? shadeRgb(rgb, 0.52) : shadeRgb(rgb, -0.52);
+      const surfaceRgb = isDarkBg ? shadeRgb(rgb, 0.09) : shadeRgb(rgb, -0.07);
+      const chipRgb = isDarkBg ? shadeRgb(rgb, 0.16) : shadeRgb(rgb, -0.13);
+
+      return {
+        isDarkBg,
+        textColor: `rgb(${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b})`,
+        mutedColor: `rgb(${mutedRgb.r}, ${mutedRgb.g}, ${mutedRgb.b})`,
+        surfaceBg: `rgba(${surfaceRgb.r}, ${surfaceRgb.g}, ${surfaceRgb.b}, 0.85)`,
+        chipBg: `rgba(${chipRgb.r}, ${chipRgb.g}, ${chipRgb.b}, 0.9)`
+      };
+    }
+
+    function applyAdaptivePaletteToCard({
+      cardEl,
+      ringEl,
+      bioEl,
+      favBoxEl,
+      bioLabelEl,
+      favLabelEl,
+      bgValue
+    }) {
+      const safeBg = bgValue || '#1e1f22';
+      const pal = computeAdaptiveProfilePalette(safeBg);
+
+      if (cardEl) {
+        cardEl.style.backgroundColor = safeBg;
+        cardEl.style.color = pal.textColor;
+      }
+      if (ringEl) {
+        ringEl.style.backgroundColor = safeBg;
+      }
+      if (bioLabelEl) {
+        bioLabelEl.style.color = pal.mutedColor;
+      }
+      if (favLabelEl) {
+        favLabelEl.style.color = pal.mutedColor;
+      }
+      if (bioEl) {
+        bioEl.style.backgroundColor = pal.surfaceBg;
+        bioEl.style.color = pal.textColor;
+      }
+      if (favBoxEl) {
+        favBoxEl.style.backgroundColor = pal.surfaceBg;
+        favBoxEl.style.color = pal.textColor;
+        favBoxEl.querySelectorAll('.fav-game-chip').forEach(chip => {
+          chip.style.backgroundColor = pal.chipBg;
+          chip.style.color = pal.textColor;
+        });
+      }
     }
 
     function normalizeFavGames(list) {
@@ -1930,13 +2164,16 @@
       return result.slice(0, 12);
     }
 
-    function renderFavGamesChips(containerEl, gamesList, { removable = false, onRemove = null } = {}) {
+    function renderFavGamesChips(containerEl, gamesList, { removable = false, onRemove = null, bgValue = '#1e1f22' } = {}) {
       if (!containerEl) return;
       containerEl.innerHTML = '';
       const list = normalizeFavGames(gamesList);
+      const pal = computeAdaptiveProfilePalette(bgValue);
+
       if (list.length === 0) {
         const emptySpan = document.createElement('span');
         emptySpan.className = 'fav-games-empty-text';
+        emptySpan.style.color = pal.mutedColor;
         emptySpan.textContent = 'Любимые игры не указаны';
         containerEl.appendChild(emptySpan);
         return;
@@ -1944,6 +2181,8 @@
       list.forEach(gameName => {
         const chip = document.createElement('span');
         chip.className = 'fav-game-chip';
+        chip.style.backgroundColor = pal.chipBg;
+        chip.style.color = pal.textColor;
 
         const label = document.createElement('span');
         label.textContent = `🎮 ${gameName}`;
@@ -1994,9 +2233,9 @@
       const safeUrl = sanitizeHttpUrl(avatarUrl);
       containerEl.innerHTML = '';
 
-      if (safeUrl) {
+      if (safeUrl || (typeof avatarUrl === 'string' && avatarUrl.startsWith('data:image/'))) {
         const img = document.createElement('img');
-        img.src = safeUrl;
+        img.src = safeUrl || avatarUrl;
         img.alt = nick || 'Avatar';
         img.referrerPolicy = 'no-referrer';
         img.onerror = () => {
@@ -2102,10 +2341,20 @@
     const savedCardBgFromStorage = localStorage.getItem('puldot_card_bg') || '#1e1f22';
     const savedNickFontFromStorage = localStorage.getItem('puldot_nick_font') || 'nick-font-sans';
     const savedProfileAnimFromStorage = localStorage.getItem('puldot_profile_anim') || 'anim-zoom';
+    const savedStatusFromStorage = localStorage.getItem('puldot_user_status') || 'online';
+    const savedNotifEnabledFromStorage = localStorage.getItem('puldot_notif_enabled') !== '0';
+    const savedRingtoneTypeFromStorage = localStorage.getItem('puldot_ringtone_type') || 'classic';
+    const savedCustomRingtoneFromStorage = localStorage.getItem('puldot_custom_ringtone') || '';
 
     let savedFavGamesFromStorage = [];
     try {
       savedFavGamesFromStorage = normalizeFavGames(JSON.parse(localStorage.getItem('puldot_fav_games') || '[]'));
+    } catch (_) {}
+
+    let savedGroupsFromStorage = [];
+    try {
+      const parsedGroups = JSON.parse(localStorage.getItem('puldot_groups') || '[]');
+      if (Array.isArray(parsedGroups)) savedGroupsFromStorage = parsedGroups;
     } catch (_) {}
 
     let savedFbConfig = null;
@@ -2131,12 +2380,18 @@
       cardBg: savedCardBgFromStorage,
       nickFont: NICK_FONTS.includes(savedNickFontFromStorage) ? savedNickFontFromStorage : 'nick-font-sans',
       profileAnim: PROFILE_ANIMS.includes(savedProfileAnimFromStorage) ? savedProfileAnimFromStorage : 'anim-zoom',
+      status: STATUS_META[savedStatusFromStorage] ? savedStatusFromStorage : 'online',
+      notificationsEnabled: savedNotifEnabledFromStorage,
+      ringtoneType: ['classic', 'pulse', 'arcade', 'custom'].includes(savedRingtoneTypeFromStorage) ? savedRingtoneTypeFromStorage : 'classic',
+      customRingtoneData: savedCustomRingtoneFromStorage,
       setupDone: setupDoneCookie,
       activeTab: 'chat',
-      channelType: 'room',
+      channelType: 'room', // 'room' | 'group' | 'dm'
       activeRoom: 'general',
+      activeGroupId: null,
       activeDmPeer: null,
       rooms: ['general', 'games', 'random'],
+      groups: savedGroupsFromStorage,
       dmPeers: JSON.parse(localStorage.getItem('puldot_dm_peers') || '[]'),
       playingGame: null,
       friends: JSON.parse(localStorage.getItem('puldot_friends') || '[]'),
@@ -2150,11 +2405,14 @@
     let currentMessagesRef = null;
     let peerConnection = null;
     let localStream = null;
-    let activeCallRoom = null;
+    let activeCallChannel = null; // e.g. 'room_general' or 'dm_...'
+    let activeCallIsDm = false;
     let activeCallWithVideo = false;
     let remotePeerInfo = { nickname: 'Собеседник', avatarUrl: '' };
+    let pendingIncomingCall = null;
     let pendingAttachment = null;
     const clientId = 'user_' + Math.random().toString(36).slice(2, 9);
+    const knownMessageIdsByPath = {};
 
     const rtcConfig = {
       iceServers: [
@@ -2164,6 +2422,142 @@
         { urls: 'stun:stun.cloudflare.com:3478' }
       ]
     };
+
+    // === SOUND & NOTIFICATION ENGINE ===
+    let audioCtx = null;
+    let ringtoneInterval = null;
+    let customAudioEl = null;
+
+    function isMutedByDndOrToggle() {
+      return !state.notificationsEnabled || state.status === 'dnd';
+    }
+
+    function updateMuteButtonUI() {
+      const btn = document.getElementById('toggle-mute-btn');
+      const dndBtn = document.getElementById('quick-dnd-btn');
+      const muted = isMutedByDndOrToggle();
+      if (btn) {
+        btn.textContent = muted ? '🔕' : '🔔';
+        btn.title = state.status === 'dnd'
+          ? 'Заглушено: статус «Не беспокоить»'
+          : (state.notificationsEnabled ? 'Уведомления включены' : 'Уведомления выключены');
+      }
+      if (dndBtn) {
+        dndBtn.classList.toggle('dc-btn-danger', state.status === 'dnd');
+      }
+    }
+
+    function ensureAudioContext() {
+      if (!audioCtx) {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (Ctx) audioCtx = new Ctx();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
+      return audioCtx;
+    }
+
+    function playTonePattern(kind) {
+      const ctx = ensureAudioContext();
+      if (!ctx) return;
+
+      const now = ctx.currentTime;
+      const playNote = (freq, startOffset, duration, type = 'sine', gainVal = 0.08) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, now + startOffset);
+        gain.gain.setValueAtTime(0.0001, now + startOffset);
+        gain.gain.exponentialRampToValueAtTime(gainVal, now + startOffset + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + startOffset + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + startOffset);
+        osc.stop(now + startOffset + duration + 0.02);
+      };
+
+      if (kind === 'message') {
+        playNote(660, 0, 0.11, 'sine', 0.06);
+        playNote(880, 0.1, 0.14, 'sine', 0.06);
+      } else if (kind === 'classic') {
+        playNote(523.25, 0, 0.16, 'triangle', 0.1);
+        playNote(659.25, 0.18, 0.16, 'triangle', 0.1);
+        playNote(783.99, 0.36, 0.22, 'triangle', 0.1);
+      } else if (kind === 'pulse') {
+        playNote(440, 0, 0.28, 'sine', 0.1);
+        playNote(554.37, 0.3, 0.28, 'sine', 0.09);
+      } else {
+        playNote(587.33, 0, 0.1, 'square', 0.05);
+        playNote(783.99, 0.11, 0.1, 'square', 0.05);
+        playNote(1046.5, 0.22, 0.16, 'square', 0.05);
+      }
+    }
+
+    function startDmRingtone() {
+      stopDmRingtone();
+      if (isMutedByDndOrToggle()) return;
+
+      if (state.ringtoneType === 'custom' && state.customRingtoneData) {
+        try {
+          customAudioEl = new Audio(state.customRingtoneData);
+          customAudioEl.loop = true;
+          customAudioEl.play().catch(() => {});
+          return;
+        } catch (_) {}
+      }
+
+      const pattern = state.ringtoneType === 'pulse' ? 'pulse' : (state.ringtoneType === 'arcade' ? 'arcade' : 'classic');
+      playTonePattern(pattern);
+      ringtoneInterval = setInterval(() => {
+        if (!isMutedByDndOrToggle()) {
+          playTonePattern(pattern);
+        }
+      }, 1500);
+    }
+
+    function stopDmRingtone() {
+      if (ringtoneInterval) {
+        clearInterval(ringtoneInterval);
+        ringtoneInterval = null;
+      }
+      if (customAudioEl) {
+        try {
+          customAudioEl.pause();
+          customAudioEl.currentTime = 0;
+        } catch (_) {}
+        customAudioEl = null;
+      }
+    }
+
+    function triggerMessageNotification(title, body) {
+      if (isMutedByDndOrToggle()) return;
+      playTonePattern('message');
+      if ('Notification' in window && Notification.permission === 'granted' && document.hidden) {
+        try {
+          new Notification(title, { body: body || 'Новое сообщение' });
+        } catch (_) {}
+      }
+    }
+
+    document.getElementById('toggle-mute-btn').addEventListener('click', () => {
+      if (state.status === 'dnd') {
+        state.status = 'online';
+        localStorage.setItem('puldot_user_status', state.status);
+        syncPresence();
+      } else {
+        state.notificationsEnabled = !state.notificationsEnabled;
+        localStorage.setItem('puldot_notif_enabled', state.notificationsEnabled ? '1' : '0');
+      }
+      updateMuteButtonUI();
+    });
+
+    document.getElementById('quick-dnd-btn').addEventListener('click', () => {
+      state.status = state.status === 'dnd' ? 'online' : 'dnd';
+      localStorage.setItem('puldot_user_status', state.status);
+      syncPresence();
+      updateMuteButtonUI();
+    });
 
     function getDmThreadId(userA, userB) {
       const a = encodeURIComponent((userA || '').trim().toLowerCase());
@@ -2175,12 +2569,18 @@
       if (state.channelType === 'dm' && state.activeDmPeer) {
         return getDmThreadId(state.nickname, state.activeDmPeer);
       }
+      if (state.channelType === 'group' && state.activeGroupId) {
+        return `group_${state.activeGroupId}`;
+      }
       return `room_${state.activeRoom}`;
     }
 
     function getCurrentFirebaseMessagesPath() {
       if (state.channelType === 'dm' && state.activeDmPeer) {
         return `dms/${getDmThreadId(state.nickname, state.activeDmPeer)}`;
+      }
+      if (state.channelType === 'group' && state.activeGroupId) {
+        return `groups/${state.activeGroupId}/messages`;
       }
       return `messages/${state.activeRoom}`;
     }
@@ -2193,6 +2593,7 @@
 
       renderAvatarContent(document.getElementById('self-avatar'), state.nickname, state.avatarUrl);
       updateCallAvatarsUI();
+      updateMuteButtonUI();
       syncSettingsFormPreview();
     }
 
@@ -2210,7 +2611,8 @@
           nickFont: state.nickFont,
           profileAnim: state.profileAnim,
           playingGame: state.playingGame,
-          online: true
+          status: state.status,
+          online: state.status !== 'offline'
         };
       }
 
@@ -2222,8 +2624,11 @@
         remote = list.find(u => u && u.nickname === nick) || null;
       }
 
-      const isOnline = Boolean(remote && (Date.now() - (remote.updatedAt || 0) < 120000));
+      const activeRecently = Boolean(remote && (Date.now() - (remote.updatedAt || 0) < 120000));
+      const rawStatus = (remote && remote.status) || fallbackObj.status || (activeRecently ? 'online' : 'offline');
+      const effectiveStatus = (!activeRecently && rawStatus !== 'offline') ? 'offline' : rawStatus;
       const rawFavs = (remote && remote.favoriteGames) || fallbackObj.favoriteGames || [];
+
       return {
         nickname: (remote && remote.nickname) || nick || fallbackObj.nickname || 'Пользователь',
         avatarUrl: (remote && remote.avatarUrl) || fallbackObj.avatarUrl || '',
@@ -2235,7 +2640,8 @@
         nickFont: (remote && remote.nickFont) || fallbackObj.nickFont || 'nick-font-sans',
         profileAnim: (remote && remote.profileAnim) || fallbackObj.profileAnim || state.profileAnim || 'anim-zoom',
         playingGame: (remote && remote.playingGame) || null,
-        online: isOnline
+        status: effectiveStatus,
+        online: effectiveStatus !== 'offline'
       };
     }
 
@@ -2252,8 +2658,7 @@
       const data = resolveUserProfileData(nick, senderId, fallbackObj);
       currentInspectedNick = data.nickname;
 
-      userProfileCard.style.backgroundColor = data.cardBg || '#1e1f22';
-      document.getElementById('modal-prof-avatar-ring').style.backgroundColor = data.cardBg || '#1e1f22';
+      const cardBgVal = data.cardBg || '#1e1f22';
       applyBannerStyle(document.getElementById('modal-prof-banner'), data.bannerBg);
       renderAvatarContent(document.getElementById('modal-prof-avatar'), data.nickname, data.avatarUrl);
 
@@ -2262,9 +2667,10 @@
       nickEl.style.color = data.accentColor || '#f2f3f5';
       applyNickFontClass(nickEl, data.nickFont);
 
+      const stMeta = STATUS_META[data.status] || STATUS_META.offline;
       const statusEl = document.getElementById('modal-prof-status');
-      statusEl.textContent = data.online ? '● В сети' : '○ Офлайн';
-      statusEl.className = data.online ? 'status-online-text' : 'status-offline-text';
+      statusEl.textContent = `${stMeta.icon} ${stMeta.label}`;
+      statusEl.className = stMeta.textClass;
 
       const playEl = document.getElementById('modal-prof-playing');
       if (data.playingGame) {
@@ -2275,10 +2681,26 @@
       }
 
       document.getElementById('modal-prof-bio').textContent = data.bio ? data.bio : 'Нет описания';
-      renderFavGamesChips(document.getElementById('modal-prof-fav-games'), data.favoriteGames, { removable: false });
+      renderFavGamesChips(document.getElementById('modal-prof-fav-games'), data.favoriteGames, {
+        removable: false,
+        bgValue: cardBgVal
+      });
 
+      applyAdaptivePaletteToCard({
+        cardEl: userProfileCard,
+        ringEl: document.getElementById('modal-prof-avatar-ring'),
+        bioEl: document.getElementById('modal-prof-bio'),
+        favBoxEl: document.getElementById('modal-prof-fav-games'),
+        bioLabelEl: document.getElementById('modal-prof-bio-label'),
+        favLabelEl: document.getElementById('modal-prof-fav-label'),
+        bgValue: cardBgVal
+      });
+
+      const isSelf = data.nickname === state.nickname;
       const dmBtn = document.getElementById('modal-prof-dm-btn');
-      dmBtn.style.display = data.nickname === state.nickname ? 'none' : 'inline-flex';
+      const callBtn = document.getElementById('modal-prof-call-btn');
+      dmBtn.style.display = isSelf ? 'none' : 'inline-flex';
+      callBtn.style.display = isSelf ? 'none' : 'inline-flex';
       dmBtn.style.backgroundColor = data.accentColor || 'var(--accent)';
       dmBtn.style.borderColor = data.accentColor || 'var(--accent)';
 
@@ -2303,6 +2725,15 @@
       if (currentInspectedNick) {
         userProfileModal.classList.remove('active');
         openDirectMessage(currentInspectedNick);
+      }
+    });
+
+    document.getElementById('modal-prof-call-btn').addEventListener('click', () => {
+      if (currentInspectedNick) {
+        const peer = currentInspectedNick;
+        userProfileModal.classList.remove('active');
+        openDirectMessage(peer);
+        startCall(false);
       }
     });
 
@@ -2408,6 +2839,7 @@
 
     // === SETTINGS TAB LOGIC ===
     const settingsNickInput = document.getElementById('settings-nick-input');
+    const settingsStatusSelect = document.getElementById('settings-status-select');
     const settingsBioInput = document.getElementById('settings-bio-input');
     const settingsFavGameInput = document.getElementById('settings-fav-game-input');
     const settingsAvatarInput = document.getElementById('settings-avatar-input');
@@ -2416,16 +2848,21 @@
     const settingsCardBgPicker = document.getElementById('settings-cardbg-picker');
     const settingsFontSelect = document.getElementById('settings-font-select');
     const settingsAnimSelect = document.getElementById('settings-anim-select');
+    const settingsNotifEnabled = document.getElementById('settings-notif-enabled');
+    const settingsRingtoneSelect = document.getElementById('settings-ringtone-select');
+    const settingsRingtoneFile = document.getElementById('settings-ringtone-file');
     const settingsFbTextarea = document.getElementById('settings-fb-textarea');
 
     let settingsInitialized = false;
 
     function renderSettingsFavGamesPreview() {
+      const previewCardBg = settingsCardBgPicker.value || state.cardBg || '#1e1f22';
       renderFavGamesChips(
         document.getElementById('settings-fav-games-preview'),
         draftFavGames,
         {
           removable: true,
+          bgValue: previewCardBg,
           onRemove: gameName => {
             draftFavGames = draftFavGames.filter(g => g !== gameName);
             renderSettingsFavGamesPreview();
@@ -2457,19 +2894,23 @@
     function syncSettingsFormPreview(forceInputs = false) {
       if (!settingsInitialized || forceInputs) {
         settingsNickInput.value = state.nickname;
+        settingsStatusSelect.value = state.status || 'online';
         settingsBioInput.value = state.bio || '';
         draftFavGames = normalizeFavGames(state.favoriteGames);
         settingsAvatarInput.value = state.avatarUrl || '';
         settingsBannerInput.value = state.bannerBg || '';
         settingsAccentPicker.value = state.accentColor || '#5865f2';
-        settingsCardBgPicker.value = state.cardBg || '#1e1f22';
+        settingsCardBgPicker.value = parseHexToRgb(state.cardBg) ? state.cardBg : '#1e1f22';
         settingsFontSelect.value = state.nickFont || 'nick-font-sans';
         settingsAnimSelect.value = state.profileAnim || 'anim-zoom';
+        settingsNotifEnabled.checked = Boolean(state.notificationsEnabled);
+        settingsRingtoneSelect.value = state.ringtoneType || 'classic';
         settingsFbTextarea.value = JSON.stringify(state.fbConfig || DEFAULT_FIREBASE_CONFIG, null, 2);
         settingsInitialized = true;
       }
 
       const previewNick = (settingsNickInput.value || state.nickname || 'Гость').trim();
+      const previewStatus = settingsStatusSelect.value || state.status || 'online';
       const previewBio = (settingsBioInput.value || '').trim();
       const previewAvatar = settingsAvatarInput.value !== undefined ? settingsAvatarInput.value : state.avatarUrl;
       const previewBanner = settingsBannerInput.value !== undefined ? settingsBannerInput.value : state.bannerBg;
@@ -2479,21 +2920,34 @@
 
       document.documentElement.style.setProperty('--accent', previewAccent);
       const cardBox = document.getElementById('settings-card-preview');
-      cardBox.style.backgroundColor = previewCardBg;
-      document.getElementById('settings-avatar-ring').style.backgroundColor = previewCardBg;
 
       const nickPreviewEl = document.getElementById('settings-nick-preview');
       nickPreviewEl.textContent = previewNick;
       nickPreviewEl.style.color = previewAccent;
       applyNickFontClass(nickPreviewEl, previewFont);
 
+      const stMeta = STATUS_META[previewStatus] || STATUS_META.online;
+      const stPreviewEl = document.getElementById('settings-status-preview');
+      stPreviewEl.textContent = `${stMeta.icon} ${stMeta.label}`;
+      stPreviewEl.className = stMeta.textClass;
+
       document.getElementById('settings-bio-preview').textContent = previewBio || 'Описание профиля...';
       renderSettingsFavGamesPreview();
       renderAvatarContent(document.getElementById('settings-avatar-preview'), previewNick, previewAvatar);
       applyBannerStyle(document.getElementById('settings-banner-preview'), previewBanner);
+
+      applyAdaptivePaletteToCard({
+        cardEl: cardBox,
+        ringEl: document.getElementById('settings-avatar-ring'),
+        bioEl: document.getElementById('settings-bio-preview'),
+        favBoxEl: document.getElementById('settings-fav-games-preview'),
+        bioLabelEl: document.getElementById('settings-bio-label'),
+        favLabelEl: document.getElementById('settings-fav-label'),
+        bgValue: previewCardBg
+      });
     }
 
-    [settingsNickInput, settingsBioInput, settingsAvatarInput, settingsBannerInput, settingsFontSelect].forEach(el => {
+    [settingsNickInput, settingsStatusSelect, settingsBioInput, settingsAvatarInput, settingsBannerInput, settingsFontSelect].forEach(el => {
       el.addEventListener('input', () => syncSettingsFormPreview(false));
       el.addEventListener('change', () => syncSettingsFormPreview(false));
     });
@@ -2534,8 +2988,53 @@
       syncSettingsFormPreview(false);
     });
 
+    document.getElementById('settings-request-browser-notif-btn').addEventListener('click', async () => {
+      if (!('Notification' in window)) {
+        alert('Браузер не поддерживает системные уведомления.');
+        return;
+      }
+      const perm = await Notification.requestPermission();
+      alert(perm === 'granted' ? 'Уведомления в браузере разрешены.' : 'Разрешение не выдано.');
+    });
+
+    settingsRingtoneFile.addEventListener('change', () => {
+      const file = settingsRingtoneFile.files && settingsRingtoneFile.files[0];
+      if (!file) return;
+      if (file.size > 2.5 * 1024 * 1024) {
+        alert('Файл мелодии должен быть до 2.5 МБ.');
+        settingsRingtoneFile.value = '';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          state.customRingtoneData = reader.result;
+          state.ringtoneType = 'custom';
+          settingsRingtoneSelect.value = 'custom';
+          localStorage.setItem('puldot_custom_ringtone', state.customRingtoneData);
+          localStorage.setItem('puldot_ringtone_type', 'custom');
+          document.getElementById('settings-ringtone-status').textContent = `Загружена мелодия: ${file.name}`;
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('settings-preview-ringtone-btn').addEventListener('click', () => {
+      state.ringtoneType = settingsRingtoneSelect.value || 'classic';
+      if (state.ringtoneType === 'custom' && state.customRingtoneData) {
+        stopDmRingtone();
+        customAudioEl = new Audio(state.customRingtoneData);
+        customAudioEl.play().catch(() => {});
+        return;
+      }
+      playTonePattern(state.ringtoneType);
+    });
+
+    document.getElementById('settings-stop-ringtone-btn').addEventListener('click', stopDmRingtone);
+
     document.getElementById('save-profile-settings-btn').addEventListener('click', () => {
       const rawNick = settingsNickInput.value.trim();
+      const rawStatus = settingsStatusSelect.value || 'online';
       const rawBio = settingsBioInput.value.trim();
       const rawAvatar = settingsAvatarInput.value.trim();
       const rawBanner = settingsBannerInput.value.trim();
@@ -2559,6 +3058,7 @@
         setCookie('puldot_nick', state.nickname, 365);
       }
 
+      state.status = STATUS_META[rawStatus] ? rawStatus : 'online';
       state.bio = rawBio;
       state.favoriteGames = normalizeFavGames(draftFavGames);
       state.avatarUrl = sanitizeHttpUrl(rawAvatar);
@@ -2567,7 +3067,10 @@
       state.cardBg = chosenCardBg;
       state.nickFont = NICK_FONTS.includes(chosenFont) ? chosenFont : 'nick-font-sans';
       state.profileAnim = PROFILE_ANIMS.includes(chosenAnim) ? chosenAnim : 'anim-zoom';
+      state.notificationsEnabled = Boolean(settingsNotifEnabled.checked);
+      state.ringtoneType = settingsRingtoneSelect.value || 'classic';
 
+      localStorage.setItem('puldot_user_status', state.status);
       localStorage.setItem('puldot_bio', state.bio);
       localStorage.setItem('puldot_fav_games', JSON.stringify(state.favoriteGames));
       localStorage.setItem('puldot_avatar_url', state.avatarUrl);
@@ -2576,6 +3079,8 @@
       localStorage.setItem('puldot_card_bg', state.cardBg);
       localStorage.setItem('puldot_nick_font', state.nickFont);
       localStorage.setItem('puldot_profile_anim', state.profileAnim);
+      localStorage.setItem('puldot_notif_enabled', state.notificationsEnabled ? '1' : '0');
+      localStorage.setItem('puldot_ringtone_type', state.ringtoneType);
 
       applyThemeCustomization();
       syncPresence();
@@ -2613,7 +3118,15 @@
       selfNickEl.textContent = state.nickname;
       applyNickFontClass(selfNickEl, state.nickFont);
       renderAvatarContent(document.getElementById('self-avatar'), state.nickname, state.avatarUrl);
+
+      const stMeta = STATUS_META[state.status] || STATUS_META.online;
+      const dotEl = document.getElementById('self-status-dot');
+      if (dotEl) {
+        dotEl.className = `avatar-status-dot ${stMeta.dotClass}`;
+      }
+
       updateCallAvatarsUI();
+      updateMuteButtonUI();
 
       const badge = document.getElementById('self-playing-badge');
       const nameEl = document.getElementById('self-playing-name');
@@ -2622,16 +3135,17 @@
       if (state.playingGame) {
         nameEl.textContent = state.playingGame;
         badge.classList.add('active');
-        subEl.textContent = `Играет: ${state.playingGame}`;
+        subEl.textContent = `${stMeta.label} • Играет: ${state.playingGame}`;
       } else {
         nameEl.textContent = '';
         badge.classList.remove('active');
-        subEl.textContent = 'В сети';
+        subEl.textContent = stMeta.label;
       }
 
       if (db) {
         set(ref(db, `presence/${clientId}`), {
           nickname: state.nickname,
+          status: state.status,
           avatarUrl: state.avatarUrl || null,
           bio: state.bio || null,
           favoriteGames: normalizeFavGames(state.favoriteGames),
@@ -2642,7 +3156,7 @@
           profileAnim: state.profileAnim || 'anim-zoom',
           playingGame: state.playingGame || null,
           activeRoom: state.activeRoom,
-          inCallRoom: activeCallRoom || null,
+          inCallChannel: activeCallChannel || null,
           updatedAt: Date.now()
         }).catch(() => {});
       }
@@ -2689,6 +3203,95 @@
 
     document.getElementById('close-game-modal').addEventListener('click', closeGameModal);
 
+    // === GROUPS ===
+    const createGroupModal = document.getElementById('create-group-modal');
+    const modalGroupTitle = document.getElementById('modal-group-title');
+    const modalGroupMembers = document.getElementById('modal-group-members');
+    const newGroupNameInput = document.getElementById('new-group-name-input');
+
+    function openCreateGroupModal(prefillName = '') {
+      modalGroupTitle.value = prefillName.trim();
+      modalGroupMembers.value = '';
+      createGroupModal.classList.add('active');
+      modalGroupTitle.focus();
+    }
+
+    document.getElementById('create-group-btn').addEventListener('click', () => {
+      openCreateGroupModal(newGroupNameInput.value);
+      newGroupNameInput.value = '';
+    });
+
+    newGroupNameInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        openCreateGroupModal(newGroupNameInput.value);
+        newGroupNameInput.value = '';
+      }
+    });
+
+    document.getElementById('close-create-group-modal').addEventListener('click', () => {
+      createGroupModal.classList.remove('active');
+    });
+
+    document.getElementById('confirm-create-group-btn').addEventListener('click', () => {
+      const title = modalGroupTitle.value.trim();
+      if (!title) {
+        alert('Введи название группы.');
+        return;
+      }
+      const rawMembers = modalGroupMembers.value.split(',').map(s => s.trim()).filter(Boolean);
+      const members = Array.from(new Set([state.nickname, ...rawMembers]));
+      const id = 'grp_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 6);
+      const newGroup = { id, title, members };
+
+      state.groups.push(newGroup);
+      localStorage.setItem('puldot_groups', JSON.stringify(state.groups));
+      if (db) {
+        set(ref(db, `groups/${id}/meta`), newGroup).catch(() => {});
+      }
+
+      createGroupModal.classList.remove('active');
+      switchGroup(id);
+    });
+
+    function renderGroupList() {
+      const list = document.getElementById('group-list');
+      list.innerHTML = '';
+
+      if (state.groups.length === 0) {
+        const empty = document.createElement('div');
+        empty.style.cssText = 'font-size: 0.76rem; color: var(--text-muted); padding: 4px 10px 8px;';
+        empty.textContent = 'Нет групп';
+        list.appendChild(empty);
+        return;
+      }
+
+      state.groups.forEach(grp => {
+        const isActive = state.channelType === 'group' && state.activeGroupId === grp.id;
+        const div = document.createElement('div');
+        div.className = `channel-item ${isActive ? 'active' : ''}`;
+        div.innerHTML = `<span class="channel-hash">👥</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(grp.title)}</span>`;
+        div.addEventListener('click', () => {
+          switchGroup(grp.id);
+          setMobileDrawer(false);
+        });
+        list.appendChild(div);
+      });
+    }
+
+    function switchGroup(groupId) {
+      const grp = state.groups.find(g => g.id === groupId);
+      if (!grp) return;
+      state.channelType = 'group';
+      state.activeGroupId = grp.id;
+      state.activeDmPeer = null;
+      updateChannelHeaderUI();
+      renderRooms();
+      renderGroupList();
+      renderDmList();
+      subscribeMessages();
+    }
+
     // === DIRECT MESSAGES (ЛС) & FRIENDS ===
     function openDirectMessage(peerNick) {
       const cleanPeer = (peerNick || '').trim();
@@ -2699,9 +3302,11 @@
       }
       state.channelType = 'dm';
       state.activeDmPeer = cleanPeer;
+      state.activeGroupId = null;
       switchTab('chat');
       updateChannelHeaderUI();
       renderRooms();
+      renderGroupList();
       renderDmList();
       subscribeMessages();
     }
@@ -2720,23 +3325,37 @@
 
       state.dmPeers.forEach(peerNick => {
         const isActive = state.channelType === 'dm' && state.activeDmPeer === peerNick;
+        const prof = resolveUserProfileData(peerNick, null);
+        const stMeta = STATUS_META[prof.status] || STATUS_META.offline;
+
         const div = document.createElement('div');
         div.className = `channel-item ${isActive ? 'active' : ''}`;
 
+        const wrap = document.createElement('div');
+        wrap.className = 'avatar-circle-wrap';
+        wrap.style.cssText = 'width: 24px; height: 24px;';
+
         const av = document.createElement('div');
         av.className = 'avatar-media avatar-clickable';
-        av.style.cssText = 'width: 22px; height: 22px; font-size: 0.7rem;';
-        renderAvatarContent(av, peerNick, getUserAvatarByNickOrId(peerNick, null));
+        av.style.cssText = 'width: 24px; height: 24px; font-size: 0.7rem;';
+        renderAvatarContent(av, peerNick, prof.avatarUrl);
         av.addEventListener('click', e => {
           e.stopPropagation();
           openUserProfileModal(peerNick, null);
         });
 
+        const dot = document.createElement('span');
+        dot.className = `avatar-status-dot ${stMeta.dotClass}`;
+        dot.style.cssText = 'width: 8px; height: 8px; border-width: 1.5px;';
+
+        wrap.appendChild(av);
+        wrap.appendChild(dot);
+
         const span = document.createElement('span');
         span.textContent = peerNick;
         span.style.cssText = 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap;';
 
-        div.appendChild(av);
+        div.appendChild(wrap);
         div.appendChild(span);
         div.addEventListener('click', () => {
           openDirectMessage(peerNick);
@@ -2757,6 +3376,7 @@
 
       state.friends.forEach(friendNick => {
         const prof = resolveUserProfileData(friendNick, null);
+        const stMeta = STATUS_META[prof.status] || STATUS_META.offline;
 
         const card = document.createElement('div');
         card.className = 'friend-card';
@@ -2772,9 +3392,9 @@
         infoEl.innerHTML = `
           <div class="friend-row">
             <strong>${escapeHtml(friendNick)}</strong>
-            <span class="${prof.online ? 'status-online-text' : 'status-offline-text'}">${prof.online ? '● В сети' : '○ Офлайн'}</span>
+            <span class="${stMeta.textClass}">${stMeta.icon} ${stMeta.label}</span>
           </div>
-          ${prof.playingGame ? `<div class="activity-text">🎮 ${escapeHtml(prof.playingGame)}</div>` : `<div class="${prof.online ? 'status-online-text' : 'status-offline-text'}">${prof.online ? 'В сети' : 'Не в сети'}</div>`}
+          ${prof.playingGame ? `<div class="activity-text">🎮 ${escapeHtml(prof.playingGame)}</div>` : `<div class="${stMeta.textClass}">${stMeta.label}</div>`}
         `;
 
         const dmBtn = document.createElement('button');
@@ -2813,6 +3433,12 @@
         prefixEl.textContent = '@';
         titleEl.textContent = state.activeDmPeer;
         hintEl.textContent = `ЛС • ${state.activeDmPeer}`;
+        callBar.style.display = 'flex';
+      } else if (state.channelType === 'group' && state.activeGroupId) {
+        const grp = state.groups.find(g => g.id === state.activeGroupId);
+        prefixEl.textContent = '👥';
+        titleEl.textContent = grp ? grp.title : 'Группа';
+        hintEl.textContent = grp ? `Группа (${grp.members.length} уч.)` : 'Группа';
         callBar.style.display = 'none';
       } else {
         prefixEl.textContent = '#';
@@ -2852,19 +3478,23 @@
 
     function switchRoom(room) {
       state.channelType = 'room';
+      state.activeGroupId = null;
       state.activeDmPeer = null;
       state.activeRoom = room;
       updateChannelHeaderUI();
       renderRooms();
+      renderGroupList();
       renderDmList();
       subscribeMessages();
       syncPresence();
     }
 
-    // === ATTACHMENTS: PNG / JPG & VIDEY ===
+    // === ATTACHMENTS: PNG / JPG / GIF, GIF URL & VIDEY ===
     const pendingBar = document.getElementById('pending-attach-bar');
     const pendingLabel = document.getElementById('pending-attach-label');
     const imageFileInput = document.getElementById('image-file-input');
+    const gifModal = document.getElementById('gif-modal');
+    const gifUrlInput = document.getElementById('gif-url-input');
     const videyModal = document.getElementById('videy-modal');
     const videyUrlInput = document.getElementById('videy-url-input');
 
@@ -2878,7 +3508,10 @@
       }
       pendingBar.classList.add('active');
       if (att.kind === 'image') {
-        pendingLabel.textContent = `🖼️ ${att.name}`;
+        const isGif = att.name && att.name.toLowerCase().endsWith('.gif');
+        pendingLabel.textContent = `${isGif ? '🎞️ GIF' : '🖼️'} ${att.name}`;
+      } else if (att.kind === 'gif_url') {
+        pendingLabel.textContent = `🎞️ GIF: ${att.url}`;
       } else if (att.kind === 'videy') {
         pendingLabel.textContent = `🎬 ${att.pageUrl}`;
       }
@@ -2890,13 +3523,13 @@
     imageFileInput.addEventListener('change', () => {
       const file = imageFileInput.files && imageFileInput.files[0];
       if (!file) return;
-      if (!['image/png', 'image/jpeg'].includes(file.type)) {
-        alert('Только PNG и JPG.');
+      if (!['image/png', 'image/jpeg', 'image/gif'].includes(file.type)) {
+        alert('Поддерживаются PNG, JPG и GIF.');
         imageFileInput.value = '';
         return;
       }
-      if (file.size > 1.5 * 1024 * 1024) {
-        alert('Максимум 1.5 МБ.');
+      if (file.size > 2.5 * 1024 * 1024) {
+        alert('Максимум 2.5 МБ.');
         imageFileInput.value = '';
         return;
       }
@@ -2912,6 +3545,29 @@
         }
       };
       reader.readAsDataURL(file);
+    });
+
+    document.getElementById('attach-gif-url-btn').addEventListener('click', () => {
+      gifUrlInput.value = '';
+      gifModal.classList.add('active');
+      gifUrlInput.focus();
+    });
+
+    document.getElementById('close-gif-modal').addEventListener('click', () => {
+      gifModal.classList.remove('active');
+    });
+
+    document.getElementById('confirm-gif-btn').addEventListener('click', () => {
+      const safe = sanitizeHttpUrl(gifUrlInput.value);
+      if (!safe) {
+        alert('Укажи корректную http/https ссылку на GIF.');
+        return;
+      }
+      setPendingAttachment({
+        kind: 'gif_url',
+        url: safe
+      });
+      gifModal.classList.remove('active');
     });
 
     document.getElementById('attach-videy-btn').addEventListener('click', () => {
@@ -2938,7 +3594,7 @@
       videyModal.classList.remove('active');
     });
 
-    function appendMessage(msg) {
+    function appendMessage(msg, { notifyIfRemote = false } = {}) {
       const box = document.getElementById('messages-box');
       const isOwn = msg.senderId === clientId;
       const authorName = msg.author || 'anon';
@@ -2999,6 +3655,17 @@
         bodyEl.appendChild(img);
       }
 
+      if (msg.attachment && msg.attachment.kind === 'gif_url' && msg.attachment.url) {
+        const safeGif = sanitizeHttpUrl(msg.attachment.url);
+        if (safeGif) {
+          const img = document.createElement('img');
+          img.className = 'msg-image-attach';
+          img.src = safeGif;
+          img.alt = 'GIF';
+          bodyEl.appendChild(img);
+        }
+      }
+
       if (msg.attachment && msg.attachment.kind === 'videy') {
         const safeStream = sanitizeHttpUrl(msg.attachment.streamUrl);
         const safePage = sanitizeHttpUrl(msg.attachment.pageUrl) || safeStream;
@@ -3030,6 +3697,11 @@
       el.appendChild(bodyEl);
       box.appendChild(el);
       box.scrollTop = box.scrollHeight;
+
+      if (!isOwn && notifyIfRemote) {
+        const previewText = msg.text || (msg.attachment ? 'Вложение' : 'Новое сообщение');
+        triggerMessageNotification(`PulDot.msg • ${authorName}`, previewText);
+      }
     }
 
     function subscribeMessages() {
@@ -3041,16 +3713,32 @@
         currentMessagesRef = null;
       }
 
+      const pathKey = getCurrentFirebaseMessagesPath();
+      if (!knownMessageIdsByPath[pathKey]) {
+        knownMessageIdsByPath[pathKey] = new Set();
+      }
+      const seenSet = knownMessageIdsByPath[pathKey];
+      let initialSyncDone = false;
+
       if (db) {
-        currentMessagesRef = ref(db, getCurrentFirebaseMessagesPath());
+        currentMessagesRef = ref(db, pathKey);
+        onValue(currentMessagesRef, snap => {
+          initialSyncDone = true;
+          const val = snap.val() || {};
+          Object.keys(val).forEach(k => seenSet.add(k));
+        }, { onlyOnce: true });
+
         onChildAdded(currentMessagesRef, snap => {
           const val = snap.val();
-          if (val) appendMessage(val);
+          if (!val) return;
+          const isNewAfterLoad = initialSyncDone && snap.key && !seenSet.has(snap.key);
+          if (snap.key) seenSet.add(snap.key);
+          appendMessage(val, { notifyIfRemote: isNewAfterLoad });
         });
       } else {
         const key = getCurrentStoragePath();
         const list = state.localMessages[key] || [];
-        list.forEach(appendMessage);
+        list.forEach(m => appendMessage(m, { notifyIfRemote: false }));
       }
     }
 
@@ -3082,14 +3770,68 @@
         if (!state.localMessages[key]) state.localMessages[key] = [];
         state.localMessages[key].push(payload);
         localStorage.setItem('puldot_local_msgs', JSON.stringify(state.localMessages));
-        appendMessage(payload);
+        appendMessage(payload, { notifyIfRemote: false });
       }
 
       input.value = '';
       setPendingAttachment(null);
     });
 
-    // === FIREBASE INIT ===
+    // === FIREBASE INIT & INCOMING DM CALL WATCHER ===
+    let dmCallsUnsub = null;
+
+    function watchIncomingDmCalls() {
+      if (dmCallsUnsub) {
+        try { dmCallsUnsub(); } catch (_) {}
+        dmCallsUnsub = null;
+      }
+      if (!db) return;
+
+      const dmCallsRef = ref(db, 'dmCalls');
+      const cb = onChildAdded(dmCallsRef, snap => {
+        const callData = snap.val();
+        if (!callData || !callData.offer || callData.offer.senderId === clientId) return;
+        const targetNick = (callData.targetNick || '').trim().toLowerCase();
+        if (!targetNick || targetNick !== state.nickname.trim().toLowerCase()) return;
+        if (activeCallChannel) return;
+
+        pendingIncomingCall = {
+          key: snap.key,
+          threadId: callData.threadId,
+          callerNick: callData.offer.senderNick || 'Собеседник',
+          callerAvatar: callData.offer.senderAvatar || '',
+          withVideo: Boolean(callData.withVideo),
+          offer: callData.offer
+        };
+
+        document.getElementById('incoming-call-caller').textContent = `📞 Входящий вызов от ${pendingIncomingCall.callerNick}`;
+        document.getElementById('incoming-call-mode').textContent = pendingIncomingCall.withVideo ? 'Видеозвонок в ЛС' : 'Голосовой вызов в ЛС';
+        document.getElementById('incoming-call-banner').classList.add('active');
+        startDmRingtone();
+      });
+
+      dmCallsUnsub = () => off(dmCallsRef, 'child_added', cb);
+    }
+
+    document.getElementById('accept-incoming-call-btn').addEventListener('click', async () => {
+      if (!pendingIncomingCall) return;
+      const incoming = pendingIncomingCall;
+      pendingIncomingCall = null;
+      document.getElementById('incoming-call-banner').classList.remove('active');
+      stopDmRingtone();
+      openDirectMessage(incoming.callerNick);
+      await startCall(incoming.withVideo, { isDm: true, dmThreadId: incoming.threadId, incomingOffer: incoming.offer });
+    });
+
+    document.getElementById('decline-incoming-call-btn').addEventListener('click', () => {
+      if (pendingIncomingCall && db && pendingIncomingCall.key) {
+        remove(ref(db, `dmCalls/${pendingIncomingCall.key}`)).catch(() => {});
+      }
+      pendingIncomingCall = null;
+      document.getElementById('incoming-call-banner').classList.remove('active');
+      stopDmRingtone();
+    });
+
     function initFirebase() {
       const statusEl = document.getElementById('fb-status-text');
       const settingsInfoEl = document.getElementById('settings-fb-current-info');
@@ -3114,9 +3856,9 @@
           renderFriends();
           renderDmList();
 
-          if (activeCallRoom) {
+          if (activeCallChannel) {
             const entries = Object.entries(state.remoteStatuses);
-            const peerEntry = entries.find(([id, u]) => id !== clientId && u && (u.inCallRoom === activeCallRoom || u.activeRoom === activeCallRoom));
+            const peerEntry = entries.find(([id, u]) => id !== clientId && u && (u.inCallChannel === activeCallChannel || u.activeRoom === state.activeRoom));
             if (peerEntry && peerEntry[1]) {
               remotePeerInfo = {
                 nickname: peerEntry[1].nickname || 'Собеседник',
@@ -3127,6 +3869,7 @@
           }
         });
 
+        watchIncomingDmCalls();
         syncPresence();
         subscribeMessages();
       } catch (err) {
@@ -3187,9 +3930,10 @@
     remoteVideoEl.addEventListener('resize', applyRemoteVideoAspect);
     window.addEventListener('resize', applyRemoteVideoAspect);
 
-    // === WEBRTC CALLS ===
+    // === WEBRTC CALLS (ROOMS & DM) ===
     let callUnsubscribers = [];
     let pendingIceCandidates = [];
+    let activeDmCallInviteKey = null;
 
     function clearCallListeners() {
       callUnsubscribers.forEach(unsub => {
@@ -3229,13 +3973,14 @@
         if (event.streams && event.streams[0]) {
           remoteVideoEl.srcObject = event.streams[0];
         }
+        stopDmRingtone();
         document.getElementById('call-peer-info').textContent = 'На связи';
         document.getElementById('call-remote-sub').textContent = 'Подключён';
       };
 
       peerConnection.onicecandidate = event => {
-        if (event.candidate && db && activeCallRoom) {
-          push(ref(db, `calls/${activeCallRoom}/candidates`), {
+        if (event.candidate && db && activeCallChannel) {
+          push(ref(db, `calls/${activeCallChannel}/candidates`), {
             senderId: clientId,
             candidate: event.candidate.toJSON()
           }).catch(() => {});
@@ -3251,9 +3996,10 @@
       };
     }
 
-    async function startCall(withVideo) {
-      if (state.channelType !== 'room') {
-        alert('Звонки доступны в комнатах.');
+    async function startCall(withVideo, opts = {}) {
+      const isDm = opts.isDm !== undefined ? opts.isDm : (state.channelType === 'dm' && Boolean(state.activeDmPeer));
+      if (!isDm && state.channelType !== 'room') {
+        alert('Звонки доступны в комнатах и в ЛС.');
         return;
       }
       if (!db) {
@@ -3263,9 +4009,21 @@
 
       try {
         clearCallListeners();
-        activeCallRoom = state.activeRoom;
+        activeCallIsDm = isDm;
+        if (isDm) {
+          const peerNick = opts.incomingOffer ? opts.incomingOffer.senderNick : state.activeDmPeer;
+          const threadId = opts.dmThreadId || getDmThreadId(state.nickname, peerNick);
+          activeCallChannel = threadId;
+          remotePeerInfo = {
+            nickname: peerNick || 'Собеседник',
+            avatarUrl: (opts.incomingOffer && opts.incomingOffer.senderAvatar) || getUserAvatarByNickOrId(peerNick, null) || ''
+          };
+        } else {
+          activeCallChannel = `room_${state.activeRoom}`;
+          remotePeerInfo = { nickname: 'Собеседник', avatarUrl: '' };
+        }
+
         activeCallWithVideo = Boolean(withVideo);
-        remotePeerInfo = { nickname: 'Собеседник', avatarUrl: '' };
 
         localStream = await navigator.mediaDevices.getUserMedia({
           audio: true,
@@ -3282,7 +4040,9 @@
         updateCallAvatarsUI();
         syncPresence();
 
-        document.getElementById('call-status-label').textContent = withVideo ? 'Видеозвонок' : 'Голосовой звонок';
+        document.getElementById('call-status-label').textContent = isDm
+          ? (withVideo ? `Видеозвонок в ЛС • ${remotePeerInfo.nickname}` : `Звонок в ЛС • ${remotePeerInfo.nickname}`)
+          : (withVideo ? 'Видеозвонок в комнате' : 'Голосовой звонок в комнате');
         document.getElementById('call-peer-info').textContent = 'Ожидание...';
         document.getElementById('call-remote-sub').textContent = 'Ожидание...';
         document.getElementById('start-voice-btn').style.display = 'none';
@@ -3291,9 +4051,9 @@
 
         setupPeerConnection();
 
-        const offerRef = ref(db, `calls/${activeCallRoom}/offer`);
-        const answerRef = ref(db, `calls/${activeCallRoom}/answer`);
-        const candidatesRef = ref(db, `calls/${activeCallRoom}/candidates`);
+        const offerRef = ref(db, `calls/${activeCallChannel}/offer`);
+        const answerRef = ref(db, `calls/${activeCallChannel}/answer`);
+        const candidatesRef = ref(db, `calls/${activeCallChannel}/candidates`);
 
         const offerUnsub = onValue(offerRef, async snap => {
           const offData = snap.val();
@@ -3301,7 +4061,7 @@
 
           if (offData.senderNick || offData.senderAvatar !== undefined) {
             remotePeerInfo = {
-              nickname: offData.senderNick || 'Собеседник',
+              nickname: offData.senderNick || remotePeerInfo.nickname || 'Собеседник',
               avatarUrl: offData.senderAvatar || ''
             };
             updateCallAvatarsUI();
@@ -3333,7 +4093,7 @@
 
           if (ans.senderNick || ans.senderAvatar !== undefined) {
             remotePeerInfo = {
-              nickname: ans.senderNick || 'Собеседник',
+              nickname: ans.senderNick || remotePeerInfo.nickname || 'Собеседник',
               avatarUrl: ans.senderAvatar || ''
             };
             updateCallAvatarsUI();
@@ -3369,60 +4129,98 @@
           () => off(candidatesRef, 'child_added', candUnsub)
         );
 
-        let hasExistingOffer = false;
-        await new Promise(resolve => {
-          const checkUnsub = onValue(offerRef, s => {
-            const val = s.val();
-            hasExistingOffer = Boolean(val && val.senderId && val.senderId !== clientId);
-            if (hasExistingOffer && val) {
-              remotePeerInfo = {
-                nickname: val.senderNick || 'Собеседник',
-                avatarUrl: val.senderAvatar || ''
-              };
-              updateCallAvatarsUI();
-            }
-            off(offerRef, 'value', checkUnsub);
-            resolve();
-          }, { onlyOnce: true });
-        });
-
-        if (!hasExistingOffer && peerConnection && peerConnection.signalingState === 'stable') {
-          const offer = await peerConnection.createOffer();
-          await peerConnection.setLocalDescription(offer);
-          await set(offerRef, {
+        if (opts.incomingOffer && peerConnection.signalingState === 'stable') {
+          await peerConnection.setRemoteDescription(new RTCSessionDescription(opts.incomingOffer));
+          await flushPendingIceCandidates();
+          const answer = await peerConnection.createAnswer();
+          await peerConnection.setLocalDescription(answer);
+          await set(answerRef, {
             senderId: clientId,
             senderNick: state.nickname,
             senderAvatar: state.avatarUrl || '',
-            sdp: offer.sdp,
-            type: offer.type
+            sdp: answer.sdp,
+            type: answer.type
           });
+        } else {
+          let hasExistingOffer = false;
+          await new Promise(resolve => {
+            const checkUnsub = onValue(offerRef, s => {
+              const val = s.val();
+              hasExistingOffer = Boolean(val && val.senderId && val.senderId !== clientId);
+              if (hasExistingOffer && val) {
+                remotePeerInfo = {
+                  nickname: val.senderNick || remotePeerInfo.nickname || 'Собеседник',
+                  avatarUrl: val.senderAvatar || ''
+                };
+                updateCallAvatarsUI();
+              }
+              off(offerRef, 'value', checkUnsub);
+              resolve();
+            }, { onlyOnce: true });
+          });
+
+          if (!hasExistingOffer && peerConnection && peerConnection.signalingState === 'stable') {
+            const offer = await peerConnection.createOffer();
+            await peerConnection.setLocalDescription(offer);
+            const offerPayload = {
+              senderId: clientId,
+              senderNick: state.nickname,
+              senderAvatar: state.avatarUrl || '',
+              sdp: offer.sdp,
+              type: offer.type
+            };
+            await set(offerRef, offerPayload);
+
+            // В ЛС отправляем вызов с мелодией; в комнату уведомление не отправляется
+            if (isDm && state.activeDmPeer) {
+              const inviteRef = push(ref(db, 'dmCalls'));
+              activeDmCallInviteKey = inviteRef.key;
+              await set(inviteRef, {
+                threadId: activeCallChannel,
+                targetNick: state.activeDmPeer,
+                withVideo: Boolean(withVideo),
+                offer: offerPayload,
+                createdAt: Date.now()
+              });
+            }
+          }
         }
 
         window.addEventListener('beforeunload', cleanupCallNodeOnUnload, { once: true });
       } catch (err) {
         clearCallListeners();
-        activeCallRoom = null;
+        activeCallChannel = null;
         alert('Нет доступа к микрофону/камере: ' + err.message);
       }
     }
 
     function cleanupCallNodeOnUnload() {
-      if (db && activeCallRoom) {
-        remove(ref(db, `calls/${activeCallRoom}`)).catch(() => {});
+      if (db && activeCallChannel) {
+        remove(ref(db, `calls/${activeCallChannel}`)).catch(() => {});
+      }
+      if (db && activeDmCallInviteKey) {
+        remove(ref(db, `dmCalls/${activeDmCallInviteKey}`)).catch(() => {});
       }
     }
 
     function hangupCall() {
       clearCallListeners();
+      stopDmRingtone();
 
       if (document.fullscreenElement) {
         document.exitFullscreen().catch(() => {});
       }
 
-      if (db && activeCallRoom) {
-        remove(ref(db, `calls/${activeCallRoom}`)).catch(() => {});
+      if (db && activeCallChannel) {
+        remove(ref(db, `calls/${activeCallChannel}`)).catch(() => {});
       }
-      activeCallRoom = null;
+      if (db && activeDmCallInviteKey) {
+        remove(ref(db, `dmCalls/${activeDmCallInviteKey}`)).catch(() => {});
+        activeDmCallInviteKey = null;
+      }
+
+      activeCallChannel = null;
+      activeCallIsDm = false;
       activeCallWithVideo = false;
       syncPresence();
 
@@ -3464,6 +4262,7 @@
     applyThemeCustomization();
     updateChannelHeaderUI();
     renderRooms();
+    renderGroupList();
     renderDmList();
     renderGames();
     renderFriends();
