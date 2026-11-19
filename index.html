@@ -29,7 +29,7 @@
     }
 
     html, body {
-      min-height: 100dvh;
+      height: 100%;
     }
 
     body {
@@ -361,9 +361,9 @@
       background: var(--bg-servers);
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: var(--text-normal);
-      padding: 8px 10px;
+      padding: 7px 10px;
       border-radius: 6px;
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       outline: none;
       font-family: inherit;
     }
@@ -376,14 +376,14 @@
       display: flex;
       flex-direction: column;
       gap: 2px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .channel-item {
       display: flex;
       align-items: center;
       gap: 7px;
-      padding: 8px 10px;
+      padding: 7px 10px;
       border-radius: 6px;
       color: var(--text-muted);
       font-size: 0.88rem;
@@ -412,7 +412,7 @@
 
     .db-box {
       margin: 0 4px;
-      padding: 8px 10px;
+      padding: 7px 10px;
       border-radius: 6px;
       background: var(--bg-servers);
       border: 1px solid var(--border);
@@ -424,7 +424,7 @@
     /* Bottom User Panel */
     .user-panel {
       background: #232428;
-      padding: 8px 10px;
+      padding: 8px 10px max(8px, env(safe-area-inset-bottom));
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -494,7 +494,7 @@
       flex-direction: column;
       background: var(--bg-chat);
       min-width: 0;
-      min-height: calc(100dvh - 84px);
+      min-height: calc(100dvh - 48px);
     }
 
     .chat-topbar {
@@ -816,7 +816,7 @@
 
     /* Composer */
     .composer-wrap {
-      padding: 4px 12px 10px;
+      padding: 4px 12px max(10px, env(safe-area-inset-bottom));
     }
 
     .pending-attach-bar {
@@ -872,8 +872,8 @@
     /* Games, Friends, Settings Views */
     .view-container {
       width: 100%;
-      padding: 14px 14px 28px;
-      max-width: 1120px;
+      padding: 12px;
+      max-width: 1080px;
       margin: 0 auto;
     }
 
@@ -881,13 +881,13 @@
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 12px 14px;
-      margin-bottom: 14px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
     }
 
     .add-friend-row {
@@ -899,15 +899,15 @@
 
     .games-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 10px;
     }
 
     .game-card {
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 14px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -915,18 +915,18 @@
     }
 
     .game-card h3 {
-      font-size: 1rem;
+      font-size: 0.98rem;
       margin-bottom: 4px;
     }
 
     .game-card p {
       color: var(--text-muted);
-      font-size: 0.84rem;
+      font-size: 0.82rem;
     }
 
     .friends-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 10px;
     }
 
@@ -941,9 +941,9 @@
     }
 
     .friend-avatar {
-      width: 40px;
-      height: 40px;
-      font-size: 0.95rem;
+      width: 38px;
+      height: 38px;
+      font-size: 0.92rem;
     }
 
     .friend-info {
@@ -959,18 +959,18 @@
     }
 
     .status-online-text {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--online);
       font-weight: 600;
     }
 
     .status-offline-text {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
     }
 
     .activity-text {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: #ffd369;
       font-weight: 600;
       margin-top: 2px;
@@ -979,8 +979,8 @@
     /* Settings Page */
     .settings-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 12px;
       align-items: start;
     }
 
@@ -988,33 +988,33 @@
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 14px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .settings-card h3 {
-      font-size: 1rem;
+      font-size: 0.98rem;
     }
 
     .field-label {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     /* Profile Card Preview & Public Profile Modal */
     .profile-card-box {
-      border-radius: 12px;
+      border-radius: 10px;
       overflow: hidden;
       background: var(--bg-servers);
       border: 1px solid rgba(255, 255, 255, 0.14);
     }
 
     .profile-banner-box {
-      height: 88px;
+      height: 76px;
       width: 100%;
       background: linear-gradient(135deg, var(--accent), #2b2d31);
       background-size: cover;
@@ -1022,7 +1022,7 @@
     }
 
     .profile-card-body {
-      padding: 0 14px 14px;
+      padding: 0 12px 12px;
     }
 
     .profile-card-top-row {
@@ -1030,31 +1030,31 @@
       align-items: flex-end;
       justify-content: space-between;
       gap: 10px;
-      margin-top: -28px;
-      margin-bottom: 10px;
+      margin-top: -26px;
+      margin-bottom: 8px;
     }
 
     .profile-avatar-ring {
-      padding: 4px;
+      padding: 3px;
       border-radius: 50%;
       background: var(--bg-servers);
       flex-shrink: 0;
     }
 
     .profile-avatar-lg {
-      width: 58px;
-      height: 58px;
-      font-size: 1.3rem;
+      width: 54px;
+      height: 54px;
+      font-size: 1.2rem;
     }
 
     .profile-bio-box {
-      margin-top: 8px;
-      padding: 8px 10px;
-      border-radius: 8px;
-      background: rgba(17, 18, 20, 0.78);
+      margin-top: 6px;
+      padding: 7px 9px;
+      border-radius: 7px;
+      background: rgba(17, 18, 20, 0.82);
       border: 1px solid rgba(255, 255, 255, 0.14);
-      font-size: 0.84rem;
-      line-height: 1.35;
+      font-size: 0.82rem;
+      line-height: 1.32;
       color: #f2f3f5;
       white-space: pre-wrap;
       word-break: break-word;
@@ -1068,8 +1068,8 @@
     }
 
     .color-swatch {
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       border: 2px solid rgba(255, 255, 255, 0.25);
       cursor: pointer;
@@ -1077,14 +1077,14 @@
 
     .banner-preset-row {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       flex-wrap: wrap;
-      margin-top: 6px;
+      margin-top: 5px;
     }
 
     .banner-chip {
-      font-size: 0.72rem;
-      padding: 4px 8px;
+      font-size: 0.7rem;
+      padding: 3px 7px;
       border-radius: 6px;
       background: var(--bg-elevated);
       border: 1px solid var(--border);
@@ -1233,23 +1233,9 @@
     }
 
     .notice {
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
       margin-top: 6px;
-    }
-
-    footer {
-      margin-top: auto;
-      flex-shrink: 0;
-      min-height: 36px;
-      background: var(--bg-servers);
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      padding: 6px 12px max(6px, env(safe-area-inset-bottom));
     }
 
     /* Tablet & Mobile Drawer Layout */
@@ -1372,16 +1358,12 @@
       }
 
       .view-container {
-        padding: 10px 8px 24px;
+        padding: 10px 8px;
       }
 
       .add-friend-row {
         flex: 1 1 100%;
         max-width: 100%;
-      }
-
-      footer {
-        display: none;
       }
     }
   </style>
@@ -1533,8 +1515,8 @@
       <div class="view-container">
         <div class="view-banner">
           <div>
-            <h2 style="font-size: 1.1rem;">Игры</h2>
-            <p style="color: var(--text-muted); font-size: 0.84rem; margin-top: 2px;">Запуск в окне со статусом активности в профиле.</p>
+            <h2 style="font-size: 1.05rem;">Игры</h2>
+            <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 2px;">Статус активности отображается в профиле.</p>
           </div>
         </div>
 
@@ -1547,8 +1529,8 @@
       <div class="view-container">
         <div class="view-banner">
           <div>
-            <h2 style="font-size: 1.1rem;">Друзья</h2>
-            <p style="color: var(--text-muted); font-size: 0.84rem; margin-top: 2px;">Нажми на аватарку для просмотра профиля или на «ЛС» для чата.</p>
+            <h2 style="font-size: 1.05rem;">Друзья</h2>
+            <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 2px;">Клик по аватарке — профиль, «ЛС» — личный чат.</p>
           </div>
           <div class="add-friend-row">
             <input type="text" class="dc-input" id="add-friend-input" placeholder="Ник друга...">
@@ -1565,8 +1547,8 @@
       <div class="view-container">
         <div class="view-banner">
           <div>
-            <h2 style="font-size: 1.1rem;">Настройки</h2>
-            <p style="color: var(--text-muted); font-size: 0.84rem; margin-top: 2px;">Профиль, оформление карточки и база данных.</p>
+            <h2 style="font-size: 1.05rem;">Настройки</h2>
+            <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 2px;">Профиль, карточка и база данных.</p>
           </div>
           <button class="dc-btn" id="settings-run-wizard-btn">Мастер настройки</button>
         </div>
@@ -1584,7 +1566,7 @@
                     <div class="avatar-media profile-avatar-lg" id="settings-avatar-preview">U</div>
                   </div>
                 </div>
-                <div id="settings-nick-preview" style="font-size: 1rem; font-weight: 700;">Гость</div>
+                <div id="settings-nick-preview" style="font-size: 0.98rem; font-weight: 700;">Гость</div>
                 <div class="profile-bio-box" id="settings-bio-preview">Описание профиля...</div>
               </div>
             </div>
@@ -1618,11 +1600,11 @@
               </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px;">
               <div>
                 <label class="field-label">Акцентный цвет</label>
                 <div class="swatch-row">
-                  <input type="color" id="settings-accent-picker" value="#5865f2" style="width: 34px; height: 28px; background: transparent; border: none; cursor: pointer;">
+                  <input type="color" id="settings-accent-picker" value="#5865f2" style="width: 32px; height: 26px; background: transparent; border: none; cursor: pointer;">
                   <button type="button" class="color-swatch" data-accent="#5865f2" style="background: #5865f2;"></button>
                   <button type="button" class="color-swatch" data-accent="#eb459e" style="background: #eb459e;"></button>
                   <button type="button" class="color-swatch" data-accent="#57f287" style="background: #57f287;"></button>
@@ -1633,7 +1615,7 @@
               <div>
                 <label class="field-label">Фон карточки (бэкграунд)</label>
                 <div class="swatch-row">
-                  <input type="color" id="settings-cardbg-picker" value="#1e1f22" style="width: 34px; height: 28px; background: transparent; border: none; cursor: pointer;">
+                  <input type="color" id="settings-cardbg-picker" value="#1e1f22" style="width: 32px; height: 26px; background: transparent; border: none; cursor: pointer;">
                   <button type="button" class="color-swatch cardbg-swatch" data-cardbg="#1e1f22" style="background: #1e1f22;"></button>
                   <button type="button" class="color-swatch cardbg-swatch" data-cardbg="#18122b" style="background: #18122b;"></button>
                   <button type="button" class="color-swatch cardbg-swatch" data-cardbg="#1a1114" style="background: #1a1114;"></button>
@@ -1642,7 +1624,7 @@
               </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px;">
               <div>
                 <label class="field-label" for="settings-font-select">Шрифт ника</label>
                 <select class="dc-select" id="settings-font-select">
@@ -1666,7 +1648,7 @@
               </div>
             </div>
 
-            <button type="button" class="dc-btn dc-btn-primary" id="save-profile-settings-btn" style="padding: 9px;">Сохранить профиль</button>
+            <button type="button" class="dc-btn dc-btn-primary" id="save-profile-settings-btn" style="padding: 8px;">Сохранить профиль</button>
           </div>
 
           <!-- Card 2: Firebase Realtime Database -->
@@ -1674,7 +1656,7 @@
             <h3>Firebase Realtime Database</h3>
             <div>
               <label class="field-label" for="settings-fb-textarea">JSON <code>firebaseConfig</code></label>
-              <textarea class="dc-textarea" id="settings-fb-textarea" rows="9" style="font-family: monospace; font-size: 0.78rem;"></textarea>
+              <textarea class="dc-textarea" id="settings-fb-textarea" rows="8" style="font-family: monospace; font-size: 0.78rem;"></textarea>
             </div>
             <div style="display: flex; gap: 8px;">
               <button type="button" class="dc-btn dc-btn-primary" id="settings-save-fb-btn" style="flex: 1;">Сохранить</button>
@@ -1772,10 +1754,6 @@
     </div>
   </div>
 
-  <footer>
-    PulDot.msg &copy; <span id="year"></span>
-  </footer>
-
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import {
@@ -1788,8 +1766,6 @@
       onChildAdded,
       off
     } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
-
-    document.getElementById('year').textContent = new Date().getFullYear();
 
     const DEFAULT_FIREBASE_CONFIG = {
       apiKey: "AIzaSyC1V4C5KhqFpCbQOW80SvIhtzPfACqOh0I",
