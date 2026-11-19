@@ -46,6 +46,13 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* Nickname font presets */
+    .nick-font-sans { font-family: 'gg sans', 'Segoe UI', Roboto, sans-serif; }
+    .nick-font-mono { font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace; letter-spacing: -0.02em; }
+    .nick-font-serif { font-family: Georgia, 'Times New Roman', serif; }
+    .nick-font-display { font-family: 'Trebuchet MS', 'Arial Black', sans-serif; letter-spacing: 0.03em; }
+    .nick-font-italic { font-family: 'Segoe UI', Roboto, sans-serif; font-style: italic; }
+
     /* Top Discord-like App Bar */
     .top-bar {
       min-height: 48px;
@@ -101,15 +108,16 @@
       background: rgba(0, 0, 0, 0.25);
       padding: 3px;
       border-radius: 8px;
+      flex-wrap: wrap;
     }
 
     .dc-tab {
       background: transparent;
       border: none;
       color: var(--text-muted);
-      padding: 5px 12px;
+      padding: 5px 11px;
       border-radius: 6px;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.15s, color 0.15s;
@@ -172,7 +180,7 @@
       align-items: center;
       justify-content: center;
       gap: 5px;
-      transition: background 0.15s, transform 0.12s;
+      transition: background 0.15s, transform 0.12s, filter 0.12s;
       white-space: nowrap;
     }
 
@@ -192,8 +200,7 @@
     }
 
     .dc-btn-primary:hover:not(:disabled) {
-      background: var(--accent-hover);
-      border-color: var(--accent-hover);
+      filter: brightness(1.1);
     }
 
     .dc-btn-danger {
@@ -321,7 +328,7 @@
       padding: 0 4px 10px;
     }
 
-    .dc-input, .dc-textarea {
+    .dc-input, .dc-textarea, .dc-select {
       width: 100%;
       background: var(--bg-servers);
       border: 1px solid rgba(0, 0, 0, 0.35);
@@ -333,7 +340,7 @@
       font-family: inherit;
     }
 
-    .dc-input:focus, .dc-textarea:focus {
+    .dc-input:focus, .dc-textarea:focus, .dc-select:focus {
       border-color: var(--accent);
     }
 
@@ -341,17 +348,17 @@
       display: flex;
       flex-direction: column;
       gap: 2px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .channel-item {
       display: flex;
       align-items: center;
       gap: 7px;
-      padding: 9px 10px;
+      padding: 8px 10px;
       border-radius: 6px;
       color: var(--text-muted);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 500;
       cursor: pointer;
       transition: background 0.12s, color 0.12s;
@@ -372,6 +379,7 @@
       color: var(--text-muted);
       font-size: 1.05rem;
       line-height: 1;
+      flex-shrink: 0;
     }
 
     .db-box {
@@ -434,7 +442,7 @@
     }
 
     .user-nick-text {
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
@@ -714,12 +722,13 @@
 
     .dc-msg-author {
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       color: var(--text-normal);
     }
 
     .dc-msg.own .dc-msg-author {
-      color: #9ba5ff;
+      color: var(--accent);
+      filter: brightness(1.35);
     }
 
     .dc-msg-time {
@@ -734,23 +743,84 @@
       word-break: break-word;
     }
 
+    .msg-image-attach {
+      margin-top: 6px;
+      max-width: min(380px, 100%);
+      max-height: 320px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: block;
+      object-fit: contain;
+      background: #111214;
+    }
+
+    .msg-videy-card {
+      margin-top: 6px;
+      max-width: min(440px, 100%);
+      background: var(--bg-sidebar);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+    }
+
+    .msg-videy-video {
+      width: 100%;
+      max-height: 270px;
+      border-radius: 6px;
+      background: #0d0e10;
+      display: block;
+    }
+
+    .msg-videy-link {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 0.76rem;
+      color: var(--accent);
+      filter: brightness(1.3);
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .msg-videy-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Composer */
     .composer-wrap {
       padding: 4px 12px 12px;
       padding-bottom: max(12px, env(safe-area-inset-bottom));
     }
 
+    .pending-attach-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: var(--bg-sidebar);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      margin-bottom: 6px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .pending-attach-bar.active {
+      display: flex;
+    }
+
     .composer-form {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       background: var(--bg-input);
       border-radius: 8px;
-      padding: 4px 6px 4px 12px;
+      padding: 4px 6px 4px 8px;
       border: 1px solid transparent;
     }
 
     .composer-form:focus-within {
-      border-color: rgba(88, 101, 242, 0.55);
+      border-color: var(--accent);
     }
 
     .composer-input {
@@ -764,7 +834,7 @@
       outline: none;
     }
 
-    /* Games & Friends Views */
+    /* Games, Friends, Settings Views */
     .view-container {
       width: 100%;
       padding: 16px;
@@ -810,7 +880,7 @@
     }
 
     .game-card:hover {
-      border-color: rgba(88, 101, 242, 0.45);
+      border-color: var(--accent);
     }
 
     .game-card h3 {
@@ -825,7 +895,7 @@
 
     .friends-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 10px;
     }
 
@@ -875,7 +945,108 @@
       margin-top: 2px;
     }
 
-    /* Avatar Preview in Modals */
+    /* Settings Page */
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+    }
+
+    .settings-card {
+      background: var(--bg-sidebar);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .settings-card h3 {
+      font-size: 1.04rem;
+    }
+
+    .field-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    /* Profile Card Preview */
+    .profile-preview-card {
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg-servers);
+      border: 1px solid var(--border);
+    }
+
+    .profile-banner-box {
+      height: 84px;
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent), #2b2d31);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .profile-preview-body {
+      padding: 0 14px 14px;
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      margin-top: -26px;
+    }
+
+    .profile-preview-avatar-wrap {
+      padding: 3px;
+      border-radius: 50%;
+      background: var(--bg-servers);
+      flex-shrink: 0;
+    }
+
+    .profile-preview-avatar {
+      width: 52px;
+      height: 52px;
+      font-size: 1.2rem;
+    }
+
+    .swatch-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .color-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+    }
+
+    .banner-preset-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .banner-chip {
+      font-size: 0.74rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-normal);
+      cursor: pointer;
+    }
+
+    .banner-chip:hover {
+      background: var(--bg-active);
+    }
+
+    /* Avatar Preview in Wizard */
     .avatar-preview-row {
       display: flex;
       align-items: center;
@@ -1079,23 +1250,14 @@
 
       .dc-tab {
         flex: 1;
-        padding: 6px 6px;
-        font-size: 0.8rem;
+        padding: 6px 4px;
+        font-size: 0.76rem;
         text-align: center;
       }
 
       .top-actions {
         width: 100%;
-        justify-content: space-between;
-      }
-
-      .top-actions .dc-btn {
-        flex: 1;
-        min-height: 36px;
-      }
-
-      #reopen-wizard-btn {
-        flex: 0 0 38px;
+        justify-content: flex-end;
       }
 
       .playing-pill {
@@ -1127,13 +1289,21 @@
         flex: 1 1 100%;
       }
 
-      .dc-input, .dc-textarea, .composer-input {
+      .dc-input, .dc-textarea, .dc-select, .composer-input {
         font-size: 16px;
       }
 
+      .composer-form {
+        flex-wrap: wrap;
+      }
+
+      .composer-input {
+        flex: 1 1 100%;
+      }
+
       .composer-form .dc-btn {
-        min-height: 38px;
-        padding: 6px 12px;
+        min-height: 36px;
+        padding: 6px 10px;
       }
 
       .view-container {
@@ -1154,7 +1324,7 @@
       }
 
       .workspace, .chat-stage {
-        height: calc(100dvh - 88px);
+        height: calc(100dvh - 84px);
       }
     }
   </style>
@@ -1172,21 +1342,19 @@
         <button class="dc-tab active" data-tab="chat">Общение</button>
         <button class="dc-tab" data-tab="games">Игры</button>
         <button class="dc-tab" data-tab="friends">Друзья</button>
+        <button class="dc-tab" data-tab="settings">Настройки</button>
       </nav>
     </div>
 
     <div class="top-actions">
       <span class="playing-pill" id="self-playing-badge">🎮 Играет в: <span id="self-playing-name"></span></span>
-      <button class="dc-btn" id="edit-profile-btn">Профиль</button>
-      <button class="dc-btn" id="fb-config-btn">Firebase</button>
-      <button class="dc-btn" id="reopen-wizard-btn" title="Мастер настройки">⚙️</button>
     </div>
   </header>
 
   <div class="drawer-backdrop" id="drawer-backdrop"></div>
 
   <div class="workspace">
-    <!-- TAB 1: ОБЩЕНИЕ -->
+    <!-- TAB 1: ОБЩЕНИЕ & ЛС -->
     <section class="tab-panel active" id="tab-chat">
       <aside class="channel-sidebar" id="channel-sidebar">
         <div>
@@ -1203,6 +1371,9 @@
             </div>
 
             <div class="channel-list" id="room-list"></div>
+
+            <div class="category-label">Личные сообщения (ЛС)</div>
+            <div class="channel-list" id="dm-list"></div>
 
             <div class="category-label">Firebase Realtime Database</div>
             <div class="db-box" id="fb-status-text">
@@ -1222,6 +1393,7 @@
               <div class="user-sub-text" id="self-activity-sub">В сети</div>
             </div>
           </div>
+          <button class="dc-btn" id="quick-settings-btn" title="Открыть настройки">⚙️</button>
         </div>
       </aside>
 
@@ -1230,13 +1402,13 @@
           <div class="chat-room-left">
             <button class="dc-btn mobile-drawer-btn" id="open-drawer-btn">☰ Комнаты</button>
             <div class="chat-room-heading">
-              <span class="channel-hash">#</span>
+              <span class="channel-hash" id="active-channel-prefix">#</span>
               <span id="active-room-title">general</span>
             </div>
             <span class="chat-room-topic" id="chat-mode-hint">Сообщения сохраняются в Firebase Realtime Database</span>
           </div>
 
-          <div class="call-controls">
+          <div class="call-controls" id="call-controls-bar">
             <button class="dc-btn dc-btn-primary" id="start-voice-btn">🎙️ Голос</button>
             <button class="dc-btn" id="start-video-btn">📹 Видео</button>
             <button class="dc-btn dc-btn-danger" id="hangup-btn" style="display: none;">📵 Завершить</button>
@@ -1284,8 +1456,17 @@
         <div class="messages-stream" id="messages-box"></div>
 
         <div class="composer-wrap">
+          <div class="pending-attach-bar" id="pending-attach-bar">
+            <span id="pending-attach-label">Вложение готово к отправке</span>
+            <button type="button" class="dc-btn dc-btn-danger" id="clear-attach-btn" style="min-height: 26px; padding: 2px 8px;">✕ Убрать</button>
+          </div>
+
+          <input type="file" id="image-file-input" accept="image/png,image/jpeg" style="display: none;">
+
           <form class="composer-form" id="message-form">
-            <input type="text" class="composer-input" id="message-input" placeholder="Написать сообщение..." autocomplete="off" required>
+            <button type="button" class="dc-btn" id="attach-image-btn" title="Прикрепить PNG или JPG">🖼️ PNG/JPG</button>
+            <button type="button" class="dc-btn" id="attach-videy-btn" title="Отправить видео через Videy">🎬 Videy</button>
+            <input type="text" class="composer-input" id="message-input" placeholder="Написать сообщение..." autocomplete="off">
             <button type="submit" class="dc-btn dc-btn-primary">Отправить</button>
           </form>
         </div>
@@ -1315,7 +1496,7 @@
           <div>
             <h2 style="font-size: 1.15rem;">Друзья</h2>
             <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 3px;">
-              Добавляй друзей по нику и смотри их текущий статус в сети и активную игру.
+              Добавляй друзей по нику, открывай личные сообщения (ЛС) и смотри статус в сети.
             </p>
           </div>
           <div class="add-friend-row">
@@ -1325,6 +1506,107 @@
         </div>
 
         <div class="friends-grid" id="friends-grid"></div>
+      </div>
+    </section>
+
+    <!-- TAB 4: НАСТРОЙКИ -->
+    <section class="tab-panel" id="tab-settings">
+      <div class="view-container">
+        <div class="view-banner">
+          <div>
+            <h2 style="font-size: 1.15rem;">Настройки профиля, оформления и базы</h2>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 3px;">
+              Управление ником, аватаркой, баннером, акцентным цветом, шрифтом ника и конфигурацией Firebase.
+            </p>
+          </div>
+          <button class="dc-btn" id="settings-run-wizard-btn">Запустить мастер настройки</button>
+        </div>
+
+        <div class="settings-grid">
+          <!-- Card 1: Profile & Customization -->
+          <div class="settings-card">
+            <h3>Профиль и кастомизация</h3>
+
+            <div class="profile-preview-card">
+              <div class="profile-banner-box" id="settings-banner-preview"></div>
+              <div class="profile-preview-body">
+                <div class="profile-preview-avatar-wrap">
+                  <div class="avatar-media profile-preview-avatar" id="settings-avatar-preview">U</div>
+                </div>
+                <div style="min-width: 0; padding-top: 26px;">
+                  <div id="settings-nick-preview" style="font-size: 1rem; font-weight: 700;">Гость</div>
+                  <div style="font-size: 0.76rem; color: var(--text-muted);">Превью карточки профиля</div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="field-label" for="settings-nick-input">Никнейм</label>
+              <input type="text" class="dc-input" id="settings-nick-input" maxlength="24" placeholder="Ваш никнейм">
+            </div>
+
+            <div>
+              <label class="field-label" for="settings-avatar-input">URL аватарки</label>
+              <div style="display: flex; gap: 6px;">
+                <input type="url" class="dc-input" id="settings-avatar-input" placeholder="https://example.com/avatar.png">
+                <button type="button" class="dc-btn" id="settings-clear-avatar-btn">Сброс</button>
+              </div>
+            </div>
+
+            <div>
+              <label class="field-label" for="settings-banner-input">Фон баннера (URL картинки или CSS-градиент)</label>
+              <input type="text" class="dc-input" id="settings-banner-input" placeholder="https://example.com/banner.png или linear-gradient(...)">
+              <div class="banner-preset-row">
+                <button type="button" class="banner-chip" data-banner="linear-gradient(135deg, #5865f2, #1e1f22)">Blurple Night</button>
+                <button type="button" class="banner-chip" data-banner="linear-gradient(135deg, #e63946, #2b1014)">Crimson Pulse</button>
+                <button type="button" class="banner-chip" data-banner="linear-gradient(135deg, #16a34a, #0f291e)">Emerald</button>
+                <button type="button" class="banner-chip" data-banner="linear-gradient(135deg, #9333ea, #1e1b4b)">Violet</button>
+              </div>
+            </div>
+
+            <div>
+              <label class="field-label">Акцентный цвет</label>
+              <div class="swatch-row">
+                <input type="color" id="settings-accent-picker" value="#5865f2" style="width: 44px; height: 32px; background: transparent; border: none; cursor: pointer;">
+                <button type="button" class="color-swatch" data-accent="#5865f2" style="background: #5865f2;" title="Blurple"></button>
+                <button type="button" class="color-swatch" data-accent="#eb459e" style="background: #eb459e;" title="Pink"></button>
+                <button type="button" class="color-swatch" data-accent="#fee75c" style="background: #fee75c;" title="Yellow"></button>
+                <button type="button" class="color-swatch" data-accent="#57f287" style="background: #57f287;" title="Green"></button>
+                <button type="button" class="color-swatch" data-accent="#ed4245" style="background: #ed4245;" title="Red"></button>
+              </div>
+            </div>
+
+            <div>
+              <label class="field-label" for="settings-font-select">Шрифт ника</label>
+              <select class="dc-select" id="settings-font-select">
+                <option value="nick-font-sans">gg sans (Стандартный)</option>
+                <option value="nick-font-mono">Monospace (Код / Терминал)</option>
+                <option value="nick-font-serif">Serif (Классический)</option>
+                <option value="nick-font-display">Display (Акцентный широкий)</option>
+                <option value="nick-font-italic">Italic (Наклонный)</option>
+              </select>
+            </div>
+
+            <button type="button" class="dc-btn dc-btn-primary" id="save-profile-settings-btn" style="padding: 9px;">Сохранить профиль и стиль</button>
+          </div>
+
+          <!-- Card 2: Firebase Realtime Database -->
+          <div class="settings-card">
+            <h3>Firebase Realtime Database</h3>
+            <p style="font-size: 0.84rem; color: var(--text-muted);">
+              Настройки подключения к базе данных для комнат, личных сообщений, присутствия и сигналинга WebRTC.
+            </p>
+            <div>
+              <label class="field-label" for="settings-fb-textarea">JSON конфигурации <code>firebaseConfig</code></label>
+              <textarea class="dc-textarea" id="settings-fb-textarea" rows="10" style="font-family: monospace; font-size: 0.78rem;"></textarea>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="dc-btn dc-btn-primary" id="settings-save-fb-btn" style="flex: 1;">Сохранить конфиг</button>
+              <button type="button" class="dc-btn" id="settings-clear-fb-btn">По умолчанию</button>
+            </div>
+            <div class="notice" id="settings-fb-current-info">Текущая БД: europe-west1</div>
+          </div>
+        </div>
       </div>
     </section>
   </div>
@@ -1340,7 +1622,7 @@
       <div class="wizard-step active" id="wizard-step-1">
         <h2 style="font-size: 1.25rem; margin-bottom: 6px;">Добро пожаловать в PulDot.msg</h2>
         <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 12px;">
-          Выбери никнейм и при желании вставь прямую ссылку (URL) на аватарку — её увидят все в чате и при голосовых звонках.
+          Выбери никнейм и при желании вставь прямую ссылку (URL) на аватарку — её увидят все в чате и при звонках.
         </p>
 
         <div class="avatar-preview-row">
@@ -1351,10 +1633,10 @@
           </div>
         </div>
 
-        <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 5px;">Твой никнейм</label>
+        <label class="field-label" for="wizard-nick-input">Твой никнейм</label>
         <input type="text" class="dc-input" id="wizard-nick-input" maxlength="24" placeholder="Например: User_2077" style="margin-bottom: 10px;">
 
-        <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 5px;">URL аватарки (необязательно)</label>
+        <label class="field-label" for="wizard-avatar-input">URL аватарки (необязательно)</label>
         <input type="url" class="dc-input" id="wizard-avatar-input" placeholder="https://example.com/avatar.png" style="margin-bottom: 14px;">
 
         <button class="dc-btn dc-btn-primary" id="wizard-next-1" style="width: 100%; padding: 8px;">Далее →</button>
@@ -1374,7 +1656,7 @@
           <button class="dc-btn" id="wizard-back-2">← Назад</button>
           <button class="dc-btn dc-btn-primary" id="wizard-finish-btn" style="flex: 1;">Завершить и сохранить</button>
         </div>
-        <div class="notice">Настройки и факт прохождения сохраняются в cookies браузера на 1 год.</div>
+        <div class="notice">Настройки и факт прохождения сохраняются в cookies и localStorage браузера.</div>
       </div>
     </div>
   </div>
@@ -1393,47 +1675,17 @@
     </div>
   </div>
 
-  <!-- Profile Nick & Avatar Modal -->
-  <div class="modal-overlay" id="profile-modal">
+  <!-- Videy Video Link Modal -->
+  <div class="modal-overlay" id="videy-modal">
     <div class="small-modal-card">
-      <button class="modal-close" id="close-profile-modal" style="position: absolute; top: 14px; right: 14px;">&times;</button>
-      <h3 style="margin-bottom: 12px;">Профиль</h3>
-
-      <div class="avatar-preview-row">
-        <div class="avatar-media avatar-preview-circle" id="profile-avatar-preview">U</div>
-        <div style="flex: 1; min-width: 0;">
-          <div style="font-size: 0.82rem; font-weight: 600;">Аватар профиля</div>
-          <div style="font-size: 0.74rem; color: var(--text-muted);">Виден всем в сообщениях, друзьях и аудиозвонках</div>
-        </div>
-      </div>
-
-      <label style="font-size: 0.82rem; color: var(--text-muted); display: block; margin-bottom: 5px;">Ваш никнейм</label>
-      <input type="text" class="dc-input" id="nickname-input" maxlength="24" style="margin-bottom: 10px;">
-
-      <label style="font-size: 0.82rem; color: var(--text-muted); display: block; margin-bottom: 5px;">Ссылка на аватарку (URL)</label>
-      <input type="url" class="dc-input" id="avatar-url-input" placeholder="https://example.com/avatar.png" style="margin-bottom: 14px;">
-
-      <div style="display: flex; gap: 8px;">
-        <button class="dc-btn dc-btn-primary" id="save-nickname-btn" style="flex: 1; padding: 8px;">Сохранить</button>
-        <button class="dc-btn" id="clear-avatar-btn" type="button">Убрать фото</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Firebase Config Modal -->
-  <div class="modal-overlay" id="fb-modal">
-    <div class="small-modal-card">
-      <button class="modal-close" id="close-fb-modal" style="position: absolute; top: 14px; right: 14px;">&times;</button>
-      <h3 style="margin-bottom: 6px;">Настройка Firebase Realtime Database</h3>
+      <button class="modal-close" id="close-videy-modal" style="position: absolute; top: 14px; right: 14px;">&times;</button>
+      <h3 style="margin-bottom: 6px;">Отправить видео через Videy</h3>
       <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px;">
-        Вставь JSON-объект <code>firebaseConfig</code> из консоли Firebase (Realtime Database + Signaling для WebRTC) или сбрось до встроенного.
+        Вставь ссылку с <code>videy.co</code> (например <code>https://videy.co/v?id=xxxxx</code>) или прямую ссылку на видео.
       </p>
-      <textarea class="dc-textarea" id="fb-config-textarea" rows="7" style="font-family: monospace; font-size: 0.78rem; margin-bottom: 10px;"></textarea>
-      <div style="display: flex; gap: 8px;">
-        <button class="dc-btn dc-btn-primary" id="save-fb-btn" style="flex: 1;">Сохранить конфиг</button>
-        <button class="dc-btn" id="clear-fb-btn">По умолчанию</button>
-      </div>
-      <div class="notice">Убедись, что в Firebase Console создана Realtime Database и указан <code>databaseURL</code>.</div>
+      <label class="field-label" for="videy-url-input">Ссылка на видео Videy</label>
+      <input type="url" class="dc-input" id="videy-url-input" placeholder="https://videy.co/v?id=..." style="margin-bottom: 12px;">
+      <button type="button" class="dc-btn dc-btn-primary" id="confirm-videy-btn" style="width: 100%; padding: 8px;">Прикрепить видео</button>
     </div>
   </div>
 
@@ -1466,8 +1718,9 @@
       appId: "1:406260242291:web:a0e11af27b23227f719706"
     };
 
-    // === SAFE AVATAR RENDERING ===
-    function sanitizeAvatarUrl(rawUrl) {
+    const NICK_FONTS = ['nick-font-sans', 'nick-font-mono', 'nick-font-serif', 'nick-font-display', 'nick-font-italic'];
+
+    function sanitizeHttpUrl(rawUrl) {
       if (!rawUrl || typeof rawUrl !== 'string') return '';
       const trimmed = rawUrl.trim();
       if (!trimmed) return '';
@@ -1480,10 +1733,35 @@
       return '';
     }
 
+    function applyBannerStyle(el, rawBanner) {
+      if (!el) return;
+      const trimmed = (rawBanner || '').trim();
+      if (!trimmed) {
+        el.style.background = 'linear-gradient(135deg, var(--accent), #2b2d31)';
+        return;
+      }
+      if (/^https?:\/\//i.test(trimmed)) {
+        const safe = sanitizeHttpUrl(trimmed);
+        el.style.background = safe
+          ? `linear-gradient(rgba(17,18,20,0.25), rgba(17,18,20,0.45)), url("${safe}") center / cover no-repeat`
+          : 'linear-gradient(135deg, var(--accent), #2b2d31)';
+      } else if (/gradient\(/i.test(trimmed) || /^#[0-9a-f]{3,8}$/i.test(trimmed) || /^rgb/i.test(trimmed)) {
+        el.style.background = trimmed;
+      } else {
+        el.style.background = 'linear-gradient(135deg, var(--accent), #2b2d31)';
+      }
+    }
+
+    function applyNickFontClass(el, fontClass) {
+      if (!el) return;
+      NICK_FONTS.forEach(cls => el.classList.remove(cls));
+      el.classList.add(NICK_FONTS.includes(fontClass) ? fontClass : 'nick-font-sans');
+    }
+
     function renderAvatarContent(containerEl, nick, avatarUrl) {
       if (!containerEl) return;
       const initial = ((nick || 'U').trim().charAt(0) || 'U').toUpperCase();
-      const safeUrl = sanitizeAvatarUrl(avatarUrl);
+      const safeUrl = sanitizeHttpUrl(avatarUrl);
       containerEl.innerHTML = '';
 
       if (safeUrl) {
@@ -1498,6 +1776,40 @@
         containerEl.appendChild(img);
       } else {
         containerEl.textContent = initial;
+      }
+    }
+
+    function parseVideyLink(rawInput) {
+      const trimmed = (rawInput || '').trim();
+      if (!trimmed) return null;
+      try {
+        const url = new URL(trimmed);
+        if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
+
+        if (url.hostname.includes('videy.co')) {
+          const idParam = url.searchParams.get('id');
+          if (idParam) {
+            const cleanId = idParam.replace(/[^a-zA-Z0-9_-]/g, '');
+            return {
+              pageUrl: url.href,
+              streamUrl: `https://cdn.videy.co/${cleanId}.mp4`
+            };
+          }
+          const pathMatch = url.pathname.match(/\/([a-zA-Z0-9_-]+)$/);
+          if (pathMatch && pathMatch[1] && pathMatch[1] !== 'v') {
+            return {
+              pageUrl: url.href,
+              streamUrl: `https://cdn.videy.co/${pathMatch[1]}.mp4`
+            };
+          }
+        }
+
+        return {
+          pageUrl: url.href,
+          streamUrl: url.href
+        };
+      } catch (_) {
+        return null;
       }
     }
 
@@ -1554,6 +1866,9 @@
     const savedNickFromCookie = getCookie('puldot_nick');
     const setupDoneCookie = getCookie('puldot_setup_done') === '1';
     const savedAvatarFromStorage = localStorage.getItem('puldot_avatar_url') || '';
+    const savedBannerFromStorage = localStorage.getItem('puldot_banner_bg') || '';
+    const savedAccentFromStorage = localStorage.getItem('puldot_accent_color') || '#5865f2';
+    const savedNickFontFromStorage = localStorage.getItem('puldot_nick_font') || 'nick-font-sans';
 
     let savedFbConfig = null;
     try {
@@ -1570,11 +1885,17 @@
 
     const state = {
       nickname: savedNickFromCookie || generateDefaultNick(),
-      avatarUrl: sanitizeAvatarUrl(savedAvatarFromStorage),
+      avatarUrl: sanitizeHttpUrl(savedAvatarFromStorage),
+      bannerBg: savedBannerFromStorage,
+      accentColor: savedAccentFromStorage,
+      nickFont: NICK_FONTS.includes(savedNickFontFromStorage) ? savedNickFontFromStorage : 'nick-font-sans',
       setupDone: setupDoneCookie,
       activeTab: 'chat',
+      channelType: 'room', // 'room' | 'dm'
       activeRoom: 'general',
+      activeDmPeer: null,
       rooms: ['general', 'games', 'random'],
+      dmPeers: JSON.parse(localStorage.getItem('puldot_dm_peers') || '[]'),
       playingGame: null,
       friends: JSON.parse(localStorage.getItem('puldot_friends') || '[]'),
       localMessages: JSON.parse(localStorage.getItem('puldot_local_msgs') || '{}'),
@@ -1589,6 +1910,7 @@
     let activeCallRoom = null;
     let activeCallWithVideo = false;
     let remotePeerInfo = { nickname: 'Собеседник', avatarUrl: '' };
+    let pendingAttachment = null; // { kind: 'image', dataUrl, name } | { kind: 'videy', pageUrl, streamUrl }
     const clientId = 'user_' + Math.random().toString(36).slice(2, 9);
 
     const rtcConfig = {
@@ -1599,6 +1921,37 @@
         { urls: 'stun:stun.cloudflare.com:3478' }
       ]
     };
+
+    function getDmThreadId(userA, userB) {
+      const a = encodeURIComponent((userA || '').trim().toLowerCase());
+      const b = encodeURIComponent((userB || '').trim().toLowerCase());
+      return 'dm_' + [a, b].sort().join('__');
+    }
+
+    function getCurrentStoragePath() {
+      if (state.channelType === 'dm' && state.activeDmPeer) {
+        return getDmThreadId(state.nickname, state.activeDmPeer);
+      }
+      return `room_${state.activeRoom}`;
+    }
+
+    function getCurrentFirebaseMessagesPath() {
+      if (state.channelType === 'dm' && state.activeDmPeer) {
+        return `dms/${getDmThreadId(state.nickname, state.activeDmPeer)}`;
+      }
+      return `messages/${state.activeRoom}`;
+    }
+
+    function applyThemeCustomization() {
+      document.documentElement.style.setProperty('--accent', state.accentColor || '#5865f2');
+      const selfNickEl = document.getElementById('self-nickname');
+      selfNickEl.textContent = state.nickname;
+      applyNickFontClass(selfNickEl, state.nickFont);
+
+      renderAvatarContent(document.getElementById('self-avatar'), state.nickname, state.avatarUrl);
+      updateCallAvatarsUI();
+      syncSettingsFormPreview();
+    }
 
     function getUserAvatarByNickOrId(nick, senderId) {
       if (senderId && state.remoteStatuses && state.remoteStatuses[senderId] && state.remoteStatuses[senderId].avatarUrl) {
@@ -1621,6 +1974,22 @@
       document.getElementById('call-remote-name').textContent = remotePeerInfo.nickname || 'Собеседник';
       document.getElementById('remote-call-label').textContent = remotePeerInfo.nickname || 'Собеседник';
     }
+
+    // === NAVIGATION TABS ===
+    function switchTab(target) {
+      state.activeTab = target;
+      setMobileDrawer(false);
+      document.querySelectorAll('.dc-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === target));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === `tab-${target}`));
+      if (target === 'friends') renderFriends();
+      if (target === 'settings') syncSettingsFormPreview();
+    }
+
+    document.querySelectorAll('.dc-tab').forEach(tab => {
+      tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+    });
+
+    document.getElementById('quick-settings-btn').addEventListener('click', () => switchTab('settings'));
 
     // === WELCOME WIZARD ===
     const wizardOverlay = document.getElementById('welcome-wizard');
@@ -1658,7 +2027,7 @@
         return;
       }
       state.nickname = nickInput;
-      state.avatarUrl = sanitizeAvatarUrl(wizardAvatarInput.value);
+      state.avatarUrl = sanitizeHttpUrl(wizardAvatarInput.value);
       showWizardStep(2);
     });
 
@@ -1685,27 +2054,141 @@
       localStorage.setItem('puldot_avatar_url', state.avatarUrl);
 
       wizardOverlay.classList.remove('active');
+      applyThemeCustomization();
       syncPresence();
       initFirebase();
     });
 
-    document.getElementById('reopen-wizard-btn').addEventListener('click', openWizard);
+    document.getElementById('settings-run-wizard-btn').addEventListener('click', openWizard);
 
-    // === TABS ===
-    document.querySelectorAll('.dc-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        const target = tab.dataset.tab;
-        state.activeTab = target;
-        setMobileDrawer(false);
-        document.querySelectorAll('.dc-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === target));
-        document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === `tab-${target}`));
-        if (target === 'friends') renderFriends();
+    // === SETTINGS TAB LOGIC ===
+    const settingsNickInput = document.getElementById('settings-nick-input');
+    const settingsAvatarInput = document.getElementById('settings-avatar-input');
+    const settingsBannerInput = document.getElementById('settings-banner-input');
+    const settingsAccentPicker = document.getElementById('settings-accent-picker');
+    const settingsFontSelect = document.getElementById('settings-font-select');
+    const settingsFbTextarea = document.getElementById('settings-fb-textarea');
+
+    let settingsInitialized = false;
+
+    function syncSettingsFormPreview(forceInputs = false) {
+      if (!settingsInitialized || forceInputs) {
+        settingsNickInput.value = state.nickname;
+        settingsAvatarInput.value = state.avatarUrl || '';
+        settingsBannerInput.value = state.bannerBg || '';
+        settingsAccentPicker.value = state.accentColor || '#5865f2';
+        settingsFontSelect.value = state.nickFont || 'nick-font-sans';
+        settingsFbTextarea.value = JSON.stringify(state.fbConfig || DEFAULT_FIREBASE_CONFIG, null, 2);
+        settingsInitialized = true;
+      }
+
+      const previewNick = (settingsNickInput.value || state.nickname || 'Гость').trim();
+      const previewAvatar = settingsAvatarInput.value !== undefined ? settingsAvatarInput.value : state.avatarUrl;
+      const previewBanner = settingsBannerInput.value !== undefined ? settingsBannerInput.value : state.bannerBg;
+      const previewAccent = settingsAccentPicker.value || state.accentColor || '#5865f2';
+      const previewFont = settingsFontSelect.value || state.nickFont;
+
+      document.documentElement.style.setProperty('--accent', previewAccent);
+      const nickPreviewEl = document.getElementById('settings-nick-preview');
+      nickPreviewEl.textContent = previewNick;
+      applyNickFontClass(nickPreviewEl, previewFont);
+      renderAvatarContent(document.getElementById('settings-avatar-preview'), previewNick, previewAvatar);
+      applyBannerStyle(document.getElementById('settings-banner-preview'), previewBanner);
+    }
+
+    [settingsNickInput, settingsAvatarInput, settingsBannerInput, settingsFontSelect].forEach(el => {
+      el.addEventListener('input', () => syncSettingsFormPreview(false));
+      el.addEventListener('change', () => syncSettingsFormPreview(false));
+    });
+
+    settingsAccentPicker.addEventListener('input', () => syncSettingsFormPreview(false));
+
+    document.querySelectorAll('.color-swatch').forEach(btn => {
+      btn.addEventListener('click', () => {
+        settingsAccentPicker.value = btn.dataset.accent;
+        syncSettingsFormPreview(false);
       });
     });
 
-    // === PROFILE & PRESENCE ===
+    document.querySelectorAll('.banner-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        settingsBannerInput.value = chip.dataset.banner;
+        syncSettingsFormPreview(false);
+      });
+    });
+
+    document.getElementById('settings-clear-avatar-btn').addEventListener('click', () => {
+      settingsAvatarInput.value = '';
+      syncSettingsFormPreview(false);
+    });
+
+    document.getElementById('save-profile-settings-btn').addEventListener('click', () => {
+      const rawNick = settingsNickInput.value.trim();
+      const rawAvatar = settingsAvatarInput.value.trim();
+      const rawBanner = settingsBannerInput.value.trim();
+      const chosenAccent = settingsAccentPicker.value || '#5865f2';
+      const chosenFont = settingsFontSelect.value || 'nick-font-sans';
+
+      if (rawAvatar && !sanitizeHttpUrl(rawAvatar)) {
+        alert('Укажи корректную ссылку на аватарку (http:// или https://).');
+        return;
+      }
+
+      if (/^https?:\/\//i.test(rawBanner) && !sanitizeHttpUrl(rawBanner)) {
+        alert('Укажи корректную ссылку на баннер.');
+        return;
+      }
+
+      if (rawNick) {
+        state.nickname = rawNick;
+        setCookie('puldot_nick', state.nickname, 365);
+      }
+
+      state.avatarUrl = sanitizeHttpUrl(rawAvatar);
+      state.bannerBg = rawBanner;
+      state.accentColor = chosenAccent;
+      state.nickFont = NICK_FONTS.includes(chosenFont) ? chosenFont : 'nick-font-sans';
+
+      localStorage.setItem('puldot_avatar_url', state.avatarUrl);
+      localStorage.setItem('puldot_banner_bg', state.bannerBg);
+      localStorage.setItem('puldot_accent_color', state.accentColor);
+      localStorage.setItem('puldot_nick_font', state.nickFont);
+
+      applyThemeCustomization();
+      syncPresence();
+      renderFriends();
+      alert('Настройки профиля сохранены.');
+    });
+
+    function applyFirebaseConfigString(rawJson) {
+      const parsed = JSON.parse(rawJson);
+      state.fbConfig = parsed;
+      localStorage.setItem('puldot_fb_config', JSON.stringify(parsed));
+      initFirebase();
+    }
+
+    document.getElementById('settings-save-fb-btn').addEventListener('click', () => {
+      try {
+        applyFirebaseConfigString(settingsFbTextarea.value.trim());
+        alert('Конфиг Firebase сохранён.');
+      } catch (_) {
+        alert('Некорректный JSON конфигурации Firebase.');
+      }
+    });
+
+    document.getElementById('settings-clear-fb-btn').addEventListener('click', () => {
+      state.fbConfig = { ...DEFAULT_FIREBASE_CONFIG };
+      localStorage.removeItem('puldot_fb_config');
+      settingsFbTextarea.value = JSON.stringify(DEFAULT_FIREBASE_CONFIG, null, 2);
+      initFirebase();
+      alert('Сброшено до встроенного конфига Firebase.');
+    });
+
+    // === PRESENCE ===
     function syncPresence() {
-      document.getElementById('self-nickname').textContent = state.nickname;
+      const selfNickEl = document.getElementById('self-nickname');
+      selfNickEl.textContent = state.nickname;
+      applyNickFontClass(selfNickEl, state.nickFont);
       renderAvatarContent(document.getElementById('self-avatar'), state.nickname, state.avatarUrl);
       updateCallAvatarsUI();
 
@@ -1727,6 +2210,9 @@
         set(ref(db, `presence/${clientId}`), {
           nickname: state.nickname,
           avatarUrl: state.avatarUrl || null,
+          bannerBg: state.bannerBg || null,
+          accentColor: state.accentColor || null,
+          nickFont: state.nickFont || 'nick-font-sans',
           playingGame: state.playingGame || null,
           activeRoom: state.activeRoom,
           inCallRoom: activeCallRoom || null,
@@ -1735,53 +2221,6 @@
       }
       renderFriends();
     }
-
-    const profileNickInput = document.getElementById('nickname-input');
-    const profileAvatarInput = document.getElementById('avatar-url-input');
-    const profileAvatarPreview = document.getElementById('profile-avatar-preview');
-
-    function refreshProfilePreview() {
-      renderAvatarContent(profileAvatarPreview, profileNickInput.value.trim() || 'U', profileAvatarInput.value);
-    }
-
-    profileNickInput.addEventListener('input', refreshProfilePreview);
-    profileAvatarInput.addEventListener('input', refreshProfilePreview);
-
-    document.getElementById('edit-profile-btn').addEventListener('click', () => {
-      profileNickInput.value = state.nickname;
-      profileAvatarInput.value = state.avatarUrl || '';
-      refreshProfilePreview();
-      document.getElementById('profile-modal').classList.add('active');
-    });
-
-    document.getElementById('close-profile-modal').addEventListener('click', () => {
-      document.getElementById('profile-modal').classList.remove('active');
-    });
-
-    document.getElementById('clear-avatar-btn').addEventListener('click', () => {
-      profileAvatarInput.value = '';
-      refreshProfilePreview();
-    });
-
-    document.getElementById('save-nickname-btn').addEventListener('click', () => {
-      const val = profileNickInput.value.trim();
-      const rawUrl = profileAvatarInput.value.trim();
-      const cleanAvatar = sanitizeAvatarUrl(rawUrl);
-
-      if (rawUrl && !cleanAvatar) {
-        alert('Укажи корректную ссылку начинающуюся с http:// или https://');
-        return;
-      }
-
-      if (val) {
-        state.nickname = val;
-        setCookie('puldot_nick', state.nickname, 365);
-      }
-      state.avatarUrl = cleanAvatar;
-      localStorage.setItem('puldot_avatar_url', state.avatarUrl);
-      syncPresence();
-      document.getElementById('profile-modal').classList.remove('active');
-    });
 
     // === GAMES MODAL & ACTIVITY BADGE ===
     function renderGames() {
@@ -1825,7 +2264,59 @@
 
     document.getElementById('close-game-modal').addEventListener('click', closeGameModal);
 
-    // === FRIENDS ===
+    // === DIRECT MESSAGES (ЛС) & FRIENDS ===
+    function openDirectMessage(peerNick) {
+      const cleanPeer = (peerNick || '').trim();
+      if (!cleanPeer) return;
+      if (!state.dmPeers.includes(cleanPeer)) {
+        state.dmPeers.push(cleanPeer);
+        localStorage.setItem('puldot_dm_peers', JSON.stringify(state.dmPeers));
+      }
+      state.channelType = 'dm';
+      state.activeDmPeer = cleanPeer;
+      switchTab('chat');
+      updateChannelHeaderUI();
+      renderRooms();
+      renderDmList();
+      subscribeMessages();
+    }
+
+    function renderDmList() {
+      const list = document.getElementById('dm-list');
+      list.innerHTML = '';
+
+      if (state.dmPeers.length === 0) {
+        const empty = document.createElement('div');
+        empty.style.cssText = 'font-size: 0.78rem; color: var(--text-muted); padding: 4px 10px 12px;';
+        empty.textContent = 'Нет открытых ЛС';
+        list.appendChild(empty);
+        return;
+      }
+
+      state.dmPeers.forEach(peerNick => {
+        const isActive = state.channelType === 'dm' && state.activeDmPeer === peerNick;
+        const div = document.createElement('div');
+        div.className = `channel-item ${isActive ? 'active' : ''}`;
+
+        const av = document.createElement('div');
+        av.className = 'avatar-media';
+        av.style.cssText = 'width: 22px; height: 22px; font-size: 0.7rem;';
+        renderAvatarContent(av, peerNick, getUserAvatarByNickOrId(peerNick, null));
+
+        const span = document.createElement('span');
+        span.textContent = peerNick;
+        span.style.cssText = 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap;';
+
+        div.appendChild(av);
+        div.appendChild(span);
+        div.addEventListener('click', () => {
+          openDirectMessage(peerNick);
+          setMobileDrawer(false);
+        });
+        list.appendChild(div);
+      });
+    }
+
     function renderFriends() {
       const grid = document.getElementById('friends-grid');
       grid.innerHTML = '';
@@ -1861,8 +2352,15 @@
           ${playing ? `<div class="activity-text">🎮 Играет в ${escapeHtml(playing)}</div>` : `<div class="${online ? 'status-online-text' : 'status-offline-text'}">${online ? 'В сети' : 'Не в сети'}</div>`}
         `;
 
+        const dmBtn = document.createElement('button');
+        dmBtn.type = 'button';
+        dmBtn.className = 'dc-btn dc-btn-primary';
+        dmBtn.textContent = '✉️ ЛС';
+        dmBtn.addEventListener('click', () => openDirectMessage(friendNick));
+
         card.appendChild(avatarEl);
         card.appendChild(infoEl);
+        card.appendChild(dmBtn);
         grid.appendChild(card);
       });
     }
@@ -1879,13 +2377,33 @@
       input.value = '';
     });
 
-    // === ROOMS & FIREBASE MESSAGES ===
+    // === ROOMS & MESSAGES ===
+    function updateChannelHeaderUI() {
+      const prefixEl = document.getElementById('active-channel-prefix');
+      const titleEl = document.getElementById('active-room-title');
+      const hintEl = document.getElementById('chat-mode-hint');
+      const callBar = document.getElementById('call-controls-bar');
+
+      if (state.channelType === 'dm' && state.activeDmPeer) {
+        prefixEl.textContent = '@';
+        titleEl.textContent = state.activeDmPeer;
+        hintEl.textContent = `Личные сообщения с ${state.activeDmPeer}`;
+        callBar.style.display = 'none';
+      } else {
+        prefixEl.textContent = '#';
+        titleEl.textContent = state.activeRoom;
+        hintEl.textContent = 'Сообщения сохраняются в Firebase Realtime Database';
+        callBar.style.display = 'flex';
+      }
+    }
+
     function renderRooms() {
       const list = document.getElementById('room-list');
       list.innerHTML = '';
       state.rooms.forEach(room => {
+        const isActive = state.channelType === 'room' && room === state.activeRoom;
         const div = document.createElement('div');
-        div.className = `channel-item ${room === state.activeRoom ? 'active' : ''}`;
+        div.className = `channel-item ${isActive ? 'active' : ''}`;
         div.innerHTML = `<span class="channel-hash">#</span><span>${escapeHtml(room)}</span>`;
         div.addEventListener('click', () => {
           switchRoom(room);
@@ -1908,12 +2426,92 @@
     });
 
     function switchRoom(room) {
+      state.channelType = 'room';
+      state.activeDmPeer = null;
       state.activeRoom = room;
-      document.getElementById('active-room-title').textContent = room;
+      updateChannelHeaderUI();
       renderRooms();
+      renderDmList();
       subscribeMessages();
       syncPresence();
     }
+
+    // === ATTACHMENTS: PNG / JPG & VIDEY ===
+    const pendingBar = document.getElementById('pending-attach-bar');
+    const pendingLabel = document.getElementById('pending-attach-label');
+    const imageFileInput = document.getElementById('image-file-input');
+    const videyModal = document.getElementById('videy-modal');
+    const videyUrlInput = document.getElementById('videy-url-input');
+
+    function setPendingAttachment(att) {
+      pendingAttachment = att;
+      if (!att) {
+        pendingBar.classList.remove('active');
+        pendingLabel.textContent = '';
+        imageFileInput.value = '';
+        return;
+      }
+      pendingBar.classList.add('active');
+      if (att.kind === 'image') {
+        pendingLabel.textContent = `🖼️ Изображение: ${att.name}`;
+      } else if (att.kind === 'videy') {
+        pendingLabel.textContent = `🎬 Videy: ${att.pageUrl}`;
+      }
+    }
+
+    document.getElementById('clear-attach-btn').addEventListener('click', () => setPendingAttachment(null));
+    document.getElementById('attach-image-btn').addEventListener('click', () => imageFileInput.click());
+
+    imageFileInput.addEventListener('change', () => {
+      const file = imageFileInput.files && imageFileInput.files[0];
+      if (!file) return;
+      if (!['image/png', 'image/jpeg'].includes(file.type)) {
+        alert('Поддерживаются только файлы PNG и JPG.');
+        imageFileInput.value = '';
+        return;
+      }
+      if (file.size > 1.5 * 1024 * 1024) {
+        alert('Размер файла для отправки в базу не должен превышать 1.5 МБ.');
+        imageFileInput.value = '';
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          setPendingAttachment({
+            kind: 'image',
+            name: file.name,
+            dataUrl: reader.result
+          });
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('attach-videy-btn').addEventListener('click', () => {
+      videyUrlInput.value = '';
+      videyModal.classList.add('active');
+      videyUrlInput.focus();
+    });
+
+    document.getElementById('close-videy-modal').addEventListener('click', () => {
+      videyModal.classList.remove('active');
+    });
+
+    document.getElementById('confirm-videy-btn').addEventListener('click', () => {
+      const parsed = parseVideyLink(videyUrlInput.value);
+      if (!parsed) {
+        alert('Введи корректную ссылку на видео (например https://videy.co/v?id=...).');
+        return;
+      }
+      setPendingAttachment({
+        kind: 'videy',
+        pageUrl: parsed.pageUrl,
+        streamUrl: parsed.streamUrl
+      });
+      videyModal.classList.remove('active');
+    });
 
     function appendMessage(msg) {
       const box = document.getElementById('messages-box');
@@ -1931,13 +2529,64 @@
 
       const bodyEl = document.createElement('div');
       bodyEl.className = 'dc-msg-body';
-      bodyEl.innerHTML = `
-        <div class="dc-msg-header">
-          <span class="dc-msg-author">${escapeHtml(authorName)}</span>
-          <span class="dc-msg-time">${timeStr}</span>
-        </div>
-        <div class="dc-msg-content">${escapeHtml(msg.text)}</div>
-      `;
+
+      const headerEl = document.createElement('div');
+      headerEl.className = 'dc-msg-header';
+
+      const authorSpan = document.createElement('span');
+      authorSpan.className = 'dc-msg-author';
+      authorSpan.textContent = authorName;
+      if (msg.nickFont) applyNickFontClass(authorSpan, msg.nickFont);
+
+      const timeSpan = document.createElement('span');
+      timeSpan.className = 'dc-msg-time';
+      timeSpan.textContent = timeStr;
+
+      headerEl.appendChild(authorSpan);
+      headerEl.appendChild(timeSpan);
+      bodyEl.appendChild(headerEl);
+
+      if (msg.text) {
+        const textDiv = document.createElement('div');
+        textDiv.className = 'dc-msg-content';
+        textDiv.textContent = msg.text;
+        bodyEl.appendChild(textDiv);
+      }
+
+      if (msg.attachment && msg.attachment.kind === 'image' && msg.attachment.dataUrl) {
+        const img = document.createElement('img');
+        img.className = 'msg-image-attach';
+        img.src = msg.attachment.dataUrl;
+        img.alt = msg.attachment.name || 'Image';
+        bodyEl.appendChild(img);
+      }
+
+      if (msg.attachment && msg.attachment.kind === 'videy') {
+        const safeStream = sanitizeHttpUrl(msg.attachment.streamUrl);
+        const safePage = sanitizeHttpUrl(msg.attachment.pageUrl) || safeStream;
+        if (safeStream) {
+          const card = document.createElement('div');
+          card.className = 'msg-videy-card';
+
+          const vid = document.createElement('video');
+          vid.className = 'msg-videy-video';
+          vid.src = safeStream;
+          vid.controls = true;
+          vid.playsInline = true;
+          vid.preload = 'metadata';
+
+          const link = document.createElement('a');
+          link.className = 'msg-videy-link';
+          link.href = safePage;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.textContent = `🎬 Открыть на Videy: ${safePage}`;
+
+          card.appendChild(vid);
+          card.appendChild(link);
+          bodyEl.appendChild(card);
+        }
+      }
 
       el.appendChild(avatarEl);
       el.appendChild(bodyEl);
@@ -1955,13 +2604,14 @@
       }
 
       if (db) {
-        currentMessagesRef = ref(db, `messages/${state.activeRoom}`);
+        currentMessagesRef = ref(db, getCurrentFirebaseMessagesPath());
         onChildAdded(currentMessagesRef, snap => {
           const val = snap.val();
           if (val) appendMessage(val);
         });
       } else {
-        const list = state.localMessages[state.activeRoom] || [];
+        const key = getCurrentStoragePath();
+        const list = state.localMessages[key] || [];
         list.forEach(appendMessage);
       }
     }
@@ -1970,34 +2620,41 @@
       e.preventDefault();
       const input = document.getElementById('message-input');
       const text = input.value.trim();
-      if (!text) return;
+      if (!text && !pendingAttachment) return;
 
       const payload = {
         author: state.nickname,
         avatarUrl: state.avatarUrl || null,
+        nickFont: state.nickFont || 'nick-font-sans',
         senderId: clientId,
-        text,
+        text: text || '',
+        attachment: pendingAttachment ? { ...pendingAttachment } : null,
         timestamp: Date.now()
       };
 
       if (db) {
-        push(ref(db, `messages/${state.activeRoom}`), payload).catch(() => {});
+        push(ref(db, getCurrentFirebaseMessagesPath()), payload).catch(() => {});
       } else {
-        if (!state.localMessages[state.activeRoom]) state.localMessages[state.activeRoom] = [];
-        state.localMessages[state.activeRoom].push(payload);
+        const key = getCurrentStoragePath();
+        if (!state.localMessages[key]) state.localMessages[key] = [];
+        state.localMessages[key].push(payload);
         localStorage.setItem('puldot_local_msgs', JSON.stringify(state.localMessages));
         appendMessage(payload);
       }
 
       input.value = '';
+      setPendingAttachment(null);
     });
 
     // === FIREBASE INIT ===
     function initFirebase() {
       const statusEl = document.getElementById('fb-status-text');
+      const settingsInfoEl = document.getElementById('settings-fb-current-info');
+
       if (!state.fbConfig || !state.fbConfig.databaseURL) {
         db = null;
         statusEl.textContent = 'Локальный режим (не указан databaseURL)';
+        if (settingsInfoEl) settingsInfoEl.textContent = 'Режим: локальное хранилище';
         subscribeMessages();
         return;
       }
@@ -2005,11 +2662,14 @@
       try {
         const app = initializeApp(state.fbConfig, 'PulDotApp_' + Date.now());
         db = getDatabase(app);
-        statusEl.textContent = `Подключено: ${state.fbConfig.projectId || 'Firebase RTDB'}`;
+        const label = `Подключено: ${state.fbConfig.projectId || 'Firebase RTDB'}`;
+        statusEl.textContent = label;
+        if (settingsInfoEl) settingsInfoEl.textContent = `${label} (${state.fbConfig.databaseURL})`;
 
         onValue(ref(db, 'presence'), snap => {
           state.remoteStatuses = snap.val() || {};
           renderFriends();
+          renderDmList();
 
           if (activeCallRoom) {
             const entries = Object.entries(state.remoteStatuses);
@@ -2029,40 +2689,10 @@
       } catch (err) {
         db = null;
         statusEl.textContent = 'Ошибка подключения к Firebase';
+        if (settingsInfoEl) settingsInfoEl.textContent = 'Ошибка подключения к Firebase';
         subscribeMessages();
       }
     }
-
-    document.getElementById('fb-config-btn').addEventListener('click', () => {
-      document.getElementById('fb-config-textarea').value = JSON.stringify(state.fbConfig || DEFAULT_FIREBASE_CONFIG, null, 2);
-      document.getElementById('fb-modal').classList.add('active');
-    });
-
-    document.getElementById('close-fb-modal').addEventListener('click', () => {
-      document.getElementById('fb-modal').classList.remove('active');
-    });
-
-    document.getElementById('save-fb-btn').addEventListener('click', () => {
-      const raw = document.getElementById('fb-config-textarea').value.trim();
-      if (!raw) return;
-      try {
-        const parsed = JSON.parse(raw);
-        state.fbConfig = parsed;
-        localStorage.setItem('puldot_fb_config', JSON.stringify(parsed));
-        document.getElementById('fb-modal').classList.remove('active');
-        initFirebase();
-      } catch (e) {
-        alert('Некорректный JSON конфигурации Firebase');
-      }
-    });
-
-    document.getElementById('clear-fb-btn').addEventListener('click', () => {
-      state.fbConfig = { ...DEFAULT_FIREBASE_CONFIG };
-      localStorage.removeItem('puldot_fb_config');
-      document.getElementById('fb-config-textarea').value = JSON.stringify(DEFAULT_FIREBASE_CONFIG, null, 2);
-      document.getElementById('fb-modal').classList.remove('active');
-      initFirebase();
-    });
 
     // === FULLSCREEN BUTTONS FOR CALL TILES ===
     document.querySelectorAll('.call-fs-btn').forEach(btn => {
@@ -2179,6 +2809,10 @@
     }
 
     async function startCall(withVideo) {
+      if (state.channelType !== 'room') {
+        alert('Звонки доступны в текстовых комнатах.');
+        return;
+      }
       if (!db) {
         alert('Для WebRTC-звонков между устройствами нужен подключённый Firebase (сигналинг SDP/ICE).');
         return;
@@ -2384,7 +3018,10 @@
     }
 
     // INIT
+    applyThemeCustomization();
+    updateChannelHeaderUI();
     renderRooms();
+    renderDmList();
     renderGames();
     renderFriends();
     syncPresence();
