@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>PulDot.msg</title>
   <style>
     :root {
@@ -31,26 +31,33 @@
       padding: 0;
     }
 
+    html, body {
+      height: 100%;
+    }
+
     body {
       font-family: 'gg sans', 'Noto Sans', 'Segoe UI', Roboto, sans-serif;
       background-color: var(--bg-chat);
       color: var(--text-normal);
-      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
     }
 
     /* Top Discord-like App Bar */
     .top-bar {
-      height: 48px;
+      min-height: 48px;
       background: var(--bg-servers);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 12px;
-      gap: 10px;
+      padding: 6px 12px;
+      padding-left: max(12px, env(safe-area-inset-left));
+      padding-right: max(12px, env(safe-area-inset-right));
+      gap: 8px;
       position: sticky;
       top: 0;
       z-index: 120;
@@ -60,7 +67,8 @@
     .brand-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      min-width: 0;
     }
 
     .brand-pill {
@@ -71,6 +79,7 @@
       font-size: 0.98rem;
       color: var(--text-normal);
       text-decoration: none;
+      white-space: nowrap;
     }
 
     .brand-badge {
@@ -82,6 +91,7 @@
       align-items: center;
       justify-content: center;
       font-size: 0.9rem;
+      flex-shrink: 0;
     }
 
     .dc-tabs {
@@ -97,12 +107,13 @@
       background: transparent;
       border: none;
       color: var(--text-muted);
-      padding: 4px 12px;
+      padding: 5px 12px;
       border-radius: 6px;
       font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
     }
 
     .dc-tab:hover {
@@ -129,29 +140,40 @@
       background: rgba(240, 178, 50, 0.14);
       border: 1px solid rgba(240, 178, 50, 0.35);
       color: #ffd369;
-      padding: 3px 9px;
+      padding: 4px 9px;
       border-radius: 12px;
       font-size: 0.76rem;
       font-weight: 600;
+      max-width: 100%;
     }
 
     .playing-pill.active {
       display: inline-flex;
     }
 
+    #self-playing-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 150px;
+    }
+
     .dc-btn {
       background: var(--bg-elevated);
       color: var(--text-normal);
       border: 1px solid var(--border);
-      padding: 5px 10px;
+      padding: 6px 10px;
+      min-height: 32px;
       border-radius: 6px;
       font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 5px;
       transition: background 0.15s, transform 0.12s;
+      white-space: nowrap;
     }
 
     .dc-btn:hover:not(:disabled) {
@@ -185,11 +207,27 @@
       border-color: var(--danger-hover);
     }
 
+    .mobile-drawer-btn {
+      display: none;
+    }
+
+    .drawer-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 140;
+    }
+
+    .drawer-backdrop.active {
+      display: block;
+    }
+
     /* Main Workspace */
     .workspace {
       flex: 1;
       display: flex;
-      min-height: calc(100vh - 48px - 42px);
+      min-height: calc(100dvh - 48px - 42px);
     }
 
     .tab-panel {
@@ -210,6 +248,7 @@
       flex-direction: column;
       justify-content: space-between;
       border-right: 1px solid var(--border);
+      z-index: 150;
     }
 
     .sidebar-header {
@@ -222,6 +261,20 @@
       font-size: 0.95rem;
       border-bottom: 1px solid rgba(0, 0, 0, 0.25);
       box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .close-drawer-btn {
+      display: none;
+      background: var(--bg-elevated);
+      border: none;
+      color: var(--text-normal);
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      font-size: 1.15rem;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
     }
 
     .sidebar-body {
@@ -253,7 +306,7 @@
       color: var(--text-normal);
       padding: 8px 10px;
       border-radius: 6px;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       outline: none;
       font-family: inherit;
     }
@@ -273,7 +326,7 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      padding: 7px 10px;
+      padding: 9px 10px;
       border-radius: 6px;
       color: var(--text-muted);
       font-size: 0.92rem;
@@ -307,12 +360,14 @@
       border: 1px solid var(--border);
       font-size: 0.78rem;
       color: var(--text-muted);
+      word-break: break-word;
     }
 
     /* Bottom User Panel (Discord style) */
     .user-panel {
       background: #232428;
       padding: 8px 10px;
+      padding-bottom: max(8px, env(safe-area-inset-bottom));
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -380,31 +435,39 @@
       flex-direction: column;
       background: var(--bg-chat);
       min-width: 0;
-      height: calc(100vh - 48px - 42px);
+      height: calc(100dvh - 48px - 42px);
     }
 
     .chat-topbar {
-      height: 48px;
-      padding: 0 16px;
+      min-height: 48px;
+      padding: 6px 12px;
       border-bottom: 1px solid rgba(0, 0, 0, 0.25);
       box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chat-room-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
       flex-wrap: wrap;
     }
 
     .chat-room-heading {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       font-size: 0.98rem;
       font-weight: 700;
     }
 
     .chat-room-topic {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
       border-left: 1px solid var(--border);
       padding-left: 10px;
@@ -419,8 +482,8 @@
 
     /* WebRTC Stage */
     .call-panel {
-      margin: 12px 16px 0;
-      padding: 12px;
+      margin: 10px 12px 0;
+      padding: 10px 12px;
       border-radius: 8px;
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
@@ -433,14 +496,14 @@
 
     .call-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 10px;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     video.call-video {
       width: 100%;
-      max-height: 210px;
+      max-height: 190px;
       background: #111214;
       border-radius: 6px;
       border: 1px solid var(--border);
@@ -451,16 +514,17 @@
     .messages-stream {
       flex: 1;
       overflow-y: auto;
-      padding: 16px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
+      -webkit-overflow-scrolling: touch;
     }
 
     .dc-msg {
       display: flex;
-      gap: 12px;
-      padding: 6px 10px;
+      gap: 10px;
+      padding: 6px 8px;
       border-radius: 6px;
       transition: background 0.1s;
     }
@@ -470,8 +534,8 @@
     }
 
     .dc-msg-avatar {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: var(--bg-elevated);
       color: var(--text-normal);
@@ -499,11 +563,12 @@
       align-items: baseline;
       gap: 8px;
       margin-bottom: 2px;
+      flex-wrap: wrap;
     }
 
     .dc-msg-author {
       font-weight: 600;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       color: var(--text-normal);
     }
 
@@ -517,14 +582,15 @@
     }
 
     .dc-msg-content {
-      font-size: 0.94rem;
+      font-size: 0.93rem;
       line-height: 1.38;
       color: #dbdee1;
       word-break: break-word;
     }
 
     .composer-wrap {
-      padding: 0 16px 16px;
+      padding: 4px 12px 12px;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
     }
 
     .composer-form {
@@ -543,10 +609,11 @@
 
     .composer-input {
       flex: 1;
+      min-width: 0;
       background: transparent;
       border: none;
       color: var(--text-normal);
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       padding: 8px 4px;
       outline: none;
     }
@@ -554,7 +621,7 @@
     /* Games & Friends Views */
     .view-container {
       width: 100%;
-      padding: 20px 24px;
+      padding: 16px;
       max-width: 1180px;
       margin: 0 auto;
     }
@@ -563,8 +630,8 @@
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 16px 18px;
-      margin-bottom: 18px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -572,21 +639,28 @@
       gap: 12px;
     }
 
+    .add-friend-row {
+      display: flex;
+      gap: 6px;
+      flex: 0 1 280px;
+      min-width: 210px;
+    }
+
     .games-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
     }
 
     .game-card {
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 16px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 14px;
+      gap: 12px;
     }
 
     .game-card:hover {
@@ -594,29 +668,29 @@
     }
 
     .game-card h3 {
-      font-size: 1.05rem;
-      margin-bottom: 6px;
+      font-size: 1.03rem;
+      margin-bottom: 5px;
     }
 
     .game-card p {
       color: var(--text-muted);
-      font-size: 0.88rem;
+      font-size: 0.86rem;
     }
 
     .friends-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 10px;
     }
 
     .friend-card {
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 14px;
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
     }
 
     .friend-row {
@@ -647,7 +721,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.82);
+      background: rgba(0, 0, 0, 0.84);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -655,7 +729,7 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s ease;
-      padding: 16px;
+      padding: 12px;
     }
 
     .modal-overlay.active {
@@ -669,7 +743,7 @@
       border-radius: 10px;
       width: 100%;
       max-width: 960px;
-      height: 82vh;
+      height: 84dvh;
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -679,9 +753,10 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 14px;
+      padding: 10px 12px;
       background: var(--bg-servers);
       border-bottom: 1px solid var(--border);
+      gap: 8px;
     }
 
     .game-frame {
@@ -697,13 +772,15 @@
       border-radius: 10px;
       width: 100%;
       max-width: 470px;
-      padding: 20px;
+      max-height: 90dvh;
+      overflow-y: auto;
+      padding: 18px;
       position: relative;
     }
 
     .wizard-modal {
       z-index: 2000;
-      background: rgba(17, 18, 20, 0.94);
+      background: rgba(17, 18, 20, 0.95);
     }
 
     .wizard-step {
@@ -735,14 +812,15 @@
       background: var(--bg-elevated);
       border: none;
       color: var(--text-normal);
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       border-radius: 6px;
       font-size: 1.2rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
 
     .modal-close:hover {
@@ -757,35 +835,145 @@
     }
 
     footer {
-      height: 42px;
+      min-height: 40px;
       background: var(--bg-servers);
       border-top: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
+      padding: 6px 12px;
+      padding-bottom: max(6px, env(safe-area-inset-bottom));
     }
 
+    /* Tablet & Mobile Drawer Layout */
     @media (max-width: 820px) {
-      .workspace, .chat-stage {
-        height: auto;
-        min-height: calc(100vh - 48px - 42px);
+      .mobile-drawer-btn {
+        display: inline-flex;
       }
 
-      .tab-panel.active {
-        flex-direction: column;
+      .close-drawer-btn {
+        display: inline-flex;
+      }
+
+      .workspace, .chat-stage {
+        height: calc(100dvh - 48px - 40px);
+        min-height: 420px;
       }
 
       .channel-sidebar {
-        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: min(82vw, 290px);
         min-width: 0;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
+        height: 100dvh;
+        transform: translateX(-100%);
+        transition: transform 0.2s ease;
+        border-right: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 8px 0 28px rgba(0, 0, 0, 0.65);
       }
 
-      .messages-stream {
-        min-height: 300px;
+      .channel-sidebar.mobile-open {
+        transform: translateX(0);
+      }
+
+      .chat-room-topic {
+        display: none;
+      }
+    }
+
+    /* Small Phones */
+    @media (max-width: 600px) {
+      .top-bar {
+        padding: 6px 8px;
+      }
+
+      .brand-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .dc-tabs {
+        flex: 1;
+        justify-content: space-between;
+      }
+
+      .dc-tab {
+        flex: 1;
+        padding: 6px 6px;
+        font-size: 0.8rem;
+        text-align: center;
+      }
+
+      .top-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .top-actions .dc-btn {
+        flex: 1;
+        min-height: 36px;
+      }
+
+      #reopen-wizard-btn {
+        flex: 0 0 38px;
+      }
+
+      .playing-pill {
+        width: 100%;
+        justify-content: center;
+      }
+
+      #self-playing-name {
+        max-width: 190px;
+      }
+
+      .chat-topbar {
+        padding: 6px 8px;
+      }
+
+      .call-controls {
+        width: 100%;
+      }
+
+      .call-controls .dc-btn {
+        flex: 1;
+        min-height: 36px;
+        font-size: 0.78rem;
+        padding: 6px 8px;
+      }
+
+      .dc-input, .dc-textarea, .composer-input {
+        font-size: 16px;
+      }
+
+      .composer-form .dc-btn {
+        min-height: 38px;
+        padding: 6px 12px;
+      }
+
+      .view-container {
+        padding: 12px 10px;
+      }
+
+      .add-friend-row {
+        flex: 1 1 100%;
+        max-width: 100%;
+      }
+
+      .game-modal-card {
+        height: 90dvh;
+      }
+
+      footer {
+        display: none;
+      }
+
+      .workspace, .chat-stage {
+        height: calc(100dvh - 88px);
       }
     }
   </style>
@@ -814,13 +1002,16 @@
     </div>
   </header>
 
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
   <div class="workspace">
     <!-- TAB 1: ОБЩЕНИЕ -->
     <section class="tab-panel active" id="tab-chat">
-      <aside class="channel-sidebar">
+      <aside class="channel-sidebar" id="channel-sidebar">
         <div>
           <div class="sidebar-header">
             <span>PulDot.msg</span>
+            <button class="close-drawer-btn" id="close-drawer-btn" title="Закрыть меню">&times;</button>
           </div>
 
           <div class="sidebar-body">
@@ -852,15 +1043,18 @@
 
       <main class="chat-stage">
         <div class="chat-topbar">
-          <div class="chat-room-heading">
-            <span class="channel-hash">#</span>
-            <span id="active-room-title">general</span>
+          <div class="chat-room-left">
+            <button class="dc-btn mobile-drawer-btn" id="open-drawer-btn">☰ Комнаты</button>
+            <div class="chat-room-heading">
+              <span class="channel-hash">#</span>
+              <span id="active-room-title">general</span>
+            </div>
             <span class="chat-room-topic" id="chat-mode-hint">Сообщения сохраняются в Firebase Realtime Database</span>
           </div>
 
           <div class="call-controls">
-            <button class="dc-btn dc-btn-primary" id="start-voice-btn">🎙️ Голосовой (WebRTC)</button>
-            <button class="dc-btn" id="start-video-btn">📹 Видео (WebRTC)</button>
+            <button class="dc-btn dc-btn-primary" id="start-voice-btn">🎙️ Голос</button>
+            <button class="dc-btn" id="start-video-btn">📹 Видео</button>
             <button class="dc-btn dc-btn-danger" id="hangup-btn" style="display: none;">📵 Завершить</button>
           </div>
         </div>
@@ -886,7 +1080,7 @@
 
         <div class="composer-wrap">
           <form class="composer-form" id="message-form">
-            <input type="text" class="composer-input" id="message-input" placeholder="Написать сообщение в комнату..." autocomplete="off" required>
+            <input type="text" class="composer-input" id="message-input" placeholder="Написать сообщение..." autocomplete="off" required>
             <button type="submit" class="dc-btn dc-btn-primary">Отправить</button>
           </form>
         </div>
@@ -919,8 +1113,8 @@
               Добавляй друзей по нику и смотри их текущий статус в сети и активную игру.
             </p>
           </div>
-          <div style="display: flex; gap: 6px;">
-            <input type="text" class="dc-input" id="add-friend-input" placeholder="Ник друга..." style="width: 190px;">
+          <div class="add-friend-row">
+            <input type="text" class="dc-input" id="add-friend-input" placeholder="Ник друга...">
             <button class="dc-btn dc-btn-primary" id="add-friend-btn">Добавить</button>
           </div>
         </div>
@@ -971,9 +1165,9 @@
   <div class="modal-overlay" id="game-modal">
     <div class="game-modal-card">
       <div class="game-modal-header">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <strong id="game-modal-title">Игра</strong>
-          <span class="playing-pill active" id="modal-playing-tag">Играет в активном окне</span>
+        <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+          <strong id="game-modal-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Игра</strong>
+          <span class="playing-pill active" id="modal-playing-tag">В игре</span>
         </div>
         <button class="modal-close" id="close-game-modal" title="Закрыть">&times;</button>
       </div>
@@ -1037,6 +1231,19 @@
       messagingSenderId: "406260242291",
       appId: "1:406260242291:web:a0e11af27b23227f719706"
     };
+
+    // === MOBILE DRAWER ===
+    const channelSidebar = document.getElementById('channel-sidebar');
+    const drawerBackdrop = document.getElementById('drawer-backdrop');
+
+    function setMobileDrawer(open) {
+      channelSidebar.classList.toggle('mobile-open', open);
+      drawerBackdrop.classList.toggle('active', open);
+    }
+
+    document.getElementById('open-drawer-btn').addEventListener('click', () => setMobileDrawer(true));
+    document.getElementById('close-drawer-btn').addEventListener('click', () => setMobileDrawer(false));
+    drawerBackdrop.addEventListener('click', () => setMobileDrawer(false));
 
     // === COOKIE HELPERS ===
     function setCookie(name, value, days = 365) {
@@ -1179,6 +1386,7 @@
       tab.addEventListener('click', () => {
         const target = tab.dataset.tab;
         state.activeTab = target;
+        setMobileDrawer(false);
         document.querySelectorAll('.dc-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === target));
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === `tab-${target}`));
         if (target === 'friends') renderFriends();
@@ -1332,7 +1540,10 @@
         const div = document.createElement('div');
         div.className = `channel-item ${room === state.activeRoom ? 'active' : ''}`;
         div.innerHTML = `<span class="channel-hash">#</span><span>${escapeHtml(room)}</span>`;
-        div.addEventListener('click', () => switchRoom(room));
+        div.addEventListener('click', () => {
+          switchRoom(room);
+          setMobileDrawer(false);
+        });
         list.appendChild(div);
       });
     }
@@ -1346,6 +1557,7 @@
       }
       input.value = '';
       switchRoom(clean);
+      setMobileDrawer(false);
     });
 
     function switchRoom(room) {
