@@ -777,6 +777,7 @@
       ref,
       push,
       set,
+      remove,
       onValue,
       onChildAdded,
       off
@@ -867,7 +868,12 @@
     const clientId = 'user_' + Math.random().toString(36).slice(2, 9);
 
     const rtcConfig = {
-      iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+      iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:stun1.l.google.com:19302' },
+        { urls: 'stun:stun2.l.google.com:19302' },
+        { urls: 'stun:stun.cloudflare.com:3478' }
+      ]
     };
 
     // === WELCOME WIZARD ===
@@ -1220,6 +1226,70 @@
     });
 
     // === WEBRTC CALLS (VOICE / VIDEO + FIREBASE SIGNALING) ===
+    let callUnsubscribers = [];
+    let pendingIceCandidates = [];
+    let activeCallRoom = null;
+
+    function clearCallListeners() {
+      callUnsubscribers.forEach(unsub => {
+        try {
+          unsub();
+        } catch (_) {}
+      });
+      callUnsubscribers = [];
+      pendingIceCandidates = [];
+    }
+
+    async function flushPendingIceCandidates() {
+      if (!peerConnection || !peerConnection.remoteDescription) return;
+      const queued = [...pendingIceCandidates];
+      pendingIceCandidates = [];
+      for (const candidateObj of queued) {
+        try {
+          await peerConnection.addIceCandidate(new RTCIceCandidate(candidateObj));
+        } catch (_) {}
+      }
+    }
+
+    function setupPeerConnection() {
+      if (peerConnection) {
+        try {
+          peerConnection.close();
+        } catch (_) {}
+      }
+
+      peerConnection = new RTCPeerConnection(rtcConfig);
+
+      if (localStream) {
+        localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+      }
+
+      peerConnection.ontrack = event => {
+        const remoteVideo = document.getElementById('remote-video');
+        if (event.streams && event.streams[0]) {
+          remoteVideo.srcObject = event.streams[0];
+        }
+        document.getElementById('call-peer-info').textContent = 'Соединение установлено';
+      };
+
+      peerConnection.onicecandidate = event => {
+        if (event.candidate && db && activeCallRoom) {
+          push(ref(db, `calls/${activeCallRoom}/candidates`), {
+            senderId: clientId,
+            candidate: event.candidate.toJSON()
+          }).catch(() => {});
+        }
+      };
+
+      peerConnection.onconnectionstatechange = () => {
+        if (!peerConnection) return;
+        const infoEl = document.getElementById('call-peer-info');
+        if (peerConnection.connectionState === 'disconnected' || peerConnection.connectionState === 'failed') {
+          infoEl.textContent = 'Соединение прервано (проверьте сеть/NAT)';
+        }
+      };
+    }
+
     async function startCall(withVideo) {
       if (!db) {
         alert('Для WebRTC-звонков между устройствами нужен подключённый Firebase (сигналинг SDP/ICE).');
@@ -1227,80 +1297,130 @@
       }
 
       try {
+        clearCallListeners();
+        activeCallRoom = state.activeRoom;
+
         localStream = await navigator.mediaDevices.getUserMedia({
           audio: true,
           video: withVideo
         });
 
         document.getElementById('local-video').srcObject = localStream;
+        document.getElementById('remote-video').srcObject = null;
         document.getElementById('call-box').classList.add('active');
         document.getElementById('call-status-label').textContent = withVideo ? 'Видеозвонок (WebRTC)' : 'Голосовой звонок (WebRTC)';
+        document.getElementById('call-peer-info').textContent = 'Ожидание подключения...';
         document.getElementById('start-voice-btn').style.display = 'none';
         document.getElementById('start-video-btn').style.display = 'none';
         document.getElementById('hangup-btn').style.display = 'inline-flex';
 
-        peerConnection = new RTCPeerConnection(rtcConfig);
-        localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+        setupPeerConnection();
 
-        peerConnection.ontrack = event => {
-          document.getElementById('remote-video').srcObject = event.streams[0];
-          document.getElementById('call-peer-info').textContent = 'Соединение установлено';
-        };
+        const offerRef = ref(db, `calls/${activeCallRoom}/offer`);
+        const answerRef = ref(db, `calls/${activeCallRoom}/answer`);
+        const candidatesRef = ref(db, `calls/${activeCallRoom}/candidates`);
 
-        peerConnection.onicecandidate = event => {
-          if (event.candidate) {
-            push(ref(db, `calls/${state.activeRoom}/candidates`), {
-              senderId: clientId,
-              candidate: event.candidate.toJSON()
-            });
-          }
-        };
-
-        const offer = await peerConnection.createOffer();
-        await peerConnection.setLocalDescription(offer);
-        await set(ref(db, `calls/${state.activeRoom}/offer`), {
-          senderId: clientId,
-          sdp: offer.sdp,
-          type: offer.type
-        });
-
-        onValue(ref(db, `calls/${state.activeRoom}/answer`), async snap => {
-          const ans = snap.val();
-          if (ans && ans.senderId !== clientId && peerConnection && !peerConnection.currentRemoteDescription) {
-            await peerConnection.setRemoteDescription(new RTCSessionDescription(ans));
-          }
-        });
-
-        onChildAdded(ref(db, `calls/${state.activeRoom}/candidates`), async snap => {
-          const item = snap.val();
-          if (item && item.senderId !== clientId && peerConnection) {
-            try {
-              await peerConnection.addIceCandidate(new RTCIceCandidate(item.candidate));
-            } catch (_) {}
-          }
-        });
-
-        onValue(ref(db, `calls/${state.activeRoom}/offer`), async snap => {
+        const offerUnsub = onValue(offerRef, async snap => {
           const offData = snap.val();
-          if (offData && offData.senderId !== clientId && peerConnection && !peerConnection.currentRemoteDescription) {
-            await peerConnection.setRemoteDescription(new RTCSessionDescription(offData));
-            const answer = await peerConnection.createAnswer();
-            await peerConnection.setLocalDescription(answer);
-            await set(ref(db, `calls/${state.activeRoom}/answer`), {
-              senderId: clientId,
-              sdp: answer.sdp,
-              type: answer.type
-            });
+          if (!offData || offData.senderId === clientId || !peerConnection) return;
+
+          try {
+            if (offData.type === 'offer' && peerConnection.signalingState === 'stable') {
+              await peerConnection.setRemoteDescription(new RTCSessionDescription(offData));
+              await flushPendingIceCandidates();
+
+              const answer = await peerConnection.createAnswer();
+              await peerConnection.setLocalDescription(answer);
+              await set(answerRef, {
+                senderId: clientId,
+                sdp: answer.sdp,
+                type: answer.type
+              });
+            }
+          } catch (err) {
+            console.warn('Ошибка обработки входящего offer:', err);
           }
         });
+
+        const answerUnsub = onValue(answerRef, async snap => {
+          const ans = snap.val();
+          if (!ans || ans.senderId === clientId || !peerConnection) return;
+
+          try {
+            if (ans.type === 'answer' && peerConnection.signalingState === 'have-local-offer') {
+              await peerConnection.setRemoteDescription(new RTCSessionDescription(ans));
+              await flushPendingIceCandidates();
+            }
+          } catch (err) {
+            console.warn('Ошибка установки remote answer:', err);
+          }
+        });
+
+        const candUnsub = onChildAdded(candidatesRef, async snap => {
+          const item = snap.val();
+          if (!item || item.senderId === clientId || !item.candidate || !peerConnection) return;
+
+          if (!peerConnection.remoteDescription || !peerConnection.remoteDescription.type) {
+            pendingIceCandidates.push(item.candidate);
+            return;
+          }
+
+          try {
+            await peerConnection.addIceCandidate(new RTCIceCandidate(item.candidate));
+          } catch (_) {}
+        });
+
+        callUnsubscribers.push(
+          () => off(offerRef, 'value', offerUnsub),
+          () => off(answerRef, 'value', answerUnsub),
+          () => off(candidatesRef, 'child_added', candUnsub)
+        );
+
+        let hasExistingOffer = false;
+        await new Promise(resolve => {
+          const checkUnsub = onValue(offerRef, s => {
+            const val = s.val();
+            hasExistingOffer = Boolean(val && val.senderId && val.senderId !== clientId);
+            off(offerRef, 'value', checkUnsub);
+            resolve();
+          }, { onlyOnce: true });
+        });
+
+        if (!hasExistingOffer && peerConnection && peerConnection.signalingState === 'stable') {
+          const offer = await peerConnection.createOffer();
+          await peerConnection.setLocalDescription(offer);
+          await set(offerRef, {
+            senderId: clientId,
+            sdp: offer.sdp,
+            type: offer.type
+          });
+        }
+
+        window.addEventListener('beforeunload', cleanupCallNodeOnUnload, { once: true });
       } catch (err) {
+        clearCallListeners();
         alert('Не удалось получить доступ к микрофону/камере: ' + err.message);
       }
     }
 
+    function cleanupCallNodeOnUnload() {
+      if (db && activeCallRoom) {
+        remove(ref(db, `calls/${activeCallRoom}`)).catch(() => {});
+      }
+    }
+
     function hangupCall() {
+      clearCallListeners();
+
+      if (db && activeCallRoom) {
+        remove(ref(db, `calls/${activeCallRoom}`)).catch(() => {});
+      }
+      activeCallRoom = null;
+
       if (peerConnection) {
-        peerConnection.close();
+        try {
+          peerConnection.close();
+        } catch (_) {}
         peerConnection = null;
       }
       if (localStream) {
