@@ -6,16 +6,23 @@
   <title>PulDot.msg</title>
   <style>
     :root {
-      --bg-color: #0d0607;
-      --card-bg: rgba(30, 10, 12, 0.65);
-      --accent-color: #e63946;
-      --accent-hover: #ff4d5a;
-      --text-color: #f1faee;
-      --text-muted: #a8a2a4;
-      --border-color: rgba(230, 57, 70, 0.25);
-      --glass-border: rgba(255, 255, 255, 0.08);
-      --online-color: #2ecc71;
-      --playing-color: #ff9f1c;
+      --bg-servers: #1e1f22;
+      --bg-sidebar: #2b2d31;
+      --bg-chat: #313338;
+      --bg-elevated: #383a40;
+      --bg-input: #383a40;
+      --bg-hover: #35373c;
+      --bg-active: #404249;
+      --text-normal: #f2f3f5;
+      --text-muted: #949ba4;
+      --text-faint: #6d6f78;
+      --accent: #5865f2;
+      --accent-hover: #4752c4;
+      --danger: #da373c;
+      --danger-hover: #a1282c;
+      --online: #23a55a;
+      --playing: #f0b232;
+      --border: rgba(255, 255, 255, 0.06);
     }
 
     * {
@@ -25,437 +32,630 @@
     }
 
     body {
-      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
+      font-family: 'gg sans', 'Noto Sans', 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-chat);
+      color: var(--text-normal);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      background-image:
-        radial-gradient(circle at 20% 20%, rgba(230, 57, 70, 0.15) 0%, transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(120, 15, 25, 0.2) 0%, transparent 50%);
-      background-attachment: fixed;
+      overflow-x: hidden;
     }
 
-    header {
-      background: rgba(15, 5, 7, 0.88);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-color);
+    /* Top Discord-like App Bar */
+    .top-bar {
+      height: 48px;
+      background: var(--bg-servers);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      gap: 10px;
       position: sticky;
       top: 0;
-      z-index: 100;
-      padding: 0.85rem 1.5rem;
-    }
-
-    .header-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      z-index: 120;
       flex-wrap: wrap;
-      gap: 1rem;
     }
 
-    .logo {
+    .brand-group {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      font-size: 1.35rem;
+      gap: 12px;
+    }
+
+    .brand-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       font-weight: 700;
-      color: var(--text-color);
+      font-size: 0.98rem;
+      color: var(--text-normal);
       text-decoration: none;
     }
 
-    .logo-icon {
-      width: 38px;
-      height: 38px;
-      background: linear-gradient(135deg, var(--accent-color), #800f19);
-      border-radius: 8px;
-      display: flex;
+    .brand-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      background: var(--accent);
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px rgba(230, 57, 70, 0.4);
-      font-size: 1.15rem;
+      font-size: 0.9rem;
     }
 
-    .nav-tabs {
+    .dc-tabs {
       display: flex;
-      gap: 0.5rem;
-      background: rgba(255, 255, 255, 0.04);
-      padding: 0.3rem;
-      border-radius: 10px;
-      border: 1px solid var(--glass-border);
+      align-items: center;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 3px;
+      border-radius: 8px;
     }
 
-    .nav-tab {
+    .dc-tab {
       background: transparent;
       border: none;
       color: var(--text-muted);
-      padding: 0.45rem 0.95rem;
-      border-radius: 7px;
-      cursor: pointer;
-      font-size: 0.9rem;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
       font-weight: 600;
-      transition: all 0.2s ease;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
     }
 
-    .nav-tab:hover {
-      color: var(--text-color);
+    .dc-tab:hover {
+      color: var(--text-normal);
+      background: rgba(255, 255, 255, 0.04);
     }
 
-    .nav-tab.active {
-      background: var(--accent-color);
+    .dc-tab.active {
+      background: var(--bg-active);
       color: #fff;
-      box-shadow: 0 2px 10px rgba(230, 57, 70, 0.35);
     }
 
-    .profile-bar {
+    .top-actions {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      background: rgba(230, 57, 70, 0.1);
-      border: 1px solid var(--border-color);
-      padding: 0.35rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--online-color);
-      display: inline-block;
-    }
-
-    .playing-badge {
-      background: rgba(255, 159, 28, 0.18);
-      border: 1px solid rgba(255, 159, 28, 0.5);
-      color: #ffbe55;
-      padding: 0.15rem 0.55rem;
-      border-radius: 12px;
-      font-size: 0.78rem;
-      font-weight: 600;
+    .playing-pill {
       display: none;
-    }
-
-    .playing-badge.active {
-      display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: 5px;
+      background: rgba(240, 178, 50, 0.14);
+      border: 1px solid rgba(240, 178, 50, 0.35);
+      color: #ffd369;
+      padding: 3px 9px;
+      border-radius: 12px;
+      font-size: 0.76rem;
+      font-weight: 600;
     }
 
-    .btn {
-      background: rgba(230, 57, 70, 0.15);
-      color: var(--text-color);
-      border: 1px solid var(--border-color);
-      padding: 0.45rem 0.9rem;
-      border-radius: 8px;
+    .playing-pill.active {
+      display: inline-flex;
+    }
+
+    .dc-btn {
+      background: var(--bg-elevated);
+      color: var(--text-normal);
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 0.85rem;
-      font-weight: 500;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
+      gap: 5px;
+      transition: background 0.15s, transform 0.12s;
     }
 
-    .btn:hover:not(:disabled) {
-      background: var(--accent-color);
-      border-color: var(--accent-color);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+    .dc-btn:hover:not(:disabled) {
+      background: var(--bg-active);
     }
 
-    .btn:disabled {
+    .dc-btn:disabled {
       opacity: 0.45;
       cursor: not-allowed;
     }
 
-    .btn-primary {
-      background: var(--accent-color);
-      border-color: var(--accent-color);
+    .dc-btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
       color: #fff;
     }
 
-    .btn-primary:hover:not(:disabled) {
+    .dc-btn-primary:hover:not(:disabled) {
       background: var(--accent-hover);
+      border-color: var(--accent-hover);
     }
 
-    main {
-      max-width: 1200px;
-      margin: 1.5rem auto;
-      padding: 0 1.25rem;
+    .dc-btn-danger {
+      background: var(--danger);
+      border-color: var(--danger);
+      color: #fff;
+    }
+
+    .dc-btn-danger:hover:not(:disabled) {
+      background: var(--danger-hover);
+      border-color: var(--danger-hover);
+    }
+
+    /* Main Workspace */
+    .workspace {
       flex: 1;
-      width: 100%;
+      display: flex;
+      min-height: calc(100vh - 48px - 42px);
     }
 
     .tab-panel {
       display: none;
+      width: 100%;
     }
 
     .tab-panel.active {
-      display: block;
+      display: flex;
     }
 
-    .glass-panel {
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--glass-border);
-      border-radius: 14px;
-      padding: 1.25rem;
-    }
-
-    /* Chat Layout */
-    .chat-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 1.25rem;
-      min-height: 580px;
-    }
-
-    @media (max-width: 820px) {
-      .chat-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .sidebar-title {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-muted);
-      margin-bottom: 0.75rem;
-    }
-
-    .input-field, .select-field {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.45);
-      border: 1px solid var(--glass-border);
-      color: var(--text-color);
-      padding: 0.55rem 0.75rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      outline: none;
-    }
-
-    .input-field:focus, .select-field:focus {
-      border-color: var(--accent-color);
-    }
-
-    .room-list {
+    /* Channel Sidebar (Discord style) */
+    .channel-sidebar {
+      width: 250px;
+      min-width: 250px;
+      background: var(--bg-sidebar);
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
-      margin: 0.75rem 0 1.25rem;
-    }
-
-    .room-item {
-      padding: 0.55rem 0.75rem;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid transparent;
-      cursor: pointer;
-      display: flex;
       justify-content: space-between;
+      border-right: 1px solid var(--border);
+    }
+
+    .sidebar-header {
+      height: 48px;
+      padding: 0 14px;
+      display: flex;
       align-items: center;
-      font-size: 0.9rem;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
     }
 
-    .room-item:hover {
-      background: rgba(255, 255, 255, 0.07);
+    .sidebar-body {
+      padding: 12px 8px;
+      flex: 1;
+      overflow-y: auto;
     }
 
-    .room-item.active {
-      background: rgba(230, 57, 70, 0.18);
-      border-color: var(--border-color);
+    .category-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      padding: 0 8px;
+      margin-bottom: 6px;
+    }
+
+    .create-room-row {
+      display: flex;
+      gap: 6px;
+      padding: 0 4px 10px;
+    }
+
+    .dc-input, .dc-textarea {
+      width: 100%;
+      background: var(--bg-servers);
+      border: 1px solid rgba(0, 0, 0, 0.35);
+      color: var(--text-normal);
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .dc-input:focus, .dc-textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .channel-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-bottom: 18px;
+    }
+
+    .channel-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s;
+    }
+
+    .channel-item:hover {
+      background: var(--bg-hover);
+      color: var(--text-normal);
+    }
+
+    .channel-item.active {
+      background: var(--bg-active);
       color: #fff;
       font-weight: 600;
     }
 
-    .chat-main {
-      display: flex;
-      flex-direction: column;
-      height: 580px;
+    .channel-hash {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1;
     }
 
-    .chat-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      padding-bottom: 0.9rem;
-      border-bottom: 1px solid var(--glass-border);
-      margin-bottom: 0.9rem;
-    }
-
-    .messages-box {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
-      padding-right: 0.35rem;
-      margin-bottom: 0.9rem;
-    }
-
-    .msg-item {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--glass-border);
-      border-radius: 10px;
-      padding: 0.65rem 0.85rem;
-      max-width: 82%;
-    }
-
-    .msg-item.own {
-      align-self: flex-end;
-      background: rgba(230, 57, 70, 0.16);
-      border-color: var(--border-color);
-    }
-
-    .msg-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
+    .db-box {
+      margin: 0 4px;
+      padding: 10px;
+      border-radius: 6px;
+      background: var(--bg-servers);
+      border: 1px solid var(--border);
       font-size: 0.78rem;
       color: var(--text-muted);
-      margin-bottom: 0.25rem;
     }
 
-    .msg-author {
-      color: var(--accent-color);
-      font-weight: 600;
-    }
-
-    .msg-text {
-      font-size: 0.95rem;
-      word-break: break-word;
-    }
-
-    .chat-form {
+    /* Bottom User Panel (Discord style) */
+    .user-panel {
+      background: #232428;
+      padding: 8px 10px;
       display: flex;
-      gap: 0.6rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-top: 1px solid rgba(0, 0, 0, 0.25);
     }
 
-    /* WebRTC Call Box */
-    .call-box {
-      margin-top: 1rem;
-      padding: 0.9rem;
-      border-radius: 10px;
-      background: rgba(0, 0, 0, 0.45);
-      border: 1px solid var(--border-color);
+    .user-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .avatar-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .avatar-status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--online);
+      border: 2px solid #232428;
+      position: absolute;
+      right: -1px;
+      bottom: -1px;
+    }
+
+    .user-nick-wrap {
+      overflow: hidden;
+    }
+
+    .user-nick-text {
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-sub-text {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Chat Area */
+    .chat-stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-chat);
+      min-width: 0;
+      height: calc(100vh - 48px - 42px);
+    }
+
+    .chat-topbar {
+      height: 48px;
+      padding: 0 16px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chat-room-heading {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.98rem;
+      font-weight: 700;
+    }
+
+    .chat-room-topic {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-left: 1px solid var(--border);
+      padding-left: 10px;
+    }
+
+    .call-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    /* WebRTC Stage */
+    .call-panel {
+      margin: 12px 16px 0;
+      padding: 12px;
+      border-radius: 8px;
+      background: var(--bg-sidebar);
+      border: 1px solid var(--border);
       display: none;
     }
 
-    .call-box.active {
+    .call-panel.active {
       display: block;
     }
 
-    .call-videos {
+    .call-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 0.75rem;
-      margin-top: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
     }
 
     video.call-video {
       width: 100%;
-      max-height: 220px;
-      background: #050203;
-      border-radius: 8px;
-      border: 1px solid var(--glass-border);
+      max-height: 210px;
+      background: #111214;
+      border-radius: 6px;
+      border: 1px solid var(--border);
       object-fit: cover;
     }
 
-    /* Games Grid */
+    /* Messages Stream */
+    .messages-stream {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .dc-msg {
+      display: flex;
+      gap: 12px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: background 0.1s;
+    }
+
+    .dc-msg:hover {
+      background: rgba(4, 4, 5, 0.14);
+    }
+
+    .dc-msg-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--bg-elevated);
+      color: var(--text-normal);
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .dc-msg.own .dc-msg-avatar {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .dc-msg-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .dc-msg-header {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .dc-msg-author {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text-normal);
+    }
+
+    .dc-msg.own .dc-msg-author {
+      color: #9ba5ff;
+    }
+
+    .dc-msg-time {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .dc-msg-content {
+      font-size: 0.94rem;
+      line-height: 1.38;
+      color: #dbdee1;
+      word-break: break-word;
+    }
+
+    .composer-wrap {
+      padding: 0 16px 16px;
+    }
+
+    .composer-form {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-input);
+      border-radius: 8px;
+      padding: 4px 6px 4px 12px;
+      border: 1px solid transparent;
+    }
+
+    .composer-form:focus-within {
+      border-color: rgba(88, 101, 242, 0.55);
+    }
+
+    .composer-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-normal);
+      font-size: 0.92rem;
+      padding: 8px 4px;
+      outline: none;
+    }
+
+    /* Games & Friends Views */
+    .view-container {
+      width: 100%;
+      padding: 20px 24px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .view-banner {
+      background: var(--bg-sidebar);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
     .games-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.25rem;
-      margin-top: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 14px;
     }
 
     .game-card {
-      background: var(--card-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 14px;
-      padding: 1.25rem;
+      background: var(--bg-sidebar);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 1rem;
-      transition: all 0.25s ease;
+      gap: 14px;
     }
 
     .game-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--border-color);
+      border-color: rgba(88, 101, 242, 0.45);
     }
 
     .game-card h3 {
-      font-size: 1.15rem;
-      margin-bottom: 0.4rem;
+      font-size: 1.05rem;
+      margin-bottom: 6px;
     }
 
     .game-card p {
       color: var(--text-muted);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
 
-    /* Friends Grid */
     .friends-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+      gap: 12px;
     }
 
     .friend-card {
-      background: var(--card-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      padding: 1rem;
+      background: var(--bg-sidebar);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
+      gap: 6px;
     }
 
-    .friend-top {
+    .friend-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 0.5rem;
+      gap: 8px;
     }
 
-    .friend-status {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-    }
-
-    .friend-playing {
-      color: #ffbe55;
-      font-size: 0.82rem;
+    .status-online-text {
+      font-size: 0.8rem;
+      color: var(--online);
       font-weight: 600;
     }
 
-    /* Modal */
+    .status-offline-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .activity-text {
+      font-size: 0.82rem;
+      color: #ffd369;
+      font-weight: 600;
+    }
+
+    /* Modals */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.88);
-      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.82);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 1000;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s ease;
-      padding: 1rem;
+      transition: opacity 0.2s ease;
+      padding: 16px;
     }
 
     .modal-overlay.active {
@@ -464,49 +664,46 @@
     }
 
     .game-modal-card {
-      background: #14080a;
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
+      background: var(--bg-sidebar);
+      border: 1px solid var(--border);
+      border-radius: 10px;
       width: 100%;
       max-width: 960px;
       height: 82vh;
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85);
     }
 
     .game-modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.85rem 1.2rem;
-      border-bottom: 1px solid var(--border-color);
-      background: rgba(20, 6, 8, 0.95);
+      padding: 10px 14px;
+      background: var(--bg-servers);
+      border-bottom: 1px solid var(--border);
     }
 
     .game-frame {
       flex: 1;
       width: 100%;
       border: none;
-      background: #0a0405;
+      background: #111214;
     }
 
     .small-modal-card {
-      background: #14080a;
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
+      background: var(--bg-sidebar);
+      border: 1px solid var(--border);
+      border-radius: 10px;
       width: 100%;
-      max-width: 480px;
-      padding: 1.5rem;
+      max-width: 470px;
+      padding: 20px;
       position: relative;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9);
     }
 
-    /* Welcome Wizard Modal */
     .wizard-modal {
       z-index: 2000;
-      background: rgba(8, 3, 4, 0.94);
+      background: rgba(17, 18, 20, 0.94);
     }
 
     .wizard-step {
@@ -519,30 +716,29 @@
 
     .wizard-dots {
       display: flex;
-      gap: 0.4rem;
-      margin-bottom: 1.1rem;
+      gap: 6px;
+      margin-bottom: 14px;
     }
 
     .wizard-dot {
       height: 4px;
       flex: 1;
       border-radius: 4px;
-      background: rgba(255, 255, 255, 0.12);
-      transition: background 0.2s ease;
+      background: var(--bg-elevated);
     }
 
     .wizard-dot.active {
-      background: var(--accent-color);
+      background: var(--accent);
     }
 
     .modal-close {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--glass-border);
-      color: var(--text-color);
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      font-size: 1.25rem;
+      background: var(--bg-elevated);
+      border: none;
+      color: var(--text-normal);
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      font-size: 1.2rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -550,117 +746,164 @@
     }
 
     .modal-close:hover {
-      background: var(--accent-color);
-      border-color: var(--accent-color);
+      background: var(--danger);
+      color: #fff;
     }
 
     .notice {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
-      margin-top: 0.5rem;
+      margin-top: 8px;
     }
 
     footer {
-      text-align: center;
-      padding: 1.25rem;
-      font-size: 0.85rem;
+      height: 42px;
+      background: var(--bg-servers);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      margin-top: auto;
+    }
+
+    @media (max-width: 820px) {
+      .workspace, .chat-stage {
+        height: auto;
+        min-height: calc(100vh - 48px - 42px);
+      }
+
+      .tab-panel.active {
+        flex-direction: column;
+      }
+
+      .channel-sidebar {
+        width: 100%;
+        min-width: 0;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .messages-stream {
+        min-height: 300px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="header-container">
-      <a href="#" class="logo" id="brand-home">
-        <div class="logo-icon">💬</div>
+  <header class="top-bar">
+    <div class="brand-group">
+      <a href="#" class="brand-pill" id="brand-home">
+        <span class="brand-badge">💬</span>
         <span>PulDot.msg</span>
       </a>
 
-      <nav class="nav-tabs" role="tablist">
-        <button class="nav-tab active" data-tab="chat">Общение</button>
-        <button class="nav-tab" data-tab="games">Игры</button>
-        <button class="nav-tab" data-tab="friends">Друзья</button>
+      <nav class="dc-tabs" role="tablist">
+        <button class="dc-tab active" data-tab="chat">Общение</button>
+        <button class="dc-tab" data-tab="games">Игры</button>
+        <button class="dc-tab" data-tab="friends">Друзья</button>
       </nav>
+    </div>
 
-      <div class="profile-bar">
-        <span class="status-dot" id="self-status-dot"></span>
-        <strong id="self-nickname">Гость</strong>
-        <span class="playing-badge" id="self-playing-badge">🎮 Играет в: <span id="self-playing-name"></span></span>
-        <button class="btn" id="edit-profile-btn">Ник</button>
-        <button class="btn" id="fb-config-btn">Firebase</button>
-        <button class="btn" id="reopen-wizard-btn" title="Мастер настройки">⚙️</button>
-      </div>
+    <div class="top-actions">
+      <span class="playing-pill" id="self-playing-badge">🎮 Играет в: <span id="self-playing-name"></span></span>
+      <button class="dc-btn" id="edit-profile-btn">Ник</button>
+      <button class="dc-btn" id="fb-config-btn">Firebase</button>
+      <button class="dc-btn" id="reopen-wizard-btn" title="Мастер настройки">⚙️</button>
     </div>
   </header>
 
-  <main>
+  <div class="workspace">
     <!-- TAB 1: ОБЩЕНИЕ -->
     <section class="tab-panel active" id="tab-chat">
-      <div class="chat-layout">
-        <aside class="glass-panel">
-          <div class="sidebar-title">Комнаты</div>
-          <div style="display: flex; gap: 0.4rem;">
-            <input type="text" class="input-field" id="new-room-input" placeholder="Новая комната...">
-            <button class="btn btn-primary" id="create-room-btn">+</button>
+      <aside class="channel-sidebar">
+        <div>
+          <div class="sidebar-header">
+            <span>PulDot.msg</span>
           </div>
-          <div class="room-list" id="room-list"></div>
 
-          <div class="sidebar-title">Firebase статус</div>
-          <div id="fb-status-text" style="font-size: 0.85rem; color: var(--text-muted);">
-            Инициализация Firebase...
+          <div class="sidebar-body">
+            <div class="category-label">Текстовые комнаты</div>
+            <div class="create-room-row">
+              <input type="text" class="dc-input" id="new-room-input" placeholder="Новая комната...">
+              <button class="dc-btn dc-btn-primary" id="create-room-btn">+</button>
+            </div>
+
+            <div class="channel-list" id="room-list"></div>
+
+            <div class="category-label">Firebase Realtime Database</div>
+            <div class="db-box" id="fb-status-text">
+              Инициализация Firebase...
+            </div>
           </div>
-        </aside>
+        </div>
 
-        <div class="glass-panel chat-main">
-          <div class="chat-header">
+        <div class="user-panel">
+          <div class="user-meta">
+            <div class="avatar-circle" id="self-avatar">U<span class="avatar-status-dot" id="self-status-dot"></span></div>
+            <div class="user-nick-wrap">
+              <div class="user-nick-text" id="self-nickname">Гость</div>
+              <div class="user-sub-text" id="self-activity-sub">В сети</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="chat-stage">
+        <div class="chat-topbar">
+          <div class="chat-room-heading">
+            <span class="channel-hash">#</span>
+            <span id="active-room-title">general</span>
+            <span class="chat-room-topic" id="chat-mode-hint">Сообщения сохраняются в Firebase Realtime Database</span>
+          </div>
+
+          <div class="call-controls">
+            <button class="dc-btn dc-btn-primary" id="start-voice-btn">🎙️ Голосовой (WebRTC)</button>
+            <button class="dc-btn" id="start-video-btn">📹 Видео (WebRTC)</button>
+            <button class="dc-btn dc-btn-danger" id="hangup-btn" style="display: none;">📵 Завершить</button>
+          </div>
+        </div>
+
+        <div class="call-panel" id="call-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <strong id="call-status-label">WebRTC звонок</strong>
+            <span style="font-size: 0.8rem; color: var(--text-muted);" id="call-peer-info">Ожидание подключения...</span>
+          </div>
+          <div class="call-grid">
             <div>
-              <h2 style="font-size: 1.15rem;">Комната: <span id="active-room-title" style="color: var(--accent-color);">#general</span></h2>
-              <div style="font-size: 0.8rem; color: var(--text-muted);" id="chat-mode-hint">Сообщения сохраняются в Firebase Realtime Database</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Вы</div>
+              <video id="local-video" class="call-video" autoplay muted playsinline></video>
             </div>
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-              <button class="btn btn-primary" id="start-voice-btn">🎙️ Голосовой (WebRTC)</button>
-              <button class="btn" id="start-video-btn">📹 Видео (WebRTC)</button>
-              <button class="btn" id="hangup-btn" style="display: none;">📵 Завершить</button>
-            </div>
-          </div>
-
-          <div class="call-box" id="call-box">
-            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-              <strong id="call-status-label">WebRTC звонок</strong>
-              <span style="font-size: 0.8rem; color: var(--text-muted);" id="call-peer-info">Ожидание подключения...</span>
-            </div>
-            <div class="call-videos">
-              <div>
-                <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Вы</div>
-                <video id="local-video" class="call-video" autoplay muted playsinline></video>
-              </div>
-              <div>
-                <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Собеседник</div>
-                <video id="remote-video" class="call-video" autoplay playsinline></video>
-              </div>
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Собеседник</div>
+              <video id="remote-video" class="call-video" autoplay playsinline></video>
             </div>
           </div>
+        </div>
 
-          <div class="messages-box" id="messages-box"></div>
+        <div class="messages-stream" id="messages-box"></div>
 
-          <form class="chat-form" id="message-form">
-            <input type="text" class="input-field" id="message-input" placeholder="Написать сообщение..." autocomplete="off" required>
-            <button type="submit" class="btn btn-primary">Отправить</button>
+        <div class="composer-wrap">
+          <form class="composer-form" id="message-form">
+            <input type="text" class="composer-input" id="message-input" placeholder="Написать сообщение в комнату..." autocomplete="off" required>
+            <button type="submit" class="dc-btn dc-btn-primary">Отправить</button>
           </form>
         </div>
-      </div>
+      </main>
     </section>
 
     <!-- TAB 2: ИГРЫ -->
     <section class="tab-panel" id="tab-games">
-      <div class="glass-panel">
-        <h2 style="font-size: 1.25rem;">Игры</h2>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">
-          При нажатии «Играть» игра откроется во всплывающем окне, а в профиле появится плашка активности.
-        </p>
+      <div class="view-container">
+        <div class="view-banner">
+          <div>
+            <h2 style="font-size: 1.15rem;">Игровой центр</h2>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 3px;">
+              При нажатии «Играть» игра откроется во всплывающем окне, а в профиле появится плашка активности.
+            </p>
+          </div>
+        </div>
 
         <div class="games-grid" id="games-grid"></div>
       </div>
@@ -668,22 +911,24 @@
 
     <!-- TAB 3: ДРУЗЬЯ -->
     <section class="tab-panel" id="tab-friends">
-      <div class="glass-panel">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+      <div class="view-container">
+        <div class="view-banner">
           <div>
-            <h2 style="font-size: 1.25rem;">Друзья</h2>
-            <p style="color: var(--text-muted); font-size: 0.88rem;">Добавляй друзей по нику и смотри их текущий статус.</p>
+            <h2 style="font-size: 1.15rem;">Друзья</h2>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 3px;">
+              Добавляй друзей по нику и смотри их текущий статус в сети и активную игру.
+            </p>
           </div>
-          <div style="display: flex; gap: 0.5rem;">
-            <input type="text" class="input-field" id="add-friend-input" placeholder="Ник друга..." style="width: 190px;">
-            <button class="btn btn-primary" id="add-friend-btn">Добавить</button>
+          <div style="display: flex; gap: 6px;">
+            <input type="text" class="dc-input" id="add-friend-input" placeholder="Ник друга..." style="width: 190px;">
+            <button class="dc-btn dc-btn-primary" id="add-friend-btn">Добавить</button>
           </div>
         </div>
 
         <div class="friends-grid" id="friends-grid"></div>
       </div>
     </section>
-  </main>
+  </div>
 
   <!-- Welcome Setup Wizard Modal -->
   <div class="modal-overlay wizard-modal" id="welcome-wizard">
@@ -693,31 +938,29 @@
         <div class="wizard-dot" id="w-dot-2"></div>
       </div>
 
-      <!-- Step 1: Nickname -->
       <div class="wizard-step active" id="wizard-step-1">
-        <h2 style="font-size: 1.35rem; margin-bottom: 0.4rem;">Добро пожаловать в PulDot.msg</h2>
-        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.1rem;">
+        <h2 style="font-size: 1.25rem; margin-bottom: 6px;">Добро пожаловать в PulDot.msg</h2>
+        <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 14px;">
           Быстрая первичная настройка. Выбери свой никнейм, под которым тебя увидят в чате и списке друзей.
         </p>
-        <label style="font-size: 0.82rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Твой никнейм</label>
-        <input type="text" class="input-field" id="wizard-nick-input" maxlength="24" placeholder="Например: User_2077" style="margin-bottom: 1.1rem;">
-        <button class="btn btn-primary" id="wizard-next-1" style="width: 100%;">Далее →</button>
+        <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 6px;">Твой никнейм</label>
+        <input type="text" class="dc-input" id="wizard-nick-input" maxlength="24" placeholder="Например: User_2077" style="margin-bottom: 14px;">
+        <button class="dc-btn dc-btn-primary" id="wizard-next-1" style="width: 100%; padding: 8px;">Далее →</button>
       </div>
 
-      <!-- Step 2: Optional Firebase Override & Cookie Save -->
       <div class="wizard-step" id="wizard-step-2">
-        <h2 style="font-size: 1.25rem; margin-bottom: 0.4rem;">Подключение Firebase</h2>
-        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 0.9rem;">
+        <h2 style="font-size: 1.2rem; margin-bottom: 6px;">Подключение Firebase</h2>
+        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 10px;">
           Встроенный конфиг проекта <code>puldotmsg</code> уже подключён. При желании можешь указать свой JSON-конфиг <code>firebaseConfig</code>.
         </p>
-        <textarea class="input-field" id="wizard-fb-input" rows="5" style="font-family: monospace; font-size: 0.78rem; margin-bottom: 1rem;" placeholder='{
+        <textarea class="dc-textarea" id="wizard-fb-input" rows="5" style="font-family: monospace; font-size: 0.78rem; margin-bottom: 12px;" placeholder='{
   "apiKey": "...",
   "databaseURL": "https://puldotmsg-default-rtdb.europe-west1.firebasedatabase.app",
   "projectId": "puldotmsg"
 }'></textarea>
-        <div style="display: flex; gap: 0.5rem;">
-          <button class="btn" id="wizard-back-2">← Назад</button>
-          <button class="btn btn-primary" id="wizard-finish-btn" style="flex: 1;">Завершить и сохранить</button>
+        <div style="display: flex; gap: 8px;">
+          <button class="dc-btn" id="wizard-back-2">← Назад</button>
+          <button class="dc-btn dc-btn-primary" id="wizard-finish-btn" style="flex: 1;">Завершить и сохранить</button>
         </div>
         <div class="notice">Настройки и факт прохождения сохраняются в cookies браузера на 1 год.</div>
       </div>
@@ -728,9 +971,9 @@
   <div class="modal-overlay" id="game-modal">
     <div class="game-modal-card">
       <div class="game-modal-header">
-        <div style="display: flex; align-items: center; gap: 0.6rem;">
+        <div style="display: flex; align-items: center; gap: 8px;">
           <strong id="game-modal-title">Игра</strong>
-          <span class="playing-badge active" id="modal-playing-tag">Играет в активном окне</span>
+          <span class="playing-pill active" id="modal-playing-tag">Играет в активном окне</span>
         </div>
         <button class="modal-close" id="close-game-modal" title="Закрыть">&times;</button>
       </div>
@@ -741,26 +984,26 @@
   <!-- Profile Nick Modal -->
   <div class="modal-overlay" id="profile-modal">
     <div class="small-modal-card">
-      <button class="modal-close" id="close-profile-modal" style="position: absolute; top: 1rem; right: 1rem;">&times;</button>
-      <h3 style="margin-bottom: 0.9rem;">Профиль</h3>
-      <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">Ваш никнейм</label>
-      <input type="text" class="input-field" id="nickname-input" maxlength="24" style="margin-bottom: 1rem;">
-      <button class="btn btn-primary" id="save-nickname-btn" style="width: 100%;">Сохранить</button>
+      <button class="modal-close" id="close-profile-modal" style="position: absolute; top: 14px; right: 14px;">&times;</button>
+      <h3 style="margin-bottom: 12px;">Профиль</h3>
+      <label style="font-size: 0.82rem; color: var(--text-muted); display: block; margin-bottom: 6px;">Ваш никнейм</label>
+      <input type="text" class="dc-input" id="nickname-input" maxlength="24" style="margin-bottom: 14px;">
+      <button class="dc-btn dc-btn-primary" id="save-nickname-btn" style="width: 100%; padding: 8px;">Сохранить</button>
     </div>
   </div>
 
   <!-- Firebase Config Modal -->
   <div class="modal-overlay" id="fb-modal">
     <div class="small-modal-card">
-      <button class="modal-close" id="close-fb-modal" style="position: absolute; top: 1rem; right: 1rem;">&times;</button>
-      <h3 style="margin-bottom: 0.5rem;">Настройка Firebase Realtime Database</h3>
-      <p style="font-size: 0.83rem; color: var(--text-muted); margin-bottom: 0.9rem;">
+      <button class="modal-close" id="close-fb-modal" style="position: absolute; top: 14px; right: 14px;">&times;</button>
+      <h3 style="margin-bottom: 6px;">Настройка Firebase Realtime Database</h3>
+      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px;">
         Вставь JSON-объект <code>firebaseConfig</code> из консоли Firebase (Realtime Database + Signaling для WebRTC) или сбрось до встроенного.
       </p>
-      <textarea class="input-field" id="fb-config-textarea" rows="7" style="font-family: monospace; font-size: 0.8rem; margin-bottom: 0.85rem;"></textarea>
-      <div style="display: flex; gap: 0.5rem;">
-        <button class="btn btn-primary" id="save-fb-btn" style="flex: 1;">Сохранить конфиг</button>
-        <button class="btn" id="clear-fb-btn">По умолчанию</button>
+      <textarea class="dc-textarea" id="fb-config-textarea" rows="7" style="font-family: monospace; font-size: 0.78rem; margin-bottom: 10px;"></textarea>
+      <div style="display: flex; gap: 8px;">
+        <button class="dc-btn dc-btn-primary" id="save-fb-btn" style="flex: 1;">Сохранить конфиг</button>
+        <button class="dc-btn" id="clear-fb-btn">По умолчанию</button>
       </div>
       <div class="notice">Убедись, что в Firebase Console создана Realtime Database и указан <code>databaseURL</code>.</div>
     </div>
@@ -932,28 +1175,39 @@
     document.getElementById('reopen-wizard-btn').addEventListener('click', openWizard);
 
     // === TABS ===
-    document.querySelectorAll('.nav-tab').forEach(tab => {
+    document.querySelectorAll('.dc-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const target = tab.dataset.tab;
         state.activeTab = target;
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === target));
+        document.querySelectorAll('.dc-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === target));
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === `tab-${target}`));
         if (target === 'friends') renderFriends();
       });
     });
 
     // === PROFILE & PRESENCE (PLAYING STATUS) ===
+    function updateSelfAvatar() {
+      const firstChar = (state.nickname || 'U').trim().charAt(0).toUpperCase() || 'U';
+      const avatarEl = document.getElementById('self-avatar');
+      avatarEl.firstChild.textContent = firstChar;
+    }
+
     function syncPresence() {
       document.getElementById('self-nickname').textContent = state.nickname;
+      updateSelfAvatar();
+
       const badge = document.getElementById('self-playing-badge');
       const nameEl = document.getElementById('self-playing-name');
+      const subEl = document.getElementById('self-activity-sub');
 
       if (state.playingGame) {
         nameEl.textContent = state.playingGame;
         badge.classList.add('active');
+        subEl.textContent = `Играет в ${state.playingGame}`;
       } else {
         nameEl.textContent = '';
         badge.classList.remove('active');
+        subEl.textContent = 'В сети';
       }
 
       if (db) {
@@ -998,7 +1252,7 @@
             <h3>${escapeHtml(game.title)}</h3>
             <p>${escapeHtml(game.description)}</p>
           </div>
-          <button class="btn btn-primary" data-game-title="${escapeHtml(game.title)}" data-game-url="${escapeHtml(game.url)}">
+          <button class="dc-btn dc-btn-primary" data-game-title="${escapeHtml(game.title)}" data-game-url="${escapeHtml(game.url)}">
             Играть
           </button>
         `;
@@ -1033,7 +1287,7 @@
       grid.innerHTML = '';
 
       if (state.friends.length === 0) {
-        grid.innerHTML = '<div style="color: var(--text-muted); font-size: 0.9rem;">Список друзей пока пуст. Добавь кого-нибудь по нику справа сверху.</div>';
+        grid.innerHTML = '<div style="color: var(--text-muted); font-size: 0.9rem;">Список друзей пока пуст. Добавь кого-нибудь по нику в шапке вкладки.</div>';
         return;
       }
 
@@ -1048,11 +1302,11 @@
         const card = document.createElement('div');
         card.className = 'friend-card';
         card.innerHTML = `
-          <div class="friend-top">
+          <div class="friend-row">
             <strong>${escapeHtml(friendNick)}</strong>
-            <span class="friend-status">${online ? '● В сети' : '○ Офлайн'}</span>
+            <span class="${online ? 'status-online-text' : 'status-offline-text'}">${online ? '● В сети' : '○ Офлайн'}</span>
           </div>
-          ${playing ? `<div class="friend-playing">🎮 Играет в ${escapeHtml(playing)}</div>` : `<div class="friend-status">${online ? 'В сети' : 'Не в сети'}</div>`}
+          ${playing ? `<div class="activity-text">🎮 Играет в ${escapeHtml(playing)}</div>` : `<div class="${online ? 'status-online-text' : 'status-offline-text'}">${online ? 'В сети' : 'Не в сети'}</div>`}
         `;
         grid.appendChild(card);
       });
@@ -1076,8 +1330,8 @@
       list.innerHTML = '';
       state.rooms.forEach(room => {
         const div = document.createElement('div');
-        div.className = `room-item ${room === state.activeRoom ? 'active' : ''}`;
-        div.innerHTML = `<span>#${escapeHtml(room)}</span>`;
+        div.className = `channel-item ${room === state.activeRoom ? 'active' : ''}`;
+        div.innerHTML = `<span class="channel-hash">#</span><span>${escapeHtml(room)}</span>`;
         div.addEventListener('click', () => switchRoom(room));
         list.appendChild(div);
       });
@@ -1096,7 +1350,7 @@
 
     function switchRoom(room) {
       state.activeRoom = room;
-      document.getElementById('active-room-title').textContent = `#${room}`;
+      document.getElementById('active-room-title').textContent = room;
       renderRooms();
       subscribeMessages();
     }
@@ -1104,16 +1358,21 @@
     function appendMessage(msg) {
       const box = document.getElementById('messages-box');
       const isOwn = msg.senderId === clientId;
+      const authorName = msg.author || 'anon';
+      const initial = authorName.trim().charAt(0).toUpperCase() || 'U';
       const timeStr = new Date(msg.timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
       const el = document.createElement('div');
-      el.className = `msg-item ${isOwn ? 'own' : ''}`;
+      el.className = `dc-msg ${isOwn ? 'own' : ''}`;
       el.innerHTML = `
-        <div class="msg-meta">
-          <span class="msg-author">${escapeHtml(msg.author || 'anon')}</span>
-          <span>${timeStr}</span>
+        <div class="dc-msg-avatar">${escapeHtml(initial)}</div>
+        <div class="dc-msg-body">
+          <div class="dc-msg-header">
+            <span class="dc-msg-author">${escapeHtml(authorName)}</span>
+            <span class="dc-msg-time">${timeStr}</span>
+          </div>
+          <div class="dc-msg-content">${escapeHtml(msg.text)}</div>
         </div>
-        <div class="msg-text">${escapeHtml(msg.text)}</div>
       `;
       box.appendChild(el);
       box.scrollTop = box.scrollHeight;
