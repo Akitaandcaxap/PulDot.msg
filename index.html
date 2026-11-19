@@ -223,6 +223,28 @@
       display: block;
     }
 
+    /* Avatar Component */
+    .avatar-media {
+      position: relative;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .avatar-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     /* Main Workspace */
     .workspace {
       flex: 1;
@@ -382,19 +404,17 @@
       min-width: 0;
     }
 
-    .avatar-circle {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .avatar-circle-wrap {
       position: relative;
+      width: 34px;
+      height: 34px;
       flex-shrink: 0;
+    }
+
+    .avatar-circle-wrap .avatar-media {
+      width: 34px;
+      height: 34px;
+      font-size: 0.85rem;
     }
 
     .avatar-status-dot {
@@ -406,6 +426,7 @@
       position: absolute;
       right: -1px;
       bottom: -1px;
+      z-index: 2;
     }
 
     .user-nick-wrap {
@@ -483,8 +504,8 @@
     /* WebRTC Stage */
     .call-panel {
       margin: 10px 12px 0;
-      padding: 10px 12px;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 10px;
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
       display: none;
@@ -495,19 +516,152 @@
     }
 
     .call-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 10px;
-      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .call-tile {
+      position: relative;
+      background: #111214;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 200px;
+      min-height: 155px;
+      flex: 1 1 240px;
+      max-width: 100%;
+      transition: aspect-ratio 0.2s ease, max-width 0.2s ease;
+    }
+
+    .call-tile.remote-video-sized {
+      flex: 0 1 auto;
+      width: min(100%, 480px);
+      max-height: 360px;
+    }
+
+    .call-tile.local-video-tile {
+      flex: 0 1 240px;
+      aspect-ratio: 16 / 9;
+    }
+
+    .call-tile:fullscreen,
+    .call-tile:-webkit-full-screen {
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: 100vw !important;
+      max-height: 100vh !important;
+      border-radius: 0;
+      background: #000;
+    }
+
+    .call-tile:fullscreen video.call-video,
+    .call-tile:-webkit-full-screen video.call-video {
+      width: 100%;
+      height: 100%;
+      max-height: 100vh;
+      object-fit: contain;
+    }
+
+    .call-tile-header {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      z-index: 5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      pointer-events: none;
+    }
+
+    .call-tile-badge {
+      background: rgba(17, 18, 20, 0.78);
+      backdrop-filter: blur(4px);
+      color: #f2f3f5;
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .call-fs-btn {
+      pointer-events: auto;
+      background: rgba(17, 18, 20, 0.82);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .call-fs-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
     }
 
     video.call-video {
       width: 100%;
-      max-height: 190px;
+      height: 100%;
+      max-height: 360px;
       background: #111214;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      object-fit: cover;
+      object-fit: contain;
+      display: block;
+    }
+
+    .audio-avatar-stage {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 26px 16px 16px;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(88, 101, 242, 0.18), #111214 75%);
+    }
+
+    .call-panel.audio-mode .audio-avatar-stage {
+      display: flex;
+    }
+
+    .call-panel.audio-mode video.call-video,
+    .call-panel.audio-mode .call-fs-btn {
+      display: none;
+    }
+
+    .audio-avatar-ring {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      padding: 3px;
+      border: 2px solid var(--online);
+      box-shadow: 0 0 18px rgba(35, 165, 90, 0.28);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .audio-avatar-ring .avatar-media {
+      width: 100%;
+      height: 100%;
+      font-size: 1.65rem;
+    }
+
+    .audio-peer-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
     }
 
     /* Messages Stream */
@@ -534,23 +688,15 @@
     }
 
     .dc-msg-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--bg-elevated);
-      color: var(--text-normal);
-      font-weight: 700;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      font-size: 0.88rem;
       margin-top: 2px;
+      background: var(--bg-elevated);
     }
 
     .dc-msg.own .dc-msg-avatar {
       background: var(--accent);
-      color: #fff;
     }
 
     .dc-msg-body {
@@ -679,7 +825,7 @@
 
     .friends-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
       gap: 10px;
     }
 
@@ -689,8 +835,19 @@
       border-radius: 8px;
       padding: 12px 14px;
       display: flex;
-      flex-direction: column;
-      gap: 5px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .friend-avatar {
+      width: 40px;
+      height: 40px;
+      font-size: 0.95rem;
+    }
+
+    .friend-info {
+      flex: 1;
+      min-width: 0;
     }
 
     .friend-row {
@@ -715,6 +872,25 @@
       font-size: 0.82rem;
       color: #ffd369;
       font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* Avatar Preview in Modals */
+    .avatar-preview-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding: 8px 10px;
+      background: var(--bg-servers);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .avatar-preview-circle {
+      width: 46px;
+      height: 46px;
+      font-size: 1.1rem;
     }
 
     /* Modals */
@@ -946,6 +1122,11 @@
         padding: 6px 8px;
       }
 
+      .call-tile {
+        min-width: 100%;
+        flex: 1 1 100%;
+      }
+
       .dc-input, .dc-textarea, .composer-input {
         font-size: 16px;
       }
@@ -996,7 +1177,7 @@
 
     <div class="top-actions">
       <span class="playing-pill" id="self-playing-badge">🎮 Играет в: <span id="self-playing-name"></span></span>
-      <button class="dc-btn" id="edit-profile-btn">Ник</button>
+      <button class="dc-btn" id="edit-profile-btn">Профиль</button>
       <button class="dc-btn" id="fb-config-btn">Firebase</button>
       <button class="dc-btn" id="reopen-wizard-btn" title="Мастер настройки">⚙️</button>
     </div>
@@ -1032,7 +1213,10 @@
 
         <div class="user-panel">
           <div class="user-meta">
-            <div class="avatar-circle" id="self-avatar">U<span class="avatar-status-dot" id="self-status-dot"></span></div>
+            <div class="avatar-circle-wrap">
+              <div class="avatar-media" id="self-avatar">U</div>
+              <span class="avatar-status-dot" id="self-status-dot"></span>
+            </div>
             <div class="user-nick-wrap">
               <div class="user-nick-text" id="self-nickname">Гость</div>
               <div class="user-sub-text" id="self-activity-sub">В сети</div>
@@ -1065,12 +1249,33 @@
             <span style="font-size: 0.8rem; color: var(--text-muted);" id="call-peer-info">Ожидание подключения...</span>
           </div>
           <div class="call-grid">
-            <div>
-              <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Вы</div>
+            <div class="call-tile local-video-tile" id="local-call-tile">
+              <div class="call-tile-header">
+                <span class="call-tile-badge" id="local-call-label">Вы</span>
+                <button type="button" class="call-fs-btn" data-fs-target="local-call-tile" title="На весь экран">⛶ Фулскрин</button>
+              </div>
+              <div class="audio-avatar-stage">
+                <div class="audio-avatar-ring">
+                  <div class="avatar-media" id="call-local-avatar">U</div>
+                </div>
+                <strong style="font-size: 0.88rem;" id="call-local-name">Вы</strong>
+                <span class="audio-peer-sub">Микрофон активен</span>
+              </div>
               <video id="local-video" class="call-video" autoplay muted playsinline></video>
             </div>
-            <div>
-              <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Собеседник</div>
+
+            <div class="call-tile" id="remote-call-tile">
+              <div class="call-tile-header">
+                <span class="call-tile-badge" id="remote-call-label">Собеседник</span>
+                <button type="button" class="call-fs-btn" data-fs-target="remote-call-tile" title="На весь экран">⛶ Фулскрин</button>
+              </div>
+              <div class="audio-avatar-stage">
+                <div class="audio-avatar-ring">
+                  <div class="avatar-media" id="call-remote-avatar">?</div>
+                </div>
+                <strong style="font-size: 0.88rem;" id="call-remote-name">Собеседник</strong>
+                <span class="audio-peer-sub" id="call-remote-sub">В голосовом канале</span>
+              </div>
               <video id="remote-video" class="call-video" autoplay playsinline></video>
             </div>
           </div>
@@ -1134,11 +1339,24 @@
 
       <div class="wizard-step active" id="wizard-step-1">
         <h2 style="font-size: 1.25rem; margin-bottom: 6px;">Добро пожаловать в PulDot.msg</h2>
-        <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 14px;">
-          Быстрая первичная настройка. Выбери свой никнейм, под которым тебя увидят в чате и списке друзей.
+        <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 12px;">
+          Выбери никнейм и при желании вставь прямую ссылку (URL) на аватарку — её увидят все в чате и при голосовых звонках.
         </p>
-        <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 6px;">Твой никнейм</label>
-        <input type="text" class="dc-input" id="wizard-nick-input" maxlength="24" placeholder="Например: User_2077" style="margin-bottom: 14px;">
+
+        <div class="avatar-preview-row">
+          <div class="avatar-media avatar-preview-circle" id="wizard-avatar-preview">U</div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 0.82rem; font-weight: 600;">Предпросмотр аватарки</div>
+            <div style="font-size: 0.74rem; color: var(--text-muted);">Поддерживаются прямые ссылки PNG / JPG / GIF / WEBP</div>
+          </div>
+        </div>
+
+        <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 5px;">Твой никнейм</label>
+        <input type="text" class="dc-input" id="wizard-nick-input" maxlength="24" placeholder="Например: User_2077" style="margin-bottom: 10px;">
+
+        <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 5px;">URL аватарки (необязательно)</label>
+        <input type="url" class="dc-input" id="wizard-avatar-input" placeholder="https://example.com/avatar.png" style="margin-bottom: 14px;">
+
         <button class="dc-btn dc-btn-primary" id="wizard-next-1" style="width: 100%; padding: 8px;">Далее →</button>
       </div>
 
@@ -1175,14 +1393,30 @@
     </div>
   </div>
 
-  <!-- Profile Nick Modal -->
+  <!-- Profile Nick & Avatar Modal -->
   <div class="modal-overlay" id="profile-modal">
     <div class="small-modal-card">
       <button class="modal-close" id="close-profile-modal" style="position: absolute; top: 14px; right: 14px;">&times;</button>
       <h3 style="margin-bottom: 12px;">Профиль</h3>
-      <label style="font-size: 0.82rem; color: var(--text-muted); display: block; margin-bottom: 6px;">Ваш никнейм</label>
-      <input type="text" class="dc-input" id="nickname-input" maxlength="24" style="margin-bottom: 14px;">
-      <button class="dc-btn dc-btn-primary" id="save-nickname-btn" style="width: 100%; padding: 8px;">Сохранить</button>
+
+      <div class="avatar-preview-row">
+        <div class="avatar-media avatar-preview-circle" id="profile-avatar-preview">U</div>
+        <div style="flex: 1; min-width: 0;">
+          <div style="font-size: 0.82rem; font-weight: 600;">Аватар профиля</div>
+          <div style="font-size: 0.74rem; color: var(--text-muted);">Виден всем в сообщениях, друзьях и аудиозвонках</div>
+        </div>
+      </div>
+
+      <label style="font-size: 0.82rem; color: var(--text-muted); display: block; margin-bottom: 5px;">Ваш никнейм</label>
+      <input type="text" class="dc-input" id="nickname-input" maxlength="24" style="margin-bottom: 10px;">
+
+      <label style="font-size: 0.82rem; color: var(--text-muted); display: block; margin-bottom: 5px;">Ссылка на аватарку (URL)</label>
+      <input type="url" class="dc-input" id="avatar-url-input" placeholder="https://example.com/avatar.png" style="margin-bottom: 14px;">
+
+      <div style="display: flex; gap: 8px;">
+        <button class="dc-btn dc-btn-primary" id="save-nickname-btn" style="flex: 1; padding: 8px;">Сохранить</button>
+        <button class="dc-btn" id="clear-avatar-btn" type="button">Убрать фото</button>
+      </div>
     </div>
   </div>
 
@@ -1231,6 +1465,41 @@
       messagingSenderId: "406260242291",
       appId: "1:406260242291:web:a0e11af27b23227f719706"
     };
+
+    // === SAFE AVATAR RENDERING ===
+    function sanitizeAvatarUrl(rawUrl) {
+      if (!rawUrl || typeof rawUrl !== 'string') return '';
+      const trimmed = rawUrl.trim();
+      if (!trimmed) return '';
+      try {
+        const parsed = new URL(trimmed);
+        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+          return parsed.href;
+        }
+      } catch (_) {}
+      return '';
+    }
+
+    function renderAvatarContent(containerEl, nick, avatarUrl) {
+      if (!containerEl) return;
+      const initial = ((nick || 'U').trim().charAt(0) || 'U').toUpperCase();
+      const safeUrl = sanitizeAvatarUrl(avatarUrl);
+      containerEl.innerHTML = '';
+
+      if (safeUrl) {
+        const img = document.createElement('img');
+        img.src = safeUrl;
+        img.alt = nick || 'Avatar';
+        img.referrerPolicy = 'no-referrer';
+        img.onerror = () => {
+          containerEl.innerHTML = '';
+          containerEl.textContent = initial;
+        };
+        containerEl.appendChild(img);
+      } else {
+        containerEl.textContent = initial;
+      }
+    }
 
     // === MOBILE DRAWER ===
     const channelSidebar = document.getElementById('channel-sidebar');
@@ -1284,6 +1553,7 @@
 
     const savedNickFromCookie = getCookie('puldot_nick');
     const setupDoneCookie = getCookie('puldot_setup_done') === '1';
+    const savedAvatarFromStorage = localStorage.getItem('puldot_avatar_url') || '';
 
     let savedFbConfig = null;
     try {
@@ -1300,6 +1570,7 @@
 
     const state = {
       nickname: savedNickFromCookie || generateDefaultNick(),
+      avatarUrl: sanitizeAvatarUrl(savedAvatarFromStorage),
       setupDone: setupDoneCookie,
       activeTab: 'chat',
       activeRoom: 'general',
@@ -1315,6 +1586,9 @@
     let currentMessagesRef = null;
     let peerConnection = null;
     let localStream = null;
+    let activeCallRoom = null;
+    let activeCallWithVideo = false;
+    let remotePeerInfo = { nickname: 'Собеседник', avatarUrl: '' };
     const clientId = 'user_' + Math.random().toString(36).slice(2, 9);
 
     const rtcConfig = {
@@ -1326,8 +1600,40 @@
       ]
     };
 
+    function getUserAvatarByNickOrId(nick, senderId) {
+      if (senderId && state.remoteStatuses && state.remoteStatuses[senderId] && state.remoteStatuses[senderId].avatarUrl) {
+        return state.remoteStatuses[senderId].avatarUrl;
+      }
+      if (nick === state.nickname && state.avatarUrl) {
+        return state.avatarUrl;
+      }
+      const remoteList = Object.values(state.remoteStatuses || {});
+      const found = remoteList.find(u => u && u.nickname === nick && u.avatarUrl);
+      return found ? found.avatarUrl : '';
+    }
+
+    function updateCallAvatarsUI() {
+      renderAvatarContent(document.getElementById('call-local-avatar'), state.nickname, state.avatarUrl);
+      document.getElementById('call-local-name').textContent = state.nickname;
+      document.getElementById('local-call-label').textContent = `Вы (${state.nickname})`;
+
+      renderAvatarContent(document.getElementById('call-remote-avatar'), remotePeerInfo.nickname, remotePeerInfo.avatarUrl);
+      document.getElementById('call-remote-name').textContent = remotePeerInfo.nickname || 'Собеседник';
+      document.getElementById('remote-call-label').textContent = remotePeerInfo.nickname || 'Собеседник';
+    }
+
     // === WELCOME WIZARD ===
     const wizardOverlay = document.getElementById('welcome-wizard');
+    const wizardNickInput = document.getElementById('wizard-nick-input');
+    const wizardAvatarInput = document.getElementById('wizard-avatar-input');
+    const wizardAvatarPreview = document.getElementById('wizard-avatar-preview');
+
+    function refreshWizardPreview() {
+      renderAvatarContent(wizardAvatarPreview, wizardNickInput.value.trim() || 'U', wizardAvatarInput.value);
+    }
+
+    wizardNickInput.addEventListener('input', refreshWizardPreview);
+    wizardAvatarInput.addEventListener('input', refreshWizardPreview);
 
     function showWizardStep(step) {
       document.getElementById('wizard-step-1').classList.toggle('active', step === 1);
@@ -1337,19 +1643,22 @@
     }
 
     function openWizard() {
-      document.getElementById('wizard-nick-input').value = state.nickname;
+      wizardNickInput.value = state.nickname;
+      wizardAvatarInput.value = state.avatarUrl || '';
+      refreshWizardPreview();
       document.getElementById('wizard-fb-input').value = JSON.stringify(state.fbConfig, null, 2);
       showWizardStep(1);
       wizardOverlay.classList.add('active');
     }
 
     document.getElementById('wizard-next-1').addEventListener('click', () => {
-      const nickInput = document.getElementById('wizard-nick-input').value.trim();
+      const nickInput = wizardNickInput.value.trim();
       if (!nickInput) {
         alert('Введи никнейм, чтобы продолжить.');
         return;
       }
       state.nickname = nickInput;
+      state.avatarUrl = sanitizeAvatarUrl(wizardAvatarInput.value);
       showWizardStep(2);
     });
 
@@ -1373,6 +1682,7 @@
       state.setupDone = true;
       setCookie('puldot_nick', state.nickname, 365);
       setCookie('puldot_setup_done', '1', 365);
+      localStorage.setItem('puldot_avatar_url', state.avatarUrl);
 
       wizardOverlay.classList.remove('active');
       syncPresence();
@@ -1393,16 +1703,11 @@
       });
     });
 
-    // === PROFILE & PRESENCE (PLAYING STATUS) ===
-    function updateSelfAvatar() {
-      const firstChar = (state.nickname || 'U').trim().charAt(0).toUpperCase() || 'U';
-      const avatarEl = document.getElementById('self-avatar');
-      avatarEl.firstChild.textContent = firstChar;
-    }
-
+    // === PROFILE & PRESENCE ===
     function syncPresence() {
       document.getElementById('self-nickname').textContent = state.nickname;
-      updateSelfAvatar();
+      renderAvatarContent(document.getElementById('self-avatar'), state.nickname, state.avatarUrl);
+      updateCallAvatarsUI();
 
       const badge = document.getElementById('self-playing-badge');
       const nameEl = document.getElementById('self-playing-name');
@@ -1421,15 +1726,31 @@
       if (db) {
         set(ref(db, `presence/${clientId}`), {
           nickname: state.nickname,
+          avatarUrl: state.avatarUrl || null,
           playingGame: state.playingGame || null,
+          activeRoom: state.activeRoom,
+          inCallRoom: activeCallRoom || null,
           updatedAt: Date.now()
         }).catch(() => {});
       }
       renderFriends();
     }
 
+    const profileNickInput = document.getElementById('nickname-input');
+    const profileAvatarInput = document.getElementById('avatar-url-input');
+    const profileAvatarPreview = document.getElementById('profile-avatar-preview');
+
+    function refreshProfilePreview() {
+      renderAvatarContent(profileAvatarPreview, profileNickInput.value.trim() || 'U', profileAvatarInput.value);
+    }
+
+    profileNickInput.addEventListener('input', refreshProfilePreview);
+    profileAvatarInput.addEventListener('input', refreshProfilePreview);
+
     document.getElementById('edit-profile-btn').addEventListener('click', () => {
-      document.getElementById('nickname-input').value = state.nickname;
+      profileNickInput.value = state.nickname;
+      profileAvatarInput.value = state.avatarUrl || '';
+      refreshProfilePreview();
       document.getElementById('profile-modal').classList.add('active');
     });
 
@@ -1437,13 +1758,28 @@
       document.getElementById('profile-modal').classList.remove('active');
     });
 
+    document.getElementById('clear-avatar-btn').addEventListener('click', () => {
+      profileAvatarInput.value = '';
+      refreshProfilePreview();
+    });
+
     document.getElementById('save-nickname-btn').addEventListener('click', () => {
-      const val = document.getElementById('nickname-input').value.trim();
+      const val = profileNickInput.value.trim();
+      const rawUrl = profileAvatarInput.value.trim();
+      const cleanAvatar = sanitizeAvatarUrl(rawUrl);
+
+      if (rawUrl && !cleanAvatar) {
+        alert('Укажи корректную ссылку начинающуюся с http:// или https://');
+        return;
+      }
+
       if (val) {
         state.nickname = val;
         setCookie('puldot_nick', state.nickname, 365);
-        syncPresence();
       }
+      state.avatarUrl = cleanAvatar;
+      localStorage.setItem('puldot_avatar_url', state.avatarUrl);
+      syncPresence();
       document.getElementById('profile-modal').classList.remove('active');
     });
 
@@ -1502,20 +1838,31 @@
       const remoteList = Object.values(state.remoteStatuses || {});
 
       state.friends.forEach(friendNick => {
-        const matchedRemote = remoteList.find(u => u.nickname === friendNick && (Date.now() - (u.updatedAt || 0) < 120000));
+        const matchedRemote = remoteList.find(u => u && u.nickname === friendNick && (Date.now() - (u.updatedAt || 0) < 120000));
         const isSelf = friendNick === state.nickname;
         const playing = isSelf ? state.playingGame : (matchedRemote ? matchedRemote.playingGame : null);
         const online = isSelf || Boolean(matchedRemote);
+        const friendAvatar = isSelf ? state.avatarUrl : (matchedRemote && matchedRemote.avatarUrl ? matchedRemote.avatarUrl : '');
 
         const card = document.createElement('div');
         card.className = 'friend-card';
-        card.innerHTML = `
+
+        const avatarEl = document.createElement('div');
+        avatarEl.className = 'avatar-media friend-avatar';
+        renderAvatarContent(avatarEl, friendNick, friendAvatar);
+
+        const infoEl = document.createElement('div');
+        infoEl.className = 'friend-info';
+        infoEl.innerHTML = `
           <div class="friend-row">
             <strong>${escapeHtml(friendNick)}</strong>
             <span class="${online ? 'status-online-text' : 'status-offline-text'}">${online ? '● В сети' : '○ Офлайн'}</span>
           </div>
           ${playing ? `<div class="activity-text">🎮 Играет в ${escapeHtml(playing)}</div>` : `<div class="${online ? 'status-online-text' : 'status-offline-text'}">${online ? 'В сети' : 'Не в сети'}</div>`}
         `;
+
+        card.appendChild(avatarEl);
+        card.appendChild(infoEl);
         grid.appendChild(card);
       });
     }
@@ -1565,27 +1912,35 @@
       document.getElementById('active-room-title').textContent = room;
       renderRooms();
       subscribeMessages();
+      syncPresence();
     }
 
     function appendMessage(msg) {
       const box = document.getElementById('messages-box');
       const isOwn = msg.senderId === clientId;
       const authorName = msg.author || 'anon';
-      const initial = authorName.trim().charAt(0).toUpperCase() || 'U';
       const timeStr = new Date(msg.timestamp || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const msgAvatarUrl = msg.avatarUrl || getUserAvatarByNickOrId(authorName, msg.senderId);
 
       const el = document.createElement('div');
       el.className = `dc-msg ${isOwn ? 'own' : ''}`;
-      el.innerHTML = `
-        <div class="dc-msg-avatar">${escapeHtml(initial)}</div>
-        <div class="dc-msg-body">
-          <div class="dc-msg-header">
-            <span class="dc-msg-author">${escapeHtml(authorName)}</span>
-            <span class="dc-msg-time">${timeStr}</span>
-          </div>
-          <div class="dc-msg-content">${escapeHtml(msg.text)}</div>
+
+      const avatarEl = document.createElement('div');
+      avatarEl.className = 'avatar-media dc-msg-avatar';
+      renderAvatarContent(avatarEl, authorName, msgAvatarUrl);
+
+      const bodyEl = document.createElement('div');
+      bodyEl.className = 'dc-msg-body';
+      bodyEl.innerHTML = `
+        <div class="dc-msg-header">
+          <span class="dc-msg-author">${escapeHtml(authorName)}</span>
+          <span class="dc-msg-time">${timeStr}</span>
         </div>
+        <div class="dc-msg-content">${escapeHtml(msg.text)}</div>
       `;
+
+      el.appendChild(avatarEl);
+      el.appendChild(bodyEl);
       box.appendChild(el);
       box.scrollTop = box.scrollHeight;
     }
@@ -1619,6 +1974,7 @@
 
       const payload = {
         author: state.nickname,
+        avatarUrl: state.avatarUrl || null,
         senderId: clientId,
         text,
         timestamp: Date.now()
@@ -1654,6 +2010,18 @@
         onValue(ref(db, 'presence'), snap => {
           state.remoteStatuses = snap.val() || {};
           renderFriends();
+
+          if (activeCallRoom) {
+            const entries = Object.entries(state.remoteStatuses);
+            const peerEntry = entries.find(([id, u]) => id !== clientId && u && (u.inCallRoom === activeCallRoom || u.activeRoom === activeCallRoom));
+            if (peerEntry && peerEntry[1]) {
+              remotePeerInfo = {
+                nickname: peerEntry[1].nickname || 'Собеседник',
+                avatarUrl: peerEntry[1].avatarUrl || ''
+              };
+              updateCallAvatarsUI();
+            }
+          }
         });
 
         syncPresence();
@@ -1696,10 +2064,59 @@
       initFirebase();
     });
 
+    // === FULLSCREEN BUTTONS FOR CALL TILES ===
+    document.querySelectorAll('.call-fs-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const targetId = btn.dataset.fsTarget;
+        const tile = document.getElementById(targetId);
+        if (!tile) return;
+
+        try {
+          if (document.fullscreenElement === tile) {
+            await document.exitFullscreen();
+          } else if (tile.requestFullscreen) {
+            await tile.requestFullscreen();
+          } else if (tile.webkitRequestFullscreen) {
+            tile.webkitRequestFullscreen();
+          } else {
+            const vid = tile.querySelector('video');
+            if (vid && vid.webkitEnterFullscreen) {
+              vid.webkitEnterFullscreen();
+            }
+          }
+        } catch (err) {
+          console.warn('Fullscreen error:', err);
+        }
+      });
+    });
+
+    // === AUTO-RESIZE REMOTE VIDEO TILE TO MATCH CAMERA RESOLUTION ===
+    const remoteVideoEl = document.getElementById('remote-video');
+    const remoteTileEl = document.getElementById('remote-call-tile');
+
+    function applyRemoteVideoAspect() {
+      const vw = remoteVideoEl.videoWidth;
+      const vh = remoteVideoEl.videoHeight;
+      if (vw > 0 && vh > 0 && activeCallWithVideo) {
+        remoteTileEl.classList.add('remote-video-sized');
+        remoteTileEl.style.aspectRatio = `${vw} / ${vh}`;
+        const maxDisplayWidth = Math.min(window.innerWidth - 48, Math.max(240, Math.min(vw, 560)));
+        remoteTileEl.style.width = `${maxDisplayWidth}px`;
+        document.getElementById('remote-call-label').textContent = `${remotePeerInfo.nickname || 'Собеседник'} (${vw}×${vh})`;
+      } else {
+        remoteTileEl.classList.remove('remote-video-sized');
+        remoteTileEl.style.aspectRatio = '';
+        remoteTileEl.style.width = '';
+      }
+    }
+
+    remoteVideoEl.addEventListener('loadedmetadata', applyRemoteVideoAspect);
+    remoteVideoEl.addEventListener('resize', applyRemoteVideoAspect);
+    window.addEventListener('resize', applyRemoteVideoAspect);
+
     // === WEBRTC CALLS (VOICE / VIDEO + FIREBASE SIGNALING) ===
     let callUnsubscribers = [];
     let pendingIceCandidates = [];
-    let activeCallRoom = null;
 
     function clearCallListeners() {
       callUnsubscribers.forEach(unsub => {
@@ -1736,11 +2153,11 @@
       }
 
       peerConnection.ontrack = event => {
-        const remoteVideo = document.getElementById('remote-video');
         if (event.streams && event.streams[0]) {
-          remoteVideo.srcObject = event.streams[0];
+          remoteVideoEl.srcObject = event.streams[0];
         }
         document.getElementById('call-peer-info').textContent = 'Соединение установлено';
+        document.getElementById('call-remote-sub').textContent = 'Подключён к звонку';
       };
 
       peerConnection.onicecandidate = event => {
@@ -1770,17 +2187,27 @@
       try {
         clearCallListeners();
         activeCallRoom = state.activeRoom;
+        activeCallWithVideo = Boolean(withVideo);
+        remotePeerInfo = { nickname: 'Собеседник', avatarUrl: '' };
 
         localStream = await navigator.mediaDevices.getUserMedia({
           audio: true,
           video: withVideo
         });
 
+        const callBox = document.getElementById('call-box');
+        callBox.classList.add('active');
+        callBox.classList.toggle('audio-mode', !withVideo);
+
         document.getElementById('local-video').srcObject = localStream;
-        document.getElementById('remote-video').srcObject = null;
-        document.getElementById('call-box').classList.add('active');
+        remoteVideoEl.srcObject = null;
+        applyRemoteVideoAspect();
+        updateCallAvatarsUI();
+        syncPresence();
+
         document.getElementById('call-status-label').textContent = withVideo ? 'Видеозвонок (WebRTC)' : 'Голосовой звонок (WebRTC)';
         document.getElementById('call-peer-info').textContent = 'Ожидание подключения...';
+        document.getElementById('call-remote-sub').textContent = 'Ожидание собеседника...';
         document.getElementById('start-voice-btn').style.display = 'none';
         document.getElementById('start-video-btn').style.display = 'none';
         document.getElementById('hangup-btn').style.display = 'inline-flex';
@@ -1795,6 +2222,14 @@
           const offData = snap.val();
           if (!offData || offData.senderId === clientId || !peerConnection) return;
 
+          if (offData.senderNick || offData.senderAvatar !== undefined) {
+            remotePeerInfo = {
+              nickname: offData.senderNick || 'Собеседник',
+              avatarUrl: offData.senderAvatar || ''
+            };
+            updateCallAvatarsUI();
+          }
+
           try {
             if (offData.type === 'offer' && peerConnection.signalingState === 'stable') {
               await peerConnection.setRemoteDescription(new RTCSessionDescription(offData));
@@ -1804,6 +2239,8 @@
               await peerConnection.setLocalDescription(answer);
               await set(answerRef, {
                 senderId: clientId,
+                senderNick: state.nickname,
+                senderAvatar: state.avatarUrl || '',
                 sdp: answer.sdp,
                 type: answer.type
               });
@@ -1816,6 +2253,14 @@
         const answerUnsub = onValue(answerRef, async snap => {
           const ans = snap.val();
           if (!ans || ans.senderId === clientId || !peerConnection) return;
+
+          if (ans.senderNick || ans.senderAvatar !== undefined) {
+            remotePeerInfo = {
+              nickname: ans.senderNick || 'Собеседник',
+              avatarUrl: ans.senderAvatar || ''
+            };
+            updateCallAvatarsUI();
+          }
 
           try {
             if (ans.type === 'answer' && peerConnection.signalingState === 'have-local-offer') {
@@ -1852,6 +2297,13 @@
           const checkUnsub = onValue(offerRef, s => {
             const val = s.val();
             hasExistingOffer = Boolean(val && val.senderId && val.senderId !== clientId);
+            if (hasExistingOffer && val) {
+              remotePeerInfo = {
+                nickname: val.senderNick || 'Собеседник',
+                avatarUrl: val.senderAvatar || ''
+              };
+              updateCallAvatarsUI();
+            }
             off(offerRef, 'value', checkUnsub);
             resolve();
           }, { onlyOnce: true });
@@ -1862,6 +2314,8 @@
           await peerConnection.setLocalDescription(offer);
           await set(offerRef, {
             senderId: clientId,
+            senderNick: state.nickname,
+            senderAvatar: state.avatarUrl || '',
             sdp: offer.sdp,
             type: offer.type
           });
@@ -1870,6 +2324,7 @@
         window.addEventListener('beforeunload', cleanupCallNodeOnUnload, { once: true });
       } catch (err) {
         clearCallListeners();
+        activeCallRoom = null;
         alert('Не удалось получить доступ к микрофону/камере: ' + err.message);
       }
     }
@@ -1883,10 +2338,16 @@
     function hangupCall() {
       clearCallListeners();
 
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+
       if (db && activeCallRoom) {
         remove(ref(db, `calls/${activeCallRoom}`)).catch(() => {});
       }
       activeCallRoom = null;
+      activeCallWithVideo = false;
+      syncPresence();
 
       if (peerConnection) {
         try {
@@ -1899,8 +2360,11 @@
         localStream = null;
       }
       document.getElementById('local-video').srcObject = null;
-      document.getElementById('remote-video').srcObject = null;
-      document.getElementById('call-box').classList.remove('active');
+      remoteVideoEl.srcObject = null;
+      applyRemoteVideoAspect();
+
+      const callBox = document.getElementById('call-box');
+      callBox.classList.remove('active', 'audio-mode');
       document.getElementById('start-voice-btn').style.display = 'inline-flex';
       document.getElementById('start-video-btn').style.display = 'inline-flex';
       document.getElementById('hangup-btn').style.display = 'none';
