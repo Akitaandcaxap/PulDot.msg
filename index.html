@@ -29,17 +29,17 @@
     }
 
     html, body {
-      height: 100%;
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
     }
 
     body {
       font-family: 'gg sans', 'Noto Sans', 'Segoe UI', Roboto, sans-serif;
       background-color: var(--bg-chat);
       color: var(--text-normal);
-      min-height: 100dvh;
       display: flex;
       flex-direction: column;
-      overflow-x: hidden;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -81,16 +81,15 @@
 
     /* Top App Bar */
     .top-bar {
+      height: 48px;
       min-height: 48px;
       background: var(--bg-servers);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 6px max(12px, env(safe-area-inset-right)) 6px max(12px, env(safe-area-inset-left));
+      padding: 0 max(12px, env(safe-area-inset-right)) 0 max(12px, env(safe-area-inset-left));
       gap: 8px;
-      position: sticky;
-      top: 0;
       z-index: 120;
       flex-shrink: 0;
     }
@@ -100,7 +99,6 @@
       align-items: center;
       gap: 10px;
       min-width: 0;
-      flex: 1;
     }
 
     .brand-pill {
@@ -281,16 +279,19 @@
 
     /* Main Workspace */
     .workspace {
-      flex: 1 0 auto;
+      flex: 1;
+      min-height: 0;
       display: flex;
-      flex-direction: column;
       width: 100%;
+      overflow: hidden;
     }
 
     .tab-panel {
       display: none;
       width: 100%;
-      flex: 1 0 auto;
+      height: 100%;
+      min-height: 0;
+      overflow: hidden;
     }
 
     .tab-panel.active {
@@ -301,16 +302,27 @@
     .channel-sidebar {
       width: 244px;
       min-width: 244px;
+      height: 100%;
       background: var(--bg-sidebar);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       border-right: 1px solid var(--border);
       z-index: 150;
+      overflow: hidden;
+    }
+
+    .sidebar-top-scroll {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     .sidebar-header {
       height: 46px;
+      min-height: 46px;
       padding: 0 12px;
       display: flex;
       align-items: center;
@@ -337,6 +349,7 @@
     .sidebar-body {
       padding: 10px 8px;
       flex: 1;
+      min-height: 0;
       overflow-y: auto;
     }
 
@@ -430,6 +443,7 @@
       justify-content: space-between;
       gap: 8px;
       border-top: 1px solid rgba(0, 0, 0, 0.25);
+      flex-shrink: 0;
     }
 
     .user-meta {
@@ -490,11 +504,13 @@
     /* Chat Area */
     .chat-stage {
       flex: 1;
+      height: 100%;
+      min-height: 0;
       display: flex;
       flex-direction: column;
       background: var(--bg-chat);
       min-width: 0;
-      min-height: calc(100dvh - 48px);
+      overflow: hidden;
     }
 
     .chat-topbar {
@@ -505,6 +521,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
+      flex-shrink: 0;
     }
 
     .chat-room-left {
@@ -555,6 +572,7 @@
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
       display: none;
+      flex-shrink: 0;
     }
 
     .call-panel.active {
@@ -709,6 +727,7 @@
     /* Messages Stream */
     .messages-stream {
       flex: 1;
+      min-height: 0;
       overflow-y: auto;
       padding: 10px 12px;
       display: flex;
@@ -817,6 +836,7 @@
     /* Composer */
     .composer-wrap {
       padding: 4px 12px max(10px, env(safe-area-inset-bottom));
+      flex-shrink: 0;
     }
 
     .pending-attach-bar {
@@ -872,6 +892,8 @@
     /* Games, Friends, Settings Views */
     .view-container {
       width: 100%;
+      height: 100%;
+      overflow-y: auto;
       padding: 12px;
       max-width: 1080px;
       margin: 0 auto;
@@ -1270,13 +1292,13 @@
     /* Small Phones — No Overlapping Controls */
     @media (max-width: 600px) {
       .top-bar {
-        padding: 6px 8px;
-        flex-wrap: wrap;
+        padding: 0 8px;
+        gap: 6px;
       }
 
       .brand-group {
-        width: 100%;
-        justify-content: space-between;
+        flex: 1;
+        min-width: 0;
         gap: 6px;
       }
 
@@ -1286,19 +1308,19 @@
 
       .dc-tabs {
         flex: 1;
+        min-width: 0;
         justify-content: space-between;
       }
 
       .dc-tab {
         flex: 1;
-        padding: 6px 4px;
-        font-size: 0.75rem;
+        padding: 5px 4px;
+        font-size: 0.74rem;
         text-align: center;
       }
 
-      .playing-pill {
-        width: 100%;
-        justify-content: center;
+      .playing-pill.active {
+        display: none;
       }
 
       .chat-topbar {
@@ -1317,7 +1339,7 @@
 
       .call-controls .dc-btn {
         flex: 1;
-        min-height: 36px;
+        min-height: 34px;
         font-size: 0.78rem;
       }
 
@@ -1394,7 +1416,7 @@
     <!-- TAB 1: ЧАТ И ЛС -->
     <section class="tab-panel active" id="tab-chat">
       <aside class="channel-sidebar" id="channel-sidebar">
-        <div>
+        <div class="sidebar-top-scroll">
           <div class="sidebar-header">
             <span>PulDot.msg</span>
             <button class="close-drawer-btn" id="close-drawer-btn" title="Закрыть">&times;</button>
