@@ -895,7 +895,7 @@
       height: 100%;
       overflow-y: auto;
       padding: 12px;
-      max-width: 1080px;
+      max-width: 1140px;
       margin: 0 auto;
     }
 
@@ -1001,50 +1001,64 @@
     /* Settings Page */
     .settings-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-      gap: 12px;
+      grid-template-columns: minmax(340px, 1.35fr) minmax(290px, 1fr);
+      gap: 14px;
       align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .settings-card {
       background: var(--bg-sidebar);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 12px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .settings-card h3 {
-      font-size: 0.98rem;
+      font-size: 1rem;
     }
 
     .field-label {
       font-size: 0.75rem;
       color: var(--text-muted);
       display: block;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
     }
 
-    /* Profile Card Preview & Public Profile Modal */
+    /* Larger & Taller Profile Card Preview & Public Profile Modal */
     .profile-card-box {
-      border-radius: 10px;
+      border-radius: 14px;
       overflow: hidden;
       background: var(--bg-servers);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
     }
 
     .profile-banner-box {
-      height: 76px;
+      height: 112px;
       width: 100%;
       background: linear-gradient(135deg, var(--accent), #2b2d31);
       background-size: cover;
       background-position: center;
+      flex-shrink: 0;
     }
 
     .profile-card-body {
-      padding: 0 12px 12px;
+      padding: 0 16px 18px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .profile-card-top-row {
@@ -1052,34 +1066,88 @@
       align-items: flex-end;
       justify-content: space-between;
       gap: 10px;
-      margin-top: -26px;
-      margin-bottom: 8px;
+      margin-top: -36px;
+      margin-bottom: 2px;
     }
 
     .profile-avatar-ring {
-      padding: 3px;
+      padding: 4px;
       border-radius: 50%;
       background: var(--bg-servers);
       flex-shrink: 0;
     }
 
     .profile-avatar-lg {
-      width: 54px;
-      height: 54px;
-      font-size: 1.2rem;
+      width: 68px;
+      height: 68px;
+      font-size: 1.45rem;
+    }
+
+    .profile-section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
     }
 
     .profile-bio-box {
-      margin-top: 6px;
-      padding: 7px 9px;
-      border-radius: 7px;
-      background: rgba(17, 18, 20, 0.82);
+      min-height: 76px;
+      padding: 9px 11px;
+      border-radius: 8px;
+      background: rgba(17, 18, 20, 0.84);
       border: 1px solid rgba(255, 255, 255, 0.14);
-      font-size: 0.82rem;
-      line-height: 1.32;
+      font-size: 0.85rem;
+      line-height: 1.38;
       color: #f2f3f5;
       white-space: pre-wrap;
       word-break: break-word;
+    }
+
+    .profile-fav-games-box {
+      min-height: 72px;
+      padding: 9px 11px;
+      border-radius: 8px;
+      background: rgba(17, 18, 20, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      gap: 6px;
+    }
+
+    .fav-game-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(88, 101, 242, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #f2f3f5;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .fav-game-remove {
+      background: transparent;
+      border: none;
+      color: #ff9aa2;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.85rem;
+      line-height: 1;
+      padding: 0 2px;
+    }
+
+    .fav-game-remove:hover {
+      color: #fff;
+    }
+
+    .fav-games-empty-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
     }
 
     .swatch-row {
@@ -1194,13 +1262,17 @@
 
     .user-profile-modal-card {
       width: 100%;
-      max-width: 400px;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      max-width: 460px;
+      min-height: 410px;
+      max-height: 88dvh;
+      overflow-y: auto;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
       background: var(--bg-servers);
       position: relative;
-      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.75);
+      box-shadow: 0 22px 54px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
     }
 
     .wizard-modal {
@@ -1570,7 +1642,7 @@
         <div class="view-banner">
           <div>
             <h2 style="font-size: 1.05rem;">Настройки</h2>
-            <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 2px;">Профиль, карточка и база данных.</p>
+            <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 2px;">Профиль, любимые игры, карточка и база данных.</p>
           </div>
           <button class="dc-btn" id="settings-run-wizard-btn">Мастер настройки</button>
         </div>
@@ -1588,8 +1660,17 @@
                     <div class="avatar-media profile-avatar-lg" id="settings-avatar-preview">U</div>
                   </div>
                 </div>
-                <div id="settings-nick-preview" style="font-size: 0.98rem; font-weight: 700;">Гость</div>
-                <div class="profile-bio-box" id="settings-bio-preview">Описание профиля...</div>
+                <div id="settings-nick-preview" style="font-size: 1.08rem; font-weight: 700;">Гость</div>
+
+                <div>
+                  <div class="profile-section-label">О себе</div>
+                  <div class="profile-bio-box" id="settings-bio-preview">Описание профиля...</div>
+                </div>
+
+                <div>
+                  <div class="profile-section-label">Любимые игры</div>
+                  <div class="profile-fav-games-box" id="settings-fav-games-preview"></div>
+                </div>
               </div>
             </div>
 
@@ -1601,6 +1682,14 @@
             <div>
               <label class="field-label" for="settings-bio-input">Описание (Bio)</label>
               <textarea class="dc-textarea" id="settings-bio-input" rows="2" maxlength="160" placeholder="Пара слов о себе..."></textarea>
+            </div>
+
+            <div>
+              <label class="field-label" for="settings-fav-game-input">Добавить любимую игру</label>
+              <div style="display: flex; gap: 6px;">
+                <input type="text" class="dc-input" id="settings-fav-game-input" maxlength="36" placeholder="Например: Roblox, Terraria, CS2...">
+                <button type="button" class="dc-btn dc-btn-primary" id="settings-add-fav-game-btn">+</button>
+              </div>
             </div>
 
             <div>
@@ -1695,20 +1784,29 @@
   <div class="modal-overlay" id="user-profile-modal">
     <div class="user-profile-modal-card" id="user-profile-card">
       <button class="modal-close" id="close-user-profile-modal" style="position: absolute; top: 10px; right: 10px;">&times;</button>
-      <div class="profile-banner-box" id="modal-prof-banner"></div>
+      <div class="profile-banner-box" id="modal-prof-banner" style="height: 124px;"></div>
       <div class="profile-card-body">
-        <div class="profile-card-top-row">
+        <div class="profile-card-top-row" style="margin-top: -40px;">
           <div class="profile-avatar-ring" id="modal-prof-avatar-ring">
             <div class="avatar-media profile-avatar-lg" id="modal-prof-avatar">U</div>
           </div>
           <button type="button" class="dc-btn dc-btn-primary" id="modal-prof-dm-btn">✉️ ЛС</button>
         </div>
         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-          <strong id="modal-prof-nick" style="font-size: 1.1rem;">Пользователь</strong>
+          <strong id="modal-prof-nick" style="font-size: 1.18rem;">Пользователь</strong>
           <span id="modal-prof-status" class="status-online-text">● В сети</span>
         </div>
         <div id="modal-prof-playing" class="activity-text" style="display: none;"></div>
-        <div class="profile-bio-box" id="modal-prof-bio">Нет описания</div>
+
+        <div>
+          <div class="profile-section-label">О себе</div>
+          <div class="profile-bio-box" id="modal-prof-bio">Нет описания</div>
+        </div>
+
+        <div>
+          <div class="profile-section-label">Любимые игры</div>
+          <div class="profile-fav-games-box" id="modal-prof-fav-games"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -1813,6 +1911,56 @@
         }
       } catch (_) {}
       return '';
+    }
+
+    function normalizeFavGames(list) {
+      if (!Array.isArray(list)) return [];
+      const seen = new Set();
+      const result = [];
+      for (const item of list) {
+        if (typeof item !== 'string') continue;
+        const clean = item.trim().slice(0, 36);
+        if (!clean) continue;
+        const key = clean.toLowerCase();
+        if (!seen.has(key)) {
+          seen.add(key);
+          result.push(clean);
+        }
+      }
+      return result.slice(0, 12);
+    }
+
+    function renderFavGamesChips(containerEl, gamesList, { removable = false, onRemove = null } = {}) {
+      if (!containerEl) return;
+      containerEl.innerHTML = '';
+      const list = normalizeFavGames(gamesList);
+      if (list.length === 0) {
+        const emptySpan = document.createElement('span');
+        emptySpan.className = 'fav-games-empty-text';
+        emptySpan.textContent = 'Любимые игры не указаны';
+        containerEl.appendChild(emptySpan);
+        return;
+      }
+      list.forEach(gameName => {
+        const chip = document.createElement('span');
+        chip.className = 'fav-game-chip';
+
+        const label = document.createElement('span');
+        label.textContent = `🎮 ${gameName}`;
+        chip.appendChild(label);
+
+        if (removable && typeof onRemove === 'function') {
+          const rmBtn = document.createElement('button');
+          rmBtn.type = 'button';
+          rmBtn.className = 'fav-game-remove';
+          rmBtn.title = 'Удалить игру';
+          rmBtn.textContent = '×';
+          rmBtn.addEventListener('click', () => onRemove(gameName));
+          chip.appendChild(rmBtn);
+        }
+
+        containerEl.appendChild(chip);
+      });
     }
 
     function applyBannerStyle(el, rawBanner) {
@@ -1955,6 +2103,11 @@
     const savedNickFontFromStorage = localStorage.getItem('puldot_nick_font') || 'nick-font-sans';
     const savedProfileAnimFromStorage = localStorage.getItem('puldot_profile_anim') || 'anim-zoom';
 
+    let savedFavGamesFromStorage = [];
+    try {
+      savedFavGamesFromStorage = normalizeFavGames(JSON.parse(localStorage.getItem('puldot_fav_games') || '[]'));
+    } catch (_) {}
+
     let savedFbConfig = null;
     try {
       const rawSavedFb = localStorage.getItem('puldot_fb_config');
@@ -1972,6 +2125,7 @@
       nickname: savedNickFromCookie || generateDefaultNick(),
       avatarUrl: sanitizeHttpUrl(savedAvatarFromStorage),
       bio: savedBioFromStorage,
+      favoriteGames: savedFavGamesFromStorage,
       bannerBg: savedBannerFromStorage,
       accentColor: savedAccentFromStorage,
       cardBg: savedCardBgFromStorage,
@@ -1991,6 +2145,7 @@
       fbConfig: savedFbConfig || { ...DEFAULT_FIREBASE_CONFIG }
     };
 
+    let draftFavGames = [...state.favoriteGames];
     let db = null;
     let currentMessagesRef = null;
     let peerConnection = null;
@@ -2048,6 +2203,7 @@
           nickname: state.nickname,
           avatarUrl: state.avatarUrl,
           bio: state.bio,
+          favoriteGames: normalizeFavGames(state.favoriteGames),
           bannerBg: state.bannerBg,
           accentColor: state.accentColor,
           cardBg: state.cardBg,
@@ -2067,10 +2223,12 @@
       }
 
       const isOnline = Boolean(remote && (Date.now() - (remote.updatedAt || 0) < 120000));
+      const rawFavs = (remote && remote.favoriteGames) || fallbackObj.favoriteGames || [];
       return {
         nickname: (remote && remote.nickname) || nick || fallbackObj.nickname || 'Пользователь',
         avatarUrl: (remote && remote.avatarUrl) || fallbackObj.avatarUrl || '',
         bio: (remote && remote.bio) || fallbackObj.bio || '',
+        favoriteGames: normalizeFavGames(rawFavs),
         bannerBg: (remote && remote.bannerBg) || fallbackObj.bannerBg || '',
         accentColor: (remote && remote.accentColor) || fallbackObj.accentColor || '#5865f2',
         cardBg: (remote && remote.cardBg) || fallbackObj.cardBg || '#1e1f22',
@@ -2117,6 +2275,7 @@
       }
 
       document.getElementById('modal-prof-bio').textContent = data.bio ? data.bio : 'Нет описания';
+      renderFavGamesChips(document.getElementById('modal-prof-fav-games'), data.favoriteGames, { removable: false });
 
       const dmBtn = document.getElementById('modal-prof-dm-btn');
       dmBtn.style.display = data.nickname === state.nickname ? 'none' : 'inline-flex';
@@ -2250,6 +2409,7 @@
     // === SETTINGS TAB LOGIC ===
     const settingsNickInput = document.getElementById('settings-nick-input');
     const settingsBioInput = document.getElementById('settings-bio-input');
+    const settingsFavGameInput = document.getElementById('settings-fav-game-input');
     const settingsAvatarInput = document.getElementById('settings-avatar-input');
     const settingsBannerInput = document.getElementById('settings-banner-input');
     const settingsAccentPicker = document.getElementById('settings-accent-picker');
@@ -2260,10 +2420,45 @@
 
     let settingsInitialized = false;
 
+    function renderSettingsFavGamesPreview() {
+      renderFavGamesChips(
+        document.getElementById('settings-fav-games-preview'),
+        draftFavGames,
+        {
+          removable: true,
+          onRemove: gameName => {
+            draftFavGames = draftFavGames.filter(g => g !== gameName);
+            renderSettingsFavGamesPreview();
+          }
+        }
+      );
+    }
+
+    function addDraftFavGame() {
+      const raw = (settingsFavGameInput.value || '').trim();
+      if (!raw) return;
+      if (draftFavGames.length >= 12) {
+        alert('Максимум 12 любимых игр.');
+        return;
+      }
+      draftFavGames = normalizeFavGames([...draftFavGames, raw]);
+      settingsFavGameInput.value = '';
+      renderSettingsFavGamesPreview();
+    }
+
+    document.getElementById('settings-add-fav-game-btn').addEventListener('click', addDraftFavGame);
+    settingsFavGameInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addDraftFavGame();
+      }
+    });
+
     function syncSettingsFormPreview(forceInputs = false) {
       if (!settingsInitialized || forceInputs) {
         settingsNickInput.value = state.nickname;
         settingsBioInput.value = state.bio || '';
+        draftFavGames = normalizeFavGames(state.favoriteGames);
         settingsAvatarInput.value = state.avatarUrl || '';
         settingsBannerInput.value = state.bannerBg || '';
         settingsAccentPicker.value = state.accentColor || '#5865f2';
@@ -2293,6 +2488,7 @@
       applyNickFontClass(nickPreviewEl, previewFont);
 
       document.getElementById('settings-bio-preview').textContent = previewBio || 'Описание профиля...';
+      renderSettingsFavGamesPreview();
       renderAvatarContent(document.getElementById('settings-avatar-preview'), previewNick, previewAvatar);
       applyBannerStyle(document.getElementById('settings-banner-preview'), previewBanner);
     }
@@ -2364,6 +2560,7 @@
       }
 
       state.bio = rawBio;
+      state.favoriteGames = normalizeFavGames(draftFavGames);
       state.avatarUrl = sanitizeHttpUrl(rawAvatar);
       state.bannerBg = rawBanner;
       state.accentColor = chosenAccent;
@@ -2372,6 +2569,7 @@
       state.profileAnim = PROFILE_ANIMS.includes(chosenAnim) ? chosenAnim : 'anim-zoom';
 
       localStorage.setItem('puldot_bio', state.bio);
+      localStorage.setItem('puldot_fav_games', JSON.stringify(state.favoriteGames));
       localStorage.setItem('puldot_avatar_url', state.avatarUrl);
       localStorage.setItem('puldot_banner_bg', state.bannerBg);
       localStorage.setItem('puldot_accent_color', state.accentColor);
@@ -2436,6 +2634,7 @@
           nickname: state.nickname,
           avatarUrl: state.avatarUrl || null,
           bio: state.bio || null,
+          favoriteGames: normalizeFavGames(state.favoriteGames),
           bannerBg: state.bannerBg || null,
           accentColor: state.accentColor || null,
           cardBg: state.cardBg || null,
@@ -2758,6 +2957,7 @@
           nickname: authorName,
           avatarUrl: msg.avatarUrl || '',
           bio: msg.bio || '',
+          favoriteGames: msg.favoriteGames || [],
           bannerBg: msg.bannerBg || '',
           accentColor: msg.accentColor || '#5865f2',
           cardBg: msg.cardBg || '#1e1f22',
@@ -2864,6 +3064,7 @@
         author: state.nickname,
         avatarUrl: state.avatarUrl || null,
         bio: state.bio || null,
+        favoriteGames: normalizeFavGames(state.favoriteGames),
         bannerBg: state.bannerBg || null,
         accentColor: state.accentColor || null,
         cardBg: state.cardBg || null,
