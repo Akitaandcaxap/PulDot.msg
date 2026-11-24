@@ -1,178 +1,731 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PulDot.msg — Технические работы</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>PulDot.msg — Telegram & Material You</title>
   <style>
     :root {
-      --bg: #0f1115;
-      --card: #171a21;
-      --border: #262b36;
-      --text: #e6e8ee;
-      --muted: #9aa3b2;
-      --accent: #3b82f6;
-      --accent-hover: #2563eb;
-      --badge-bg: rgba(59, 130, 246, 0.14);
+      --md-primary: #3390ec;
+      --md-on-primary: #ffffff;
+      --md-primary-container: rgba(51, 144, 236, 0.2);
+      --md-on-primary-container: #b8dcff;
+
+      --md-bg: #0e1621;
+      --md-surface: #17212b;
+      --md-surface-container: #1d2733;
+      --md-surface-container-high: #242f3d;
+      --md-outline: #2b394a;
+      --md-text: #f5f9fc;
+      --md-text-muted: #7f91a4;
+      --md-danger: #ef4444;
+      --md-danger-container: rgba(239, 68, 68, 0.18);
+
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-pill: 999px;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
+    }
+
+    html, body {
+      height: 100dvh;
+      max-height: 100dvh;
+      overflow: hidden;
+      background-color: var(--md-bg);
+      color: var(--md-text);
     }
 
     body {
-      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(127, 145, 164, 0.35); border-radius: 999px; }
+
+    /* Material You Capsule Buttons */
+    .m3-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: var(--radius-pill);
+      border: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.12s ease, filter 0.18s ease, background-color 0.2s ease;
+      white-space: nowrap;
+    }
+    .m3-btn:active { transform: scale(0.96); }
+    .m3-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .m3-btn-filled { background: var(--md-primary); color: var(--md-on-primary); }
+    .m3-btn-filled:hover:not(:disabled) { filter: brightness(1.08); }
+
+    .m3-btn-tonal { background: var(--md-primary-container); color: var(--md-on-primary-container); }
+    .m3-btn-tonal:hover:not(:disabled) { filter: brightness(1.15); }
+
+    .m3-btn-outlined { background: transparent; color: var(--md-text); border: 1px solid var(--md-outline); }
+    .m3-btn-outlined:hover:not(:disabled) { background: rgba(255,255,255,0.05); }
+
+    .m3-btn-danger {
+      background: var(--md-danger-container);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .m3-btn-danger:hover:not(:disabled) { background: rgba(239, 68, 68, 0.26); }
+
+    .m3-btn-sm { padding: 6px 12px; font-size: 0.78rem; }
+    .m3-icon-btn {
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      border-radius: var(--radius-pill);
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+
+    /* Inputs */
+    .m3-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .m3-field label { font-size: 0.82rem; color: var(--md-text-muted); font-weight: 500; }
+    .m3-input {
+      width: 100%;
+      padding: 10px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--md-outline);
+      background: var(--md-surface);
+      color: var(--md-text);
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    textarea.m3-input { border-radius: var(--radius-md); }
+    .m3-input:focus {
+      border-color: var(--md-primary);
+      box-shadow: 0 0 0 3px var(--md-primary-container);
+    }
+
+    /* Auth Screen */
+    .auth-wrapper {
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Arial, sans-serif;
-      line-height: 1.6;
+      overflow-y: auto;
     }
-
-    .card {
+    .auth-card {
       width: 100%;
-      max-width: 540px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px 28px;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+      max-width: 410px;
+      background: var(--md-surface-container);
+      border-radius: var(--radius-xl);
+      padding: 30px 26px;
+      border: 1px solid var(--md-outline);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    }
+    .brand-logo { font-size: 1.48rem; font-weight: 800; letter-spacing: -0.3px; }
+    .brand-logo span { color: var(--md-primary); }
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--md-surface);
+      padding: 4px;
+      border-radius: var(--radius-pill);
+      margin: 18px 0;
+      border: 1px solid var(--md-outline);
+    }
+    .auth-tab {
+      padding: 9px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: transparent;
+      color: var(--md-text-muted);
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .auth-tab.active { background: var(--md-primary); color: var(--md-on-primary); }
+    .auth-error {
+      color: #fca5a5;
+      background: var(--md-danger-container);
+      padding: 10px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 0.84rem;
+      margin-bottom: 14px;
+      display: none;
+      text-align: center;
     }
 
-    .header {
+    /* Telegram Split Layout + Material You Capsules */
+    .app-shell {
+      display: none;
+      flex: 1;
+      height: 100dvh;
+      max-height: 100dvh;
+      max-width: 1320px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 10px;
+      gap: 10px;
+      overflow: hidden;
+    }
+    .app-shell.active { display: flex; }
+
+    /* Left Telegram Chat List Sidebar */
+    .tg-sidebar {
+      width: 320px;
+      background: var(--md-surface);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--md-outline);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+    .tg-sidebar-head {
+      padding: 12px 14px 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .tg-search-wrap {
+      padding: 4px 14px 10px;
+      flex-shrink: 0;
+    }
+    .tg-search-input {
+      width: 100%;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--md-outline);
+      background: var(--md-surface-container);
+      color: var(--md-text);
+      font-size: 0.88rem;
+      outline: none;
+    }
+    .tg-search-input:focus {
+      border-color: var(--md-primary);
+    }
+
+    .chat-list-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 4px 8px 10px;
+    }
+    .chat-list-label {
+      font-size: 0.69rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--md-text-muted);
+      padding: 8px 12px 3px;
+      font-weight: 700;
+    }
+    .chat-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: transparent;
+      color: var(--md-text);
+      cursor: pointer;
+      text-align: left;
+      transition: background-color 0.15s ease;
+    }
+    .chat-item:hover { background: rgba(255,255,255,0.05); }
+    .chat-item.active {
+      background: var(--md-primary);
+      color: var(--md-on-primary);
+    }
+    .chat-item.active .chat-item-sub { color: rgba(255,255,255,0.82); }
+    .chat-item-info { flex: 1; min-width: 0; }
+    .chat-item-title {
+      font-weight: 600;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .chat-item-sub {
+      font-size: 0.76rem;
+      color: var(--md-text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 1px;
+    }
+
+    /* Bottom Telegram User Bar (Click Avatar to open Profile Editor) */
+    .tg-footer {
+      border-top: 1px solid var(--md-outline);
+      padding: 8px 10px;
+      background: var(--md-surface-container);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 6px;
+      flex-shrink: 0;
     }
-
-    .brand {
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: 0.2px;
+    .tg-user-click {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+      flex: 1;
+      cursor: pointer;
+      padding: 3px 6px;
+      border-radius: var(--radius-pill);
+      transition: background 0.15s;
     }
-
-    .brand span {
-      color: var(--accent);
-    }
-
-    .status {
-      font-size: 0.8rem;
+    .tg-user-click:hover { background: rgba(255,255,255,0.06); }
+    .tg-footer-btns { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+    .capsule-mini-btn {
+      height: 32px;
+      padding: 0 11px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--md-outline);
+      background: var(--md-surface);
+      color: var(--md-text-muted);
+      font-size: 0.78rem;
       font-weight: 600;
-      color: #60a5fa;
-      background: var(--badge-bg);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      padding: 4px 10px;
-      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: 0.15s;
+    }
+    .capsule-mini-btn:hover, .capsule-mini-btn.active {
+      background: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      border-color: var(--md-primary);
+    }
+
+    .avatar-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .avatar-circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .clickable-user { cursor: pointer; transition: opacity 0.15s; }
+    .clickable-user:hover { opacity: 0.85; }
+
+    /* Right Telegram Chat Pane */
+    .main-pane {
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      background: var(--md-surface);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--md-outline);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .view-section {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+    }
+    .view-section.active { display: flex; }
+    #chat-section.active { overflow: hidden; }
+
+    .pane-header {
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--md-outline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--md-surface-container);
+      flex-shrink: 0;
+      z-index: 5;
+    }
+    .pane-header h2 {
+      font-size: 1.02rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .mobile-back-btn { display: none; }
+
+    .db-pill {
+      font-size: 0.68rem;
+      padding: 2px 9px;
+      border-radius: var(--radius-pill);
+      background: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+      font-weight: 600;
     }
 
-    h1 {
-      font-size: 1.35rem;
-      margin-bottom: 12px;
-      line-height: 1.35;
+    /* Resizable Top Call Drawer (Шторка звонка вверху чата) */
+    .call-drawer {
+      display: none;
+      flex-direction: column;
+      background: var(--md-bg);
+      border-bottom: 1px solid var(--md-outline);
+      height: 245px;
+      min-height: 145px;
+      max-height: 68dvh;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .call-drawer.open { display: flex; }
+
+    .call-drawer-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--md-surface-container);
+      border-bottom: 1px solid var(--md-outline);
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+    .call-drawer-body {
+      flex: 1;
+      min-height: 0;
+      padding: 10px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+    }
+    .webrtc-videos {
+      flex: 1;
+      min-height: 85px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .webrtc-box {
+      background: #080c12;
+      border: 1px solid var(--md-outline);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+      height: 100%;
+      min-height: 80px;
+    }
+    .webrtc-box video { width: 100%; height: 100%; object-fit: cover; }
+    .webrtc-label {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: rgba(14, 22, 33, 0.78);
+      padding: 2px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 0.72rem;
+    }
+    .call-resize-handle {
+      height: 12px;
+      background: var(--md-surface-container);
+      border-top: 1px solid var(--md-outline);
+      cursor: ns-resize;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      touch-action: none;
+    }
+    .call-resize-handle::after {
+      content: "";
+      width: 40px;
+      height: 4px;
+      border-radius: var(--radius-pill);
+      background: var(--md-outline);
+    }
+    .call-resize-handle:hover::after { background: var(--md-primary); }
+
+    /* Telegram-style Message Bubbles */
+    .chat-messages {
+      flex: 1;
+      min-height: 0;
+      padding: 16px 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .msg-row {
+      display: flex;
+      gap: 9px;
+      max-width: 78%;
+      align-items: flex-end;
+    }
+    .msg-row.own {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+    .msg-bubble {
+      background: var(--md-surface-container);
+      padding: 9px 14px;
+      border-radius: 18px 18px 18px 6px;
+      border: 1px solid var(--md-outline);
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+    .msg-row.own .msg-bubble {
+      background: var(--md-primary-container);
+      border-color: var(--md-primary);
+      border-radius: 18px 18px 6px 18px;
+    }
+    .msg-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+      color: var(--md-on-primary-container);
+    }
+    .msg-time { font-weight: 400; color: var(--md-text-muted); font-size: 0.69rem; }
+    .msg-media {
+      margin-top: 6px;
+      max-width: 280px;
+      max-height: 260px;
+      border-radius: 14px;
+      display: block;
+      object-fit: cover;
+      border: 1px solid var(--md-outline);
+    }
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--md-primary);
+      color: var(--md-on-primary);
+      font-size: 9px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+    .admin-tag {
+      font-size: 0.65rem;
+      padding: 1px 7px;
+      border-radius: var(--radius-pill);
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
     }
 
-    .lead {
-      color: var(--muted);
-      margin-bottom: 20px;
+    .media-preview-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 18px;
+      background: var(--md-surface-container-high);
+      border-top: 1px solid var(--md-outline);
+      flex-shrink: 0;
+    }
+    .media-preview-bar img { height: 46px; border-radius: 10px; object-fit: cover; }
+
+    /* Telegram Capsule Composer */
+    .chat-composer-wrap {
+      padding: 10px 16px 14px;
+      background: var(--md-surface);
+      flex-shrink: 0;
+    }
+    .chat-composer {
+      padding: 5px 7px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--md-outline);
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      background: var(--md-surface-container);
+    }
+    .chat-composer .m3-input {
+      border: none;
+      background: transparent;
+      box-shadow: none !important;
+      padding: 8px 10px;
+    }
+    .spam-banner {
+      display: none;
+      background: var(--md-danger-container);
+      color: #fca5a5;
+      padding: 7px 16px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-align: center;
+      border-top: 1px solid rgba(239, 68, 68, 0.35);
+      flex-shrink: 0;
     }
 
-    .info-box {
-      background: rgba(255, 255, 255, 0.025);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 18px;
-      margin-bottom: 22px;
+    /* Profile Customization */
+    .profile-container { padding: 20px; display: flex; flex-direction: column; gap: 18px; }
+    .profile-preview-card {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid var(--md-outline);
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    .profile-banner {
+      height: 140px;
+      background: linear-gradient(135deg, var(--md-primary), #1d2733);
+      background-size: cover;
+      background-position: center;
+    }
+    .profile-body { padding: 0 22px 22px; position: relative; }
+    .profile-avatar-lg {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      margin-top: -41px;
+      border: 4px solid currentColor;
+      background: var(--md-surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 800;
+      overflow: hidden;
+    }
+    .profile-avatar-lg img { width: 100%; height: 100%; object-fit: cover; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 14px;
+    }
+    .m3-card {
+      background: var(--md-surface-container);
+      border: 1px solid var(--md-outline);
+      border-radius: var(--radius-lg);
+      padding: 16px;
     }
 
-    .info-title {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
+    .swatches { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+    .swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .swatch:hover { transform: scale(1.1); }
+    .swatch.active { border-color: #ffffff; box-shadow: 0 0 0 2px var(--md-bg); }
+
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--md-outline);
+    }
+    .switch-row:last-child { border-bottom: none; }
+
+    .user-admin-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--md-surface);
+      border: 1px solid var(--md-outline);
+      border-radius: var(--radius-lg);
       margin-bottom: 10px;
     }
-
-    ul {
-      padding-left: 18px;
-      margin-bottom: 14px;
-    }
-
-    li {
-      margin-bottom: 6px;
-    }
-
-    .relaunch {
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
-      font-size: 0.95rem;
-    }
-
-    .relaunch strong {
-      color: #93c5fd;
-    }
-
-    .footer-note {
-      color: var(--muted);
-      font-size: 0.92rem;
-      margin-bottom: 22px;
-    }
-
-    .btn-refresh {
-      width: 100%;
-      padding: 13px 18px;
-      font-size: 1rem;
+    .badge-pill {
+      font-size: 0.72rem;
+      padding: 2px 9px;
+      border-radius: var(--radius-pill);
       font-weight: 600;
-      color: #ffffff;
-      background: var(--accent);
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.18s ease, transform 0.08s ease;
     }
 
-    .btn-refresh:hover {
-      background: var(--accent-hover);
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 9000;
+    }
+    .modal-backdrop.open { display: flex; }
+    .m3-modal {
+      width: 100%;
+      max-width: 470px;
+      max-height: 90dvh;
+      overflow-y: auto;
+      background: var(--md-surface-container);
+      border: 1px solid var(--md-outline);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: 0 24px 70px rgba(0,0,0,0.65);
     }
 
-    .btn-refresh:active {
-      transform: scale(0.99);
+    /* Particle Fountain & Confetti Overlay */
+    #fx-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
     }
-  </style>
-</head>
-<body>
-  <main class="card">
-    <div class="header">
-      <div class="brand">PulDot<span>.msg</span></div>
-      <div class="status">Временно закрыт</div>
-    </div>
-
-    <h1>Уважаемые пользователи PulDot.msg!</h1>
-    <p class="lead">Сайт временно закрыт на техническое обновление.</p>
-
-    <section class="info-box">
-      <div class="info-title">Причина закрытия</div>
-      <ul>
-        <li>Поднят вопрос добавления регистрации по логину и паролю.</li>
-        <li>Также поднят вопрос о добавлении модерации.</li>
-      </ul>
-      <div class="relaunch">
-        <strong>24.11.2026</strong> предвидится «перезапуск» сайта.
-      </div>
-    </section>
-
-    <p class="footer-note">Ожидайте обновлений.</p>
-
-    <button type="button" class="btn-refresh" onclick="window.location.reload();">
-      Обновить сайт
-    </button>
-  </main>
-</body>
-</html>
+    .fountain-particle {
+      position: fixed;
+      bottom: -20px;
+      font-size: 26px;
+      user-select: none;
+      will-change: transform, opacity;
+      animation: fountainShoot var(--dur, 1.3s) cubic-bezier(0.16, 0.84, 0.44, 1) forwards;
+    }
+    @keyframes fountainShoot {
+      0% { transform: translate(0, 0) scale(0.5) rotate(0deg); opacity: 1; }
+      65% { opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(1.25) rotate(var(--rot)); opacity: 0; }
+    }
+    .confetti-piece {
+      position: fixed;
+      top: -16px;
+      width: 10px;
+      height: 16px;
+      border-radius: 3px;
+      animation: confettiFall var(--dur, 3s) linear forwards;
+    }
+    @keyframes confet
